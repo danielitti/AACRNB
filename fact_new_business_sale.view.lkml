@@ -36,6 +36,7 @@ view: new_business_sale {
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
+              TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
               TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
               TRANSACTION_DATE.FINANCIAL_YEAR,
               TRANSACTION_DATE.FINANCIAL_YEAR_NAME
@@ -48,6 +49,7 @@ view: new_business_sale {
                               FINANCIAL_WEEK_NUMBER as TRADING_WEEK_NUMBER,
                               FINANCIAL_WEEK_NAME as TRADING_WEEK_NAME,
                               CALENDAR_DAY_NUMBER_OF_WEEK as TRADING_DAY_NUMBER_OF_WEEK,
+                              FINANCIAL_WEEK_NUMBER,
                               FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR,
                               FINANCIAL_YEAR_NAME
@@ -134,6 +136,13 @@ view: new_business_sale {
     group_label: "Transaction Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_YEAR_NAME ;;
+  }
+
+  dimension: trx_financial_week_number{
+    label: "Financial Week Number"
+    group_label: "Transaction Date Indentifiers"
+    type: string
+    sql: ${TABLE}.FINANCIAL_WEEK_NUMBER ;;
   }
 
   dimension: trx_financial_week_yyyyww {
