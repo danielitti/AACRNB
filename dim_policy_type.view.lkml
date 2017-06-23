@@ -1,6 +1,6 @@
 view: policy_type {
   derived_table: {
-    sql: SELECT  LVL2.POLICY_TYPE_KEY AS POLICY_TYPE_LEVEL_2_KEY,
+    sql: SELECT LVL2.POLICY_TYPE_KEY AS POLICY_TYPE_LEVEL_2_KEY,
                 LVL2.POLICY_TYPE_LEVEL,
                 LVL2.POLICY_TYPE_DESC AS LEVEL_2_POLICY_TYPE_DESC,
                 LVL2.POLICY_TYPE_FULL_DESC AS LEVEL_2_POLICY_TYPE_FULL_DESC,
@@ -12,11 +12,6 @@ view: policy_type {
         ON NVL(LVL2.PARENT_POLICY_TYPE_KEY, LVL2.POLICY_TYPE_KEY)  = LVL1.POLICY_TYPE_KEY
  ;;
   }
-
-
-# comment by DC
-#  test comment by cj
-
 
   dimension: policy_type_level_2_key {
     primary_key: yes

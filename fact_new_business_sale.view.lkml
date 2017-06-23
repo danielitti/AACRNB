@@ -9,7 +9,7 @@ view: new_business_sale {
               --TRANSACTION_ID,
               --POLICY_KEY,
               --TRANSACTION_TYPE_LEVEL_3_KEY,
-              --TRANS_SALES_CHANNEL_LEVEL2_KEY,
+              TRANS_SALES_CHANNEL_LEVEL2_KEY,
               --CUSTOMER_TYPE_KEY,
               POLICY_TYPE_LEVEL_2_KEY,
               --CONTRACT_TYPE_LEVEL_2_KEY,
@@ -164,6 +164,13 @@ view: new_business_sale {
     sql: ${TABLE}.SERIES_IDENTIFIER ;;
   }
 
+  dimension: trans_sales_channel_level_2_key {
+    label: "Policy Type Level 2 Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.TRANS_SALES_CHANNEL_LEVEL2_KEY ;;
+  }
+
   dimension: policy_type_level_2_key {
     label: "Policy Type Level 2 Key"
     hidden:  yes
@@ -181,6 +188,19 @@ view: new_business_sale {
     label: "Will Join?"
     type: string
     sql: ${TABLE}.IS_WILL_JOIN ;;
+  }
+
+  dimension: split_by_dimension {
+    type: "string"
+    sql:
+        CASE
+        WHEN {% condition split_by_filter %} 'Policy Type' {% endcondition %}
+          THEN ${policy_type.level_2_policy_type_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Sales Channel' {% endcondition %}
+          THEN ${channel.level_2_channel_full_desc}
+
+      END;;
   }
 
   ### Supporting dimensions for measure calculation
@@ -307,6 +327,14 @@ view: new_business_sale {
     # full_suggestions:
     ### xxx need to make only budget available here
   }
+
+  filter: split_by_filter {
+    label: "Split By Filter"
+    group_label: "Filters"
+    suggestions: ["Policy Type", "Sales Channel"]
+    default_value: "Policy Type"
+  }
+
 
   ###########################################################################################
   ### Measures
@@ -636,6 +664,15 @@ view: new_business_sale {
     type: number
     sql: (NULLIF(${volume_actual_fytd},0) - NULLIF(${volume_fcast_fytd},0))/NULLIF(${volume_fcast_fytd},0)  ;;
     value_format_name: percent_2
+  }
+
+  measure: volume_actual_fytd_minus_ly {
+    label: "Volume FYTD - FYTD LY"
+    group_label: "Volume"
+    type: number
+    #sql: NULLIF(NULLIF(${volume_actual_fytd},0) - NULLIF(${volume_actual_fytd_ly},0),0)  ;;
+    sql: ${volume_actual_fytd} - ${volume_actual_fytd_ly};;
+    value_format_name: decimal_0
   }
 
 }
