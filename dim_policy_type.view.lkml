@@ -13,6 +13,7 @@ view: policy_type {
  ;;
   }
 
+# comment by DC
 
   dimension: policy_type_level_2_key {
     primary_key: yes
