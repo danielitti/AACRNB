@@ -13,6 +13,7 @@ view: policy_type {
  ;;
   }
 
+#  test comment by cj
 
   dimension: policy_type_level_2_key {
     primary_key: yes
