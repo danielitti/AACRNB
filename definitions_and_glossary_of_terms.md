@@ -1345,3 +1345,5 @@ Retention Outcomes apply to the following Sales Channels
 
 * <span style="color:DarkRed">[Add Staff Type]</span>
 * <span style="color:DarkRed">[Add Digital Visit type]</span>
+* <span style="color:DarkRed">[Add Contact centre departments]</span>
+* <span style="color:DarkRed">[Add Stay AA attributes and measures]</span>
