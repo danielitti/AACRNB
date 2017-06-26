@@ -164,6 +164,11 @@ view: new_business_sale {
     sql: ${TABLE}.SERIES_IDENTIFIER ;;
   }
 
+  dimension: series_identifier_fcast {
+    label: "Series Identifier Forecast"
+    type: string
+    sql: CASE WHEN SUBSTR(${TABLE}.SERIES_IDENTIFIER, 1, 2) = 'FY' THEN ${TABLE}.SERIES_IDENTIFIER END  ;;
+  }
   dimension: trans_sales_channel_level_2_key {
     label: "Policy Type Level 2 Key"
     hidden:  yes
