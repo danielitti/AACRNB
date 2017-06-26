@@ -60,6 +60,6 @@ If you come across a Bug / Issue, please inform us by,
 ## Resources for BI Developers and LookAA Administrators
 
 * [BI Development Guide]()
-* [Usage KPIs]()
+* [Usage KPIs](/dashboards/4)
 * [Access control accounting]()
 * [Looker Operations Guide]()
