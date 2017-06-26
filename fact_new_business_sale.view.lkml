@@ -214,25 +214,25 @@ view: new_business_sale {
   dimension: is_selected_day {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} = {% parameter date_filter_parameter %} ;;
+    sql: ${trx_date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
   dimension: is_selected_day_ly {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} + 365 = {% parameter date_filter_parameter %} ;;
+    sql: ${trx_date_raw} + 365 = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
   dimension: is_up_to_selected_day {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} <= {% parameter date_filter_parameter %} ;;
+    sql: ${trx_date_raw} <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
   dimension: is_up_to_selected_day_ly {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} + 365 <= {% parameter date_filter_parameter %} ;;
+    sql: ${trx_date_raw} + 365 <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
   dimension: trdwk_derived_by_date_filter {
@@ -240,14 +240,14 @@ view: new_business_sale {
     hidden:  yes
     sql:
         CASE
-            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %}) < TO_DATE('28-Jan-16') THEN
-              FLOOR((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('29-Jan-15'))/7)+1
+            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
+              FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('29-Jan-15'))/7)+1
 
-             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %})  < TO_DATE('26-Jan-17') THEN
-               FLOOR((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('28-Jan-16'))/7)+1
+             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('26-Jan-17') THEN
+               FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('28-Jan-16'))/7)+1
 
-             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %})  < TO_DATE('25-Jan-18') THEN
-               FLOOR((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('26-Jan-17'))/7)+1
+             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('25-Jan-18') THEN
+               FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('26-Jan-17'))/7)+1
 
         END ;;
   }
@@ -257,14 +257,14 @@ view: new_business_sale {
     hidden:  yes
     sql:
         CASE
-            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %}) < TO_DATE('28-Jan-16') THEN
-              MOD((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('29-Jan-15')),7)+1
+            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
+              MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('29-Jan-15')),7)+1
 
-             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %})  < TO_DATE('26-Jan-17') THEN
-               MOD((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('28-Jan-16')),7)+1
+             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('26-Jan-17') THEN
+               MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('28-Jan-16')),7)+1
 
-             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}) AND TO_DATE({% parameter date_filter_parameter %})  < TO_DATE('25-Jan-18') THEN
-               MOD((TO_DATE({% parameter date_filter_parameter %}) - TO_DATE('26-Jan-17')),7)+1
+             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('25-Jan-18') THEN
+               MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('26-Jan-17')),7)+1
 
         END ;;
   }
@@ -286,25 +286,25 @@ view: new_business_sale {
   dimension: is_selected_fy {
     hidden: yes
     type: yesno
-    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS({% parameter date_filter_parameter %},11)  , 'YYYY') AS INT)  ;;
+    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS(TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'),11)  , 'YYYY') AS INT)  ;;
   }
 
   dimension: is_selected_last_fy {
     hidden: yes
     type: yesno
-    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS({% parameter date_filter_parameter %},11)  , 'YYYY') AS INT)-1  ;;
+    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS(TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'),11)  , 'YYYY') AS INT)-1  ;;
   }
 
   dimension: is_selected_year_month {
     hidden: yes
     type: yesno
-    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw}), EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %})), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}))) ;;
+    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw}), EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'))) ;;
   }
 
   dimension: is_selected_year_month_ly {
     hidden: yes
     type: yesno
-    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %})), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}))) ;;
+    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'))) ;;
   }
 
 
