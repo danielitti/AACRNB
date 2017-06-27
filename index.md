@@ -42,7 +42,7 @@ If you come across a Bug / Issue, please inform us by,
 | Tim Smith            | Jon Tippell  | Daniele Carmelitti  | Christopher Jones  | Pras Bhaskaran  |
 |:---------------------:|:-------------:|:-------------:|:-------------:|:-------------|
 | Head of Commercial BI | Consumer Road Commercial MI Lead | BI Consultant, CarGenie Lead | BI Consultant | Business Analyst |
-| <a href='mailto:Tim.Smith@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/18f9d7d.jpg'></a> | <a href='mailto:Jon.Tippell@TheAA.com'><img src='https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAW2AAAAJDcyNWYwMmEwLWI5MzYtNDM0OS1iYjQ2LWEzMzlhOGY1Zjc5ZA.jpg'></a> | <a href='mailto:Daniele.Carmelitti@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/12b88a7.jpg'></a> |  <a href='mailto:Christopher.Jones2@TheAA.com' style="font-size: 80px !important; text-decoration: none !important;">&#128104;&#127995;</a>  | <a href='mailto:Pras.Bhaskaran@TheAA.com'  style="font-size: 80px !important; text-decoration: none !important;">&#128104;&#127995;</a> |
+|     <a href='mailto:Tim.Smith@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/profiles/SmithT.jpg'></a> | <a href='mailto:Jon.Tippell@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/profiles/TippellJ.jpg'></a> | <a href='mailto:Daniele.Carmelitti@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/profiles/CarmelittiD.jpg'></a> | <a href='mailto:Christopher.Jones2@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/profiles/JonesC.jpg'></a> | <a href='mailto:Pras.Bhaskaran@TheAA.com'><img src='https://tippco-web.s3.amazonaws.com/lookaa/profiles/BhaskaranP.jpg'></a> |
 
 
 ## Roadmap
