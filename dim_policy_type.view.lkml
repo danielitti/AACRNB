@@ -26,28 +26,28 @@ view: policy_type {
     sql: ${TABLE}.POLICY_TYPE_LEVEL ;;
   }
 
-  dimension: level_1_policy_type_desc {
+  dimension: policy_type_lvl1_desc {
     label: "Policy Type Lvl 1 Desc"
     group_label: "Policy Type Lvl 1"
     type: string
     sql: ${TABLE}.LEVEL_1_POLICY_TYPE_DESC ;;
   }
 
-  dimension: level_1_policy_type_full_desc {
+  dimension: policy_type_lvl1_full_desc {
     label: "Policy Type Lvl 1 Full Desc"
     group_label: "Policy Type Lvl 1"
     type: string
     sql: ${TABLE}.LEVEL_1_POLICY_TYPE_FULL_DESC ;;
   }
 
-  dimension: level_2_policy_type_desc {
+  dimension: policy_type_lvl2_desc {
     label: "Policy Type Lvl 2 Desc"
     group_label: "Policy Type Lvl 2"
     type: string
     sql: ${TABLE}.LEVEL_2_POLICY_TYPE_DESC ;;
   }
 
-  dimension: level_2_policy_type_full_desc {
+  dimension: policy_type_lvl2_full_desc {
     label: "Policy Type Lvl 2 Full Desc"
     group_label: "Policy Type Lvl 2"
     type: string

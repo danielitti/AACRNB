@@ -200,10 +200,10 @@ view: new_business_sale {
     sql:
         CASE
         WHEN {% condition split_by_filter %} 'Policy Type' {% endcondition %}
-          THEN ${policy_type.level_2_policy_type_full_desc}
+          THEN ${policy_type.policy_type_lvl2_full_desc}
 
         WHEN {% condition split_by_filter %} 'Sales Channel' {% endcondition %}
-          THEN ${channel.level_2_channel_full_desc}
+          THEN ${sales_channel.sales_channel_lvl2_full_desc}
 
       END;;
   }

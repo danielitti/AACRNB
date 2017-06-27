@@ -12,9 +12,9 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.policy_type_level_2_key} = ${policy_type.policy_type_level_2_key} ;;
     relationship: many_to_one
   }
-  join: channel {
+  join: sales_channel {
     type: inner
-    sql_on: ${new_business_sale.trans_sales_channel_level_2_key} = ${channel.trans_sales_channel_level2_key} ;;
+    sql_on: ${new_business_sale.trans_sales_channel_level_2_key} = ${sales_channel.trans_sales_channel_level2_key} ;;
     relationship: many_to_one
   }
 
