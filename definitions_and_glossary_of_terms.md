@@ -746,7 +746,6 @@ Valid values:
 | Direct – Third Party Insurers | <span style="color:DarkRed">[Definition to come]</span> |
 | Direct – Inbound SMS | <span style="color:DarkRed">[Definition to come]</span> |
 | Direct – Outbound SMS | <span style="color:DarkRed">[Definition to come]</span> |
-| Direct – Inbound calls | <span style="color:DarkRed">[Definition to come]</span> |
 | Direct – Inbound emails | <span style="color:DarkRed">[Definition to come]</span> |
 | Direct – Other | <span style="color:DarkRed">[Definition to come]</span> |
 
