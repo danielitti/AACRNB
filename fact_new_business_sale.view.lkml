@@ -49,10 +49,12 @@ view: new_business_sale {
                               FINANCIAL_WEEK_NUMBER as TRADING_WEEK_NUMBER,
                               FINANCIAL_WEEK_NAME as TRADING_WEEK_NAME,
                               CALENDAR_DAY_NUMBER_OF_WEEK as TRADING_DAY_NUMBER_OF_WEEK,
+                              FINANCIAL_YEAR AS TRADING_YEAR, --xxx
                               FINANCIAL_WEEK_NUMBER,
                               FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR,
-                              FINANCIAL_YEAR_NAME
+                              FINANCIAL_YEAR_NAME,
+                              CALENDAR_DAY_NUMBER_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR --xxx
                               FROM  SHARED_MRT_UAT7.DIM_DATE) TRANSACTION_DATE
               ON SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
             ;;
@@ -124,6 +126,14 @@ view: new_business_sale {
     sql: ${TABLE}.TRADING_DAY_NUMBER_OF_WEEK ;;
   }
 
+  dimension: trx_trdwk_year {
+    label: "Trading Year"
+    group_label: "Transaction Date Indentifiers"
+    type: string
+    sql: ${TABLE}.TRADING_YEAR ;;
+  }
+
+
   dimension: trx_financial_year {
     label: "Financial Year"
     group_label: "Transaction Date Indentifiers"
@@ -150,6 +160,13 @@ view: new_business_sale {
     group_label: "Transaction Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
+  }
+
+  dimension: trx_financial_day_n_of_year {
+    label: "Financial Year and Week "
+    group_label: "Transaction Date Indentifiers"
+    type: string
+    sql: ${TABLE}.FINANCIAL_DAY_NUMBER_OF_YEAR ;;
   }
 
   dimension: accounting_treatmenr {

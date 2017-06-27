@@ -17,6 +17,21 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.trans_sales_channel_level_2_key} = ${sales_channel.trans_sales_channel_level2_key} ;;
     relationship: many_to_one
   }
+  join: package {
+    type: inner
+    sql_on: ${new_business_sale.product_package_level_2_key} = ${package.package_level_2_key} ;;
+    relationship: many_to_one
+  }
+
+#   join: date {
+#     type: full_outer
+#     sql_on: ${new_business_sale.date_key} = ${date.date_date} ;;
+#     relationship: many_to_one
+#   }
+#   join:  date_filter {
+#     type: cross
+#     relationship: many_to_one
+#   }
 
 }
 
