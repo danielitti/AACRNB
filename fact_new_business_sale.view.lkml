@@ -16,7 +16,7 @@ view: new_business_sale {
               --RECURRENCE_PATTERN_KEY,
               --PAYMENT_METHOD_LEVEL_1_KEY
               --CONTRACT_AND_RECURRENCE_KEY,
-              --PRODUCT_PACKAGE_LEVEL_2_KEY,
+              PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
               --ADDON_PACKAGE_LEVEL_1_KEY,
               --DEVICE_TYPE_KEY,
               --SOURCE_CODE_KEY,
@@ -27,7 +27,7 @@ view: new_business_sale {
               IS_WILL_JOIN,
               --ANNUALISATION_FACTOR,
               --PRODUCT_AND_ADDON_GCP,
-              --ANNUALISED_PRODUCT_ADDON_GCP,
+              ANNUALISED_PRODUCT_ADDON_GCP,
               TRANSACTION_COUNT,
               SERIES_IDENTIFIER,
               TRANSACTION_DATE.DATE_DTTM,
@@ -206,6 +206,11 @@ view: new_business_sale {
           THEN ${channel.level_2_channel_full_desc}
 
       END;;
+  }
+
+  dimension: product_package_level_2_key {
+    type: number
+    sql: ${TABLE}.PRODUCT_PACKAGE_LEVEL_2_KEY ;;
   }
 
   ### Supporting dimensions for measure calculation
@@ -513,6 +518,13 @@ view: new_business_sale {
     value_format_name: percent_2
   }
 
+  measure: volume_actual_trdwk_minus_ly {
+    label: "Volume Trading WK - WK LY"
+    group_label: "Volume"
+    type: number
+    sql: COALESCE(${volume_actual_trdwk},0) - COALESCE(${volume_actual_trdwk_ly},0);;
+    value_format_name: decimal_0
+  }
   ### MTD
 
   measure: volume_actual_mtd {
@@ -675,9 +687,92 @@ view: new_business_sale {
     label: "Volume FYTD - FYTD LY"
     group_label: "Volume"
     type: number
-    #sql: NULLIF(NULLIF(${volume_actual_fytd},0) - NULLIF(${volume_actual_fytd_ly},0),0)  ;;
-    sql: ${volume_actual_fytd} - ${volume_actual_fytd_ly};;
+    sql: COALESCE(${volume_actual_fytd},0) - COALESCE(${volume_actual_fytd_ly},0);;
     value_format_name: decimal_0
+  }
+
+  ###############################
+  ### Annualised Product and Add-on GCP
+  ###############################
+
+  ### Trading Week
+
+  measure: agcp_actual_trdwk {
+    label: "AGCP Trading WK"
+    group_label: "AGCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_trdwk_ly {
+    label: "AGCP Trading WK LY"
+    group_label: "AGCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ###############################
+  ### AATV
+  ###############################
+
+  ### Trading Week
+
+  measure: aatv_actual_trdwk {
+    label: "AATV Trading WK"
+    group_label: "AATV"
+    type: number
+    sql: NULLIF(${agcp_actual_trdwk},0) / NULLIF(${volume_actual_trdwk},0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_trdwk_ly {
+    label: "AATV Trading WK LY"
+    group_label: "AATV"
+    type: number
+    sql: NULLIF(${agcp_actual_trdwk_ly},0) / NULLIF(${volume_actual_trdwk_ly},0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_trdwk_minus_ly {
+    label: "AATV Trading WK - WK LY"
+    group_label: "AATV"
+    type: number
+    sql: COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_actual_trdwk_ly},0);;
+    value_format_name: decimal_2
   }
 
 }
