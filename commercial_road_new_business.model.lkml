@@ -22,6 +22,11 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.product_package_level_2_key} = ${package.package_level_2_key} ;;
     relationship: many_to_one
   }
+  join: contract_and_reccurence {
+    type: inner
+    sql_on: ${new_business_sale.contract_and_reccurence_key} = ${contract_and_reccurence.contract_and_reccurence_key} ;;
+    relationship: many_to_one
+  }
 
 #   join: date {
 #     type: full_outer

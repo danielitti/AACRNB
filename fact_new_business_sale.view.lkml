@@ -15,7 +15,7 @@ view: new_business_sale {
               --CONTRACT_TYPE_LEVEL_2_KEY,
               --RECURRENCE_PATTERN_KEY,
               --PAYMENT_METHOD_LEVEL_1_KEY
-              --CONTRACT_AND_RECURRENCE_KEY,
+              CONTRACT_AND_RECURRENCE_KEY,
               PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
               --ADDON_PACKAGE_LEVEL_1_KEY,
               --DEVICE_TYPE_KEY,
@@ -200,6 +200,13 @@ view: new_business_sale {
     sql: ${TABLE}.POLICY_TYPE_LEVEL_2_KEY ;;
   }
 
+  dimension: contract_and_reccurence_key {
+    label: "Contract and Reccurence Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.CONTRACT_AND_RECURRENCE_KEY ;;
+  }
+
   dimension: offer_code {
     label: "Offer Code"
     type: string
@@ -216,11 +223,14 @@ view: new_business_sale {
     type: "string"
     sql:
         CASE
-        WHEN {% condition split_by_filter %} 'Policy Type' {% endcondition %}
-          THEN ${policy_type.policy_type_lvl2_full_desc}
+        WHEN {% condition split_by_filter %} 'Product Package' {% endcondition %}
+          THEN ${package.package_lvl1_full_desc}
 
         WHEN {% condition split_by_filter %} 'Sales Channel' {% endcondition %}
-          THEN ${sales_channel.sales_channel_lvl2_full_desc}
+          THEN ${sales_channel.sales_channel_lvl1_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Contract and Reccurence' {% endcondition %}
+          THEN ${contract_and_reccurence.contract_and_reccurence_desc}
 
       END;;
   }
