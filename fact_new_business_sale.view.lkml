@@ -36,8 +36,8 @@ view: new_business_sale {
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
-              TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
-              TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
+              --TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
+              --TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
               TRANSACTION_DATE.FINANCIAL_YEAR,
               TRANSACTION_DATE.FINANCIAL_YEAR_NAME
               FROM  SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE
@@ -46,15 +46,15 @@ view: new_business_sale {
                               DATE_DTTM,
                               TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
                               TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
-                              FINANCIAL_WEEK_NUMBER as TRADING_WEEK_NUMBER,
-                              FINANCIAL_WEEK_NAME as TRADING_WEEK_NAME,
-                              CALENDAR_DAY_NUMBER_OF_WEEK as TRADING_DAY_NUMBER_OF_WEEK,
-                              FINANCIAL_YEAR AS TRADING_YEAR, --xxx
-                              FINANCIAL_WEEK_NUMBER,
-                              FINANCIAL_WEEK_YYYYWW,
+                              TRADING_WEEK_NUMBER,
+                              TRADING_WEEK_NAME,
+                              TRADING_DAY_NUMBER_OF_WEEK,
+                              TRADING_YEAR,
+                              --FINANCIAL_WEEK_NUMBER,
+                              --FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR,
                               FINANCIAL_YEAR_NAME,
-                              CALENDAR_DAY_NUMBER_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR --xxx
+                              FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
                               FROM  SHARED_MRT_UAT7.DIM_DATE) TRANSACTION_DATE
               ON SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
             ;;
@@ -152,15 +152,15 @@ view: new_business_sale {
     label: "Financial Week Number"
     group_label: "Transaction Date Indentifiers"
     type: string
-    sql: ${TABLE}.FINANCIAL_WEEK_NUMBER ;;
+    sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
 
-  dimension: trx_financial_week_yyyyww {
-    label: "Financial Year and Week "
-    group_label: "Transaction Date Indentifiers"
-    type: string
-    sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
-  }
+#   dimension: trx_financial_week_yyyyww {
+#     label: "Financial Year and Week "
+#     group_label: "Transaction Date Indentifiers"
+#     type: string
+#     sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
+#   }
 
   dimension: trx_financial_day_n_of_year {
     label: "Financial Year and Week "
@@ -344,6 +344,16 @@ view: new_business_sale {
     sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'))) ;;
   }
 
+#   dimension: test {
+#     type: string
+#     sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.date_raw} END;;
+#   }
+#
+#   dimension: is_test {
+#     hidden: yes
+#     type: yesno
+#     sql: ${trx_date_raw} = ${test} ;;
+#   }
 
   ###########################################################################################
   ### Detached filters
@@ -368,18 +378,17 @@ view: new_business_sale {
   filter: split_by_filter {
     label: "Split By Filter"
     group_label: "Filters"
-    suggestions: ["Policy Type", "Sales Channel"]
-    default_value: "Policy Type"
+    suggestions: ["Product Package", "Sales Channel", "Contract and Reccurence"]
+    default_value: "Product Package"
   }
-
 
   ###########################################################################################
   ### Measures
   ###########################################################################################
 
-  ###############################
+  ##############################################################
   ### Volume
-  ###############################
+  ##############################################################
 
   measure: volume {
     label: "Volume"
@@ -406,6 +415,23 @@ view: new_business_sale {
     }
     value_format_name: decimal_0
   }
+
+#   measure: volume_actual_day_test {
+#     label: "Volume Day Test"
+#     group_label: "Volume"
+#     type: sum
+#     sql: ${TABLE}.TRANSACTION_COUNT;;
+#     filters: {
+#       field: is_test
+#       value: "yes"
+#     }
+#     filters: {
+#       field: series_identifier
+#       value: "Actual"
+#     }
+#     value_format_name: decimal_0
+#   }
+
 
   measure: volume_actual_day_ly {
     label: "Volume Day LY"
@@ -443,7 +469,7 @@ view: new_business_sale {
     label: "Volume Day VS LY %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_day},0) - NULLIF(${volume_actual_day_ly},0))/NULLIF(${volume_actual_day_ly},0)  ;;
+    sql: (COALESCE(${volume_actual_day},0) - COALESCE(${volume_actual_day_ly},0))/NULLIF(${volume_actual_day_ly},0)  ;;
     value_format_name: percent_2
   }
 
@@ -451,7 +477,7 @@ view: new_business_sale {
     label: "Volume Day VS Forecast   %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_day},0) - NULLIF(${volume_fcast_day},0))/NULLIF(${volume_fcast_day},0)  ;;
+    sql: (COALESCE(${volume_actual_day},0) - COALESCE(${volume_fcast_day},0))/NULLIF(${volume_fcast_day},0)  ;;
     value_format_name: percent_2
   }
 
@@ -533,7 +559,7 @@ view: new_business_sale {
     label: "Volume Trading WK VS LY %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_trdwk},0) - NULLIF(${volume_actual_trdwk_ly},0))/NULLIF(${volume_actual_trdwk_ly},0)  ;;
+    sql: (COALESCE(${volume_actual_trdwk},0) - COALESCE(${volume_actual_trdwk_ly},0))/NULLIF(${volume_actual_trdwk_ly},0)  ;;
     value_format_name: percent_2
   }
 
@@ -541,7 +567,7 @@ view: new_business_sale {
     label: "Volume Trading WK VS Forecast %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_trdwk},0) - NULLIF(${volume_fcast_trdwk},0))/NULLIF(${volume_fcast_trdwk},0)  ;;
+    sql: (COALESCE(${volume_actual_trdwk},0) - COALESCE(${volume_fcast_trdwk},0))/NULLIF(${volume_fcast_trdwk},0)  ;;
     value_format_name: percent_2
   }
 
@@ -620,7 +646,7 @@ view: new_business_sale {
     label: "Volume MTD VS LY %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_mtd},0) - NULLIF(${volume_actual_mtd_ly},0))/NULLIF(${volume_actual_mtd_ly},0)  ;;
+    sql: (COALESCE(${volume_actual_mtd},0) - COALESCE(${volume_actual_mtd_ly},0))/NULLIF(${volume_actual_mtd_ly},0)  ;;
     value_format_name: percent_2
   }
 
@@ -628,7 +654,7 @@ view: new_business_sale {
     label: "Volume MTD VS Forecast %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_mtd},0) - NULLIF(${volume_fcast_mtd},0))/NULLIF(${volume_fcast_mtd},0)  ;;
+    sql: (COALESCE(${volume_actual_mtd},0) - COALESCE(${volume_fcast_mtd},0))/NULLIF(${volume_fcast_mtd},0)  ;;
     value_format_name: percent_2
   }
 
@@ -698,7 +724,7 @@ view: new_business_sale {
     label: "Volume FYTD VS LY %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_fytd},0) - NULLIF(${volume_actual_fytd_ly},0))/NULLIF(${volume_actual_fytd_ly},0)  ;;
+    sql: (COALESCE(${volume_actual_fytd},0) - COALESCE(${volume_actual_fytd_ly},0))/NULLIF(${volume_actual_fytd_ly},0)  ;;
     value_format_name: percent_2
   }
 
@@ -706,7 +732,7 @@ view: new_business_sale {
     label: "Volume FYTD VS Forecast %"
     group_label: "Volume"
     type: number
-    sql: (NULLIF(${volume_actual_fytd},0) - NULLIF(${volume_fcast_fytd},0))/NULLIF(${volume_fcast_fytd},0)  ;;
+    sql: (COALESCE(${volume_actual_fytd},0) - COALESCE(${volume_fcast_fytd},0))/NULLIF(${volume_fcast_fytd},0)  ;;
     value_format_name: percent_2
   }
 
@@ -718,15 +744,106 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
-  ###############################
+  ##############################################################
   ### Annualised Product and Add-on GCP
-  ###############################
+  ##############################################################
+
+  measure: agcp {
+    label: "Annualised Product and Add-on GCP"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    value_format_name: decimal_0
+  }
+
+  ### Actual Day
+
+  measure: agcp_actual_day {
+    label: "AGCP Day"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+#   measure: agcp_actual_day_test {
+#     label: "AGCP Day Test"
+#     group_label: "Annualised Product and Add-on GCP"
+#     type: sum
+#     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+#     filters: {
+#       field: is_test
+#       value: "yes"
+#     }
+#     filters: {
+#       field: series_identifier
+#       value: "Actual"
+#     }
+#     value_format_name: decimal_0
+#   }
+
+
+  measure: agcp_actual_day_ly {
+    label: "AGCP Day LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_day_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_fcast_day {
+    label: "AGCP Day Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_day_vs_ly {
+    label: "AGCP Day VS LY %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_day},0) - COALESCE(${agcp_actual_day_ly},0))/NULLIF(${agcp_actual_day_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_day_vs_fcast {
+    label: "AGCP Day VS Forecast   %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_day},0) - COALESCE(${agcp_fcast_day},0))/NULLIF(${agcp_fcast_day},0)  ;;
+    value_format_name: percent_2
+  }
 
   ### Trading Week
 
   measure: agcp_actual_trdwk {
     label: "AGCP Trading WK"
-    group_label: "AGCP"
+    group_label: "Annualised Product and Add-on GCP"
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -750,7 +867,7 @@ view: new_business_sale {
 
   measure: agcp_actual_trdwk_ly {
     label: "AGCP Trading WK LY"
-    group_label: "AGCP"
+    group_label: "Annualised Product and Add-on GCP"
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -769,6 +886,219 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_fcast_trdwk {
+    label: "AGCP Trading WK Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_trdwk_vs_ly {
+    label: "AGCP Trading WK VS LY %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_trdwk},0) - COALESCE(${agcp_actual_trdwk_ly},0))/NULLIF(${agcp_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_trdwk_vs_fcast {
+    label: "AGCP Trading WK VS Forecast %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_trdwk},0) - COALESCE(${agcp_fcast_trdwk},0))/NULLIF(${agcp_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_trdwk_minus_ly {
+    label: "AGCP Trading WK - WK LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: COALESCE(${agcp_actual_trdwk},0) - COALESCE(${agcp_actual_trdwk_ly},0);;
+    value_format_name: decimal_0
+  }
+  ### MTD
+
+  measure: agcp_actual_mtd {
+    label: "AGCP MTD"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_year_month
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_mtd_ly {
+    label: "AGCP MTD LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    group_label: "Annualised Product and Add-on GCP"
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_year_month_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_fcast_mtd {
+    label: "AGCP MTD Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    group_label: "Annualised Product and Add-on GCP"
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_year_month
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_mtd_vs_ly {
+    label: "AGCP MTD VS LY %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_mtd},0) - COALESCE(${agcp_actual_mtd_ly},0))/NULLIF(${agcp_actual_mtd_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_mtd_vs_fcast {
+    label: "AGCP MTD VS Forecast %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_mtd},0) - COALESCE(${agcp_fcast_mtd},0))/NULLIF(${agcp_fcast_mtd},0)  ;;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: agcp_actual_fytd {
+    label: "AGCP FYTD"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_fytd_ly {
+    label: "AGCP FYTD LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_fcast_fytd {
+    label: "AGCP FYTD Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: agcp_actual_fytd_vs_ly {
+    label: "AGCP FYTD VS LY %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_fytd},0) - COALESCE(${agcp_actual_fytd_ly},0))/NULLIF(${agcp_actual_fytd_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_fytd_vs_fcast {
+    label: "AGCP FYTD VS Forecast %"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: (COALESCE(${agcp_actual_fytd},0) - COALESCE(${agcp_fcast_fytd},0))/NULLIF(${agcp_fcast_fytd},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: agcp_actual_fytd_minus_ly {
+    label: "AGCP FYTD - FYTD LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: number
+    sql: COALESCE(${agcp_actual_fytd},0) - COALESCE(${agcp_actual_fytd_ly},0);;
     value_format_name: decimal_0
   }
 

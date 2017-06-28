@@ -33,10 +33,10 @@ explore: new_business_sale {
 #     sql_on: ${new_business_sale.date_key} = ${date.date_date} ;;
 #     relationship: many_to_one
 #   }
-#   join:  date_filter {
-#     type: cross
-#     relationship: many_to_one
-#   }
+#  join:  date_filter {
+#    type: cross
+#    relationship: many_to_one
+#  }
 
 }
 

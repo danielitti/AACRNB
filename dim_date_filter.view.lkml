@@ -1,19 +1,20 @@
 view: date_filter {
   derived_table: {
-      sql: SELECT DATE_KEY,
-    DATE_DTTM,
-    TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
-    TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
-    FINANCIAL_WEEK_NUMBER as TRADING_WEEK_NUMBER,
-    FINANCIAL_WEEK_NAME as TRADING_WEEK_NAME,
-    CALENDAR_DAY_NUMBER_OF_WEEK as TRADING_DAY_NUMBER_OF_WEEK,
-    FINANCIAL_YEAR AS TRADING_YEAR,
-    FINANCIAL_WEEK_NUMBER,
-    FINANCIAL_WEEK_YYYYWW,
-    FINANCIAL_YEAR,
-    FINANCIAL_YEAR_NAME,
-    CALENDAR_DAY_NUMBER_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
-    FROM  SHARED_MRT_UAT7.DIM_DATE
+      sql: SELECT   DATE_KEY AS DIM_DATE_KEY,
+        DATE_DTTM,
+        TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
+        TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
+        TRADING_WEEK_NUMBER,
+        TRADING_WEEK_NAME,
+        TRADING_DAY_NUMBER_OF_WEEK,
+        TRADING_YEAR,
+        --FINANCIAL_WEEK_NUMBER,
+        --FINANCIAL_WEEK_YYYYWW,
+        FINANCIAL_YEAR,
+        FINANCIAL_YEAR_NAME,
+        FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
+        FROM  SHARED_MRT_UAT7.DIM_DATE
+        WHERE FINANCIAL_YEAR = 2017
             ;;
 
   }
@@ -28,10 +29,10 @@ view: date_filter {
     sql: ${TABLE}.DATE_KEY ;;
   }
 
-  filter: date_filter_parameter2 {
-    label: "Date Filter 2"
-    group_label: "Filters 2"
-  }
+#   filter: date_filter_parameter2 {
+#     label: "Date Filter 2"
+#     group_label: "Filters 2"
+#   }
 
   dimension_group: date {
     #hidden: yes
@@ -89,17 +90,17 @@ view: date_filter {
     sql: ${TABLE}.FINANCIAL_YEAR_NAME ;;
   }
 
-  dimension: financial_week_number{
-    hidden: yes
-    type: string
-    sql: ${TABLE}.FINANCIAL_WEEK_NUMBER ;;
-  }
-
-  dimension: financial_week_yyyyww {
-    hidden: yes
-    type: string
-    sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
-  }
+#   dimension: financial_week_number{
+#     hidden: yes
+#     type: string
+#     sql: ${TABLE}.FINANCIAL_WEEK_NUMBER ;;
+#   }
+#
+#   dimension: financial_week_yyyyww {
+#     hidden: yes
+#     type: string
+#     sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
+#   }
 
   dimension: financial_day_n_of_year {
     hidden: yes
