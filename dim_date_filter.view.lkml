@@ -1,27 +1,18 @@
 view: date_filter {
   derived_table: {
-      sql: SELECT   DATE_KEY AS DIM_DATE_KEY,
-        DATE_DTTM,
-        TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
-        TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
-        TRADING_WEEK_NUMBER,
-        TRADING_WEEK_NAME,
-        TRADING_DAY_NUMBER_OF_WEEK,
-        TRADING_YEAR,
-        --FINANCIAL_WEEK_NUMBER,
-        --FINANCIAL_WEEK_YYYYWW,
-        FINANCIAL_YEAR,
-        FINANCIAL_YEAR_NAME,
-        FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
+    sql: SELECT   DATE_KEY,
+                    DATE_DTTM,
+                    TRADING_WEEK_NUMBER,
+                    TRADING_DAY_NUMBER_OF_WEEK,
+                    TRADING_YEAR,
+                    TRADING_YEAR-1 AS TRADING_YEAR_LY,
+                    FINANCIAL_YEAR,
+                    FINANCIAL_DAY_OF_YEAR
         FROM  SHARED_MRT_UAT7.DIM_DATE
         WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy-mm-dd') {% endcondition %}
-
             ;;
 
   }
-
-#WHERE {% condition TO_DATE(date_filter_parameter2) %} date_dttm {% endcondition%}
-#
 
 dimension: date_key {
     primary_key: yes
@@ -31,16 +22,11 @@ dimension: date_key {
   }
 
   dimension_group: date {
-    #hidden: yes
+    hidden: yes
     type: time
     timeframes: [date, week, month, raw]
     convert_tz: no
     sql: ${TABLE}.DATE_DTTM ;;
-  }
-
-  dimension: date_2_raw {
-    type: string
-    sql: ${date_raw} ;;
   }
 
   dimension: day_month {
