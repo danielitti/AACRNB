@@ -27,16 +27,15 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.contract_and_reccurence_key} = ${contract_and_reccurence.contract_and_reccurence_key} ;;
     relationship: many_to_one
   }
-
-#   join: date {
-#     type: full_outer
-#     sql_on: ${new_business_sale.date_key} = ${date.date_date} ;;
-#     relationship: many_to_one
-#   }
-#  join:  date_filter {
-#    type: cross
-#    relationship: many_to_one
-#  }
+  # join: date {
+  #   type: full_outer
+  #   sql_on: ${new_business_sale.date_key} = ${date.date_date} ;;
+  #   relationship: many_to_one
+  # }
+  join:  date_filter {
+    type: cross
+    relationship: many_to_one
+  }
 
 }
 

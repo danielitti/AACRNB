@@ -14,25 +14,21 @@ view: date_filter {
         FINANCIAL_YEAR_NAME,
         FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
         FROM  SHARED_MRT_UAT7.DIM_DATE
-        WHERE FINANCIAL_YEAR = 2017
+        WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy-mm-dd') {% endcondition %}
+
             ;;
 
   }
 
 #WHERE {% condition TO_DATE(date_filter_parameter2) %} date_dttm {% endcondition%}
+#
 
-
-  dimension: date_key {
+dimension: date_key {
     primary_key: yes
     hidden: yes
     type: string
     sql: ${TABLE}.DATE_KEY ;;
   }
-
-#   filter: date_filter_parameter2 {
-#     label: "Date Filter 2"
-#     group_label: "Filters 2"
-#   }
 
   dimension_group: date {
     #hidden: yes
@@ -40,6 +36,11 @@ view: date_filter {
     timeframes: [date, week, month, raw]
     convert_tz: no
     sql: ${TABLE}.DATE_DTTM ;;
+  }
+
+  dimension: date_2_raw {
+    type: string
+    sql: ${date_raw} ;;
   }
 
   dimension: day_month {

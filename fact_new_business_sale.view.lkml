@@ -91,6 +91,11 @@ view: new_business_sale {
     sql: ${TABLE}.DATE_DTTM ;;
   }
 
+  dimension: trx_date_2_raw {
+    type: string
+    sql: ${trx_date_raw} ;;
+  }
+
   dimension: trx_day_month {
     label: "Calendar Day And Month"
     group_label: "Transaction Date Indentifiers"
@@ -272,9 +277,14 @@ view: new_business_sale {
     sql: ${trx_date_raw} + 365 <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
+  dimension: trdwk_derived_by_date_filter_test {
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_number} END;;
+  }
+
   dimension: trdwk_derived_by_date_filter {
     type: string
-    hidden:  yes
+    #hidden:  yes
     sql:
         CASE
             WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
@@ -289,9 +299,14 @@ view: new_business_sale {
         END ;;
   }
 
+  dimension: trdwk_day_by_date_filter_test {
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_day_number} END;;
+  }
+
   dimension: trdwk_day_by_date_filter {
     type: string
-    hidden:  yes
+    #hidden:  yes
     sql:
         CASE
             WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
@@ -344,11 +359,7 @@ view: new_business_sale {
     sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'))) ;;
   }
 
-#   dimension: test {
-#     type: string
-#     sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.date_raw} END;;
-#   }
-#
+
 #   dimension: is_test {
 #     hidden: yes
 #     type: yesno
@@ -604,7 +615,6 @@ view: new_business_sale {
     label: "Volume MTD LY"
     group_label: "Volume"
     type: sum
-    group_label: "Volume"
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
       field: is_selected_year_month_ly
@@ -625,7 +635,6 @@ view: new_business_sale {
     label: "Volume MTD Forecast"
     group_label: "Volume"
     type: sum
-    group_label: "Volume"
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
       field: is_selected_year_month
@@ -962,7 +971,6 @@ view: new_business_sale {
     label: "AGCP MTD LY"
     group_label: "Annualised Product and Add-on GCP"
     type: sum
-    group_label: "Annualised Product and Add-on GCP"
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
       field: is_selected_year_month_ly
@@ -983,7 +991,6 @@ view: new_business_sale {
     label: "AGCP MTD Forecast"
     group_label: "Annualised Product and Add-on GCP"
     type: sum
-    group_label: "Annualised Product and Add-on GCP"
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
       field: is_selected_year_month
