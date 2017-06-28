@@ -1089,6 +1089,48 @@ Retention Outcomes apply to the following Sales Channels
 | Renewal Date | Date | The date the next policy year is due to commence |
 
 
+#### Selected date
+Date selected by User (will default to yesterday)
+
+#### Last year selected date
+The equivalent day of same the same trading week for last year, (as opposed to the equivalent calendar day of last year)
+E.g. If selected date is Tuesday of trading week 51 i.e. Tue January 30, 2018   then Last year selected date will be Tuesday of equivalent trading week of last year ie Tue January 24, 2017
+(Note as with Last Year Trading week, below, there is a complication for week 53 in that there is no equivalent week for the previous year so if the selected date is any date between Thu January 25, 2018 and Wed January 31, 2018 then Last year selected date will be taken from week 1 of the current year i.e. Dates Thu January 28, 2017 and Wed February 2 2017. )
+
+#### Financial Year
+AA Financial Year starting February 1st. So if selected date is Fri February 2, 2018 then Financial Year will be 2019.
+
+#### Financial Year to selected date
+Will be period from 1st February to the selected date.
+
+#### Last Financial Year to date
+The comparison between the Financial Year to date and Last Financial Year to date will be performed upon the selected day’s index in the year, so that there is an equal number of days in the Financial Year to date and the Last Financial Year to date.
+This approach will correctly account for leap years.
+For example, for the Financial year of 2017, the financial year to 3 March 2016 would be compared to the last financial year to 4 March 2015.
+This is a change in logic from the legacy MI, which performs a comparison upon date in month, e.g.., 3 March TY to 3 March LY.
+
+#### Trading week up to selected day
+Trading week is the period starting from the Thursday before the selected date until the selected date.
+
+#### Last Year
+Trading week up to selected day The comparison between a Trading Week in this year and last year will be performed by comparing a given day of this year’s trading week against the same day of the equivalent week of last year.
+This is as per the legacy MI, e.g., Week 10 FY 2018 is compared with Week 10 FY 2017.
+There is a complication for week 53 which occurs every 7 years or so and is due to happen at the end of the current financial year.
+Our proposal is that, since there is no equivalent week 53 for last year, the TW LY fields will report week 1 for current year when we are reporting on TW 53.
+
+~~~~
+Current Year                 Last Year
+2018 WK 52                   compares to 2018 WK 52
+2018 WK 53                   compares to 2018 WK 1 (see above)
+2019 WK 1                    compares to 2018 WK 1
+~~~~
+
+#### Calendar Month to selected date
+The period between the first of the month and the selected date
+Last Year Calendar Month to selected date The period between the first of the month and the selected date equivalent for last year. So if selected date is 23 Feb 2018 then Last Year Calendar Month to selected date will be 1 – 23 Feb 2017.
+
+
+
 ---
 [↑](#definitions-and-glossary-of-terms)
 
