@@ -19,7 +19,7 @@ view: new_business_sale {
               PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
               --ADDON_PACKAGE_LEVEL_1_KEY,
               --DEVICE_TYPE_KEY,
-              --SOURCE_CODE_KEY,
+              --SOURCE_CODE_KEY, --xxx source group
               --STAFF_KEY,
               --LEAD_CODE_KEY,
               --MEMBERSHIP_TYPE_LEVEL_2_KEY,
@@ -40,7 +40,7 @@ view: new_business_sale {
               --TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
               TRANSACTION_DATE.FINANCIAL_YEAR,
               TRANSACTION_DATE.FINANCIAL_YEAR_NAME
-              FROM  SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE
+              FROM  SHARED_MRT_UAT6.FACT_NEW_BUSINESS_SALE
               INNER JOIN
                     (SELECT   DATE_KEY AS DIM_DATE_KEY,
                               DATE_DTTM,
@@ -56,7 +56,7 @@ view: new_business_sale {
                               FINANCIAL_YEAR_NAME,
                               FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
                               FROM  SHARED_MRT_UAT7.DIM_DATE) TRANSACTION_DATE
-              ON SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
+              ON SHARED_MRT_UAT6.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
             ;;
   }
 
@@ -771,7 +771,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
 #   measure: agcp_actual_day_test {
@@ -804,7 +804,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_fcast_day {
@@ -820,7 +820,7 @@ view: new_business_sale {
       field: is_selected_forecast_series
       value: "yes"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_day_vs_ly {
@@ -862,7 +862,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_trdwk_ly {
@@ -886,7 +886,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_fcast_trdwk {
@@ -910,7 +910,7 @@ view: new_business_sale {
       field: is_selected_forecast_series
       value: "yes"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_trdwk_vs_ly {
@@ -934,7 +934,7 @@ view: new_business_sale {
     group_label: "Annualised Product and Add-on GCP"
     type: number
     sql: COALESCE(${agcp_actual_trdwk},0) - COALESCE(${agcp_actual_trdwk_ly},0);;
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
   ### MTD
 
@@ -955,7 +955,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_mtd_ly {
@@ -976,7 +976,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_fcast_mtd {
@@ -997,7 +997,7 @@ view: new_business_sale {
       field: is_selected_forecast_series
       value: "Yes"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_mtd_vs_ly {
@@ -1035,7 +1035,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_fytd_ly {
@@ -1055,7 +1055,7 @@ view: new_business_sale {
       field: series_identifier
       value: "Actual"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_fcast_fytd {
@@ -1075,7 +1075,7 @@ view: new_business_sale {
       field: is_selected_forecast_series
       value: "Yes"
     }
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   measure: agcp_actual_fytd_vs_ly {
@@ -1099,7 +1099,7 @@ view: new_business_sale {
     group_label: "Annualised Product and Add-on GCP"
     type: number
     sql: COALESCE(${agcp_actual_fytd},0) - COALESCE(${agcp_actual_fytd_ly},0);;
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   ###############################
