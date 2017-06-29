@@ -35,6 +35,8 @@ view: new_business_sale {
               TRANSACTION_DATE.DATE_MM_DD,
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
+              TRANSACTION_DATE.TRADING_WEEK_START_DATE,
+              TRANSACTION_DATE.TRADING_WEEK_END_DATE,
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
               TRANSACTION_DATE.TRADING_YEAR,
               --TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
@@ -55,6 +57,8 @@ view: new_business_sale {
                               TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
                               TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
                               TRADING_WEEK_NAME,
+                              TRADING_WEEK_START_DATE,
+                              TRADING_WEEK_END_DATE,
                               --FINANCIAL_WEEK_NUMBER,
                               --FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR_NAME
@@ -125,6 +129,20 @@ view: new_business_sale {
     group_label: "Transaction Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_WEEK_NAME ;;
+  }
+
+  dimension: trx_trdwk_start_date {
+    label: "Trading Week Start Date"
+    group_label: "Transaction Date Indentifiers"
+    type: date
+    sql: ${TABLE}.TRADING_WEEK_START_DATE ;;
+  }
+
+  dimension: trx_trdwk_end_date {
+    label: "Trading Week End Date"
+    group_label: "Transaction Date Indentifiers"
+    type: date
+    sql: ${TABLE}.TRADING_WEEK_END_DATE ;;
   }
 
   dimension: trx_trdwk_day_of_week {
