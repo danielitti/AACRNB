@@ -14,16 +14,13 @@ LookAA is being introduced by Hawking, the AA's Data & Insight transformation pr
 
 * [Zero to Hero Guide](/projects/commercial_road_new_business/documents/zero_to_hero_guide.md)
 * [Definitions and Glossary of terms](/projects/commercial_road_new_business/documents/definitions_and_glossary_of_terms.md)
-* [Conventions and Standards]()
-* [Available data assets (Explores)]()
 
 
 ## Commercial Decision-Support Dashboards
 
-| Space                | Sub Space    | Content |
-|:---------------------|:-------------|:--------|
-| [Commercial → Consumer Road](/spaces/9) | [New Business](/spaces/10) | Comprises:<br />– Demand by Origination Channel and by Source Group<br />– Commercial effectiveness by channel, e.g., conversion, absolute sales volume, ATV and pricing; delta to last year and to forecast |
-
+| Dashboard                                                  | Content |
+|:-----------------------------------------------------------|:--------|
+| [Commercial → Consumer Road → New Business](/dashboards/5) | Comprises:<br />– Sales volume, value and ATV<br />– Delta to last year and to forecast<br />– Demand and Converson<br />– ...Overall, by Sales Channel and by Marketing Channel |
 
 
 ## Release notes and Bugs / Issues
@@ -47,7 +44,7 @@ If you come across a Bug / Issue, please inform us by,
 
 ## Roadmap
 
-| Module   | Soft launch date     |  Launched?  |
+| Module   | Soft launch date     |  Soft launch?  |
 |:----------|:---------------------|:----------:|
 | Consumer Road New Business | July 2017 |   ✓ |
 | Consumer Road Retention | September 2017 | – |
