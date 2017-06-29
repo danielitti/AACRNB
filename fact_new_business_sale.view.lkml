@@ -36,26 +36,29 @@ view: new_business_sale {
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
+              TRANSACTION_DATE.TRADING_YEAR,
               --TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
               --TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
               TRANSACTION_DATE.FINANCIAL_YEAR,
-              TRANSACTION_DATE.FINANCIAL_YEAR_NAME
+              TRANSACTION_DATE.FINANCIAL_YEAR_NAME,
+              TRANSACTION_DATE.FINANCIAL_DAY_OF_YEAR
               FROM  SHARED_MRT_UAT6.FACT_NEW_BUSINESS_SALE
               INNER JOIN
                     (SELECT   DATE_KEY AS DIM_DATE_KEY,
                               DATE_DTTM,
-                              TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
-                              TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
                               TRADING_WEEK_NUMBER,
-                              TRADING_WEEK_NAME,
                               TRADING_DAY_NUMBER_OF_WEEK,
                               TRADING_YEAR,
+                              FINANCIAL_YEAR,
+                              FINANCIAL_DAY_OF_YEAR,
+
+                              TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
+                              TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
+                              TRADING_WEEK_NAME,
                               --FINANCIAL_WEEK_NUMBER,
                               --FINANCIAL_WEEK_YYYYWW,
-                              FINANCIAL_YEAR,
-                              FINANCIAL_YEAR_NAME,
-                              FINANCIAL_DAY_OF_YEAR AS FINANCIAL_DAY_NUMBER_OF_YEAR
-                              FROM  SHARED_MRT_UAT7.DIM_DATE) TRANSACTION_DATE
+                              FINANCIAL_YEAR_NAME
+                              FROM  SHARED_MRT_UAT6.DIM_DATE) TRANSACTION_DATE
               ON SHARED_MRT_UAT6.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
             ;;
   }
@@ -124,7 +127,7 @@ view: new_business_sale {
     sql: ${TABLE}.TRADING_WEEK_NAME ;;
   }
 
-  dimension: trx_trdwk_day_number {
+  dimension: trx_trdwk_day_of_week {
     label: "Trading Week Day Number"
     group_label: "Transaction Date Indentifiers"
     type: string
@@ -151,6 +154,13 @@ view: new_business_sale {
     group_label: "Transaction Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_YEAR_NAME ;;
+  }
+
+  dimension: trx_financial_day_of_year {
+    label: "Financial Day of Year"
+    group_label: "Transaction Date Indentifiers"
+    type: string
+    sql: ${TABLE}.FINANCIAL_DAY_OF_YEAR ;;
   }
 
   dimension: trx_financial_week_number{
@@ -191,6 +201,7 @@ view: new_business_sale {
     type: string
     sql: CASE WHEN SUBSTR(${TABLE}.SERIES_IDENTIFIER, 1, 2) = 'FY' THEN ${TABLE}.SERIES_IDENTIFIER END  ;;
   }
+
   dimension: trans_sales_channel_level_2_key {
     label: "Policy Type Level 2 Key"
     hidden:  yes
@@ -254,7 +265,7 @@ view: new_business_sale {
   }
 
   dimension: is_selected_day {
-    hidden: yes
+    #hidden: yes
     type: yesno
     sql: ${trx_date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
@@ -263,6 +274,7 @@ view: new_business_sale {
     hidden: yes
     type: yesno
     sql: ${trx_date_raw} + 365 = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
+    #sql:  ${trx_trdwk_number}=${date_filter_trdwk_number} AND ${trx_trdwk_day_of_week}=${date_filter_trdwk_day_of_week} AND ${trx_trdwk_year}=${date_filter_trdwk_year_ly};;
   }
 
   dimension: is_up_to_selected_day {
@@ -275,11 +287,6 @@ view: new_business_sale {
     hidden: yes
     type: yesno
     sql: ${trx_date_raw} + 365 <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
-  }
-
-  dimension: trdwk_derived_by_date_filter_test {
-    type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_number} END;;
   }
 
   dimension: trdwk_derived_by_date_filter {
@@ -297,11 +304,6 @@ view: new_business_sale {
                FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('26-Jan-17'))/7)+1
 
         END ;;
-  }
-
-  dimension: trdwk_day_by_date_filter_test {
-    type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_day_number} END;;
   }
 
   dimension: trdwk_day_by_date_filter {
@@ -332,7 +334,7 @@ view: new_business_sale {
     # xxx nned to have trading_week_day in the database; this to solve the problem with last year same week but different day number. Need to trading_week_day <= trading_week_day_derived_by_date_filter_parameter
     hidden: yes
     type: yesno
-    sql: ${trx_trdwk_day_number}<=${trdwk_day_by_date_filter}  ;;
+    sql: ${trx_trdwk_day_of_week}<=${trdwk_day_by_date_filter}  ;;
   }
 
   dimension: is_selected_fy {
@@ -359,12 +361,6 @@ view: new_business_sale {
     sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'))) ;;
   }
 
-
-#   dimension: is_test {
-#     hidden: yes
-#     type: yesno
-#     sql: ${trx_date_raw} = ${test} ;;
-#   }
 
   ###########################################################################################
   ### Detached filters
@@ -426,23 +422,6 @@ view: new_business_sale {
     }
     value_format_name: decimal_0
   }
-
-#   measure: volume_actual_day_test {
-#     label: "Volume Day Test"
-#     group_label: "Volume"
-#     type: sum
-#     sql: ${TABLE}.TRANSACTION_COUNT;;
-#     filters: {
-#       field: is_test
-#       value: "yes"
-#     }
-#     filters: {
-#       field: series_identifier
-#       value: "Actual"
-#     }
-#     value_format_name: decimal_0
-#   }
-
 
   measure: volume_actual_day_ly {
     label: "Volume Day LY"
@@ -782,23 +761,6 @@ view: new_business_sale {
     }
     value_format_name: gbp_0
   }
-
-#   measure: agcp_actual_day_test {
-#     label: "AGCP Day Test"
-#     group_label: "Annualised Product and Add-on GCP"
-#     type: sum
-#     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
-#     filters: {
-#       field: is_test
-#       value: "yes"
-#     }
-#     filters: {
-#       field: series_identifier
-#       value: "Actual"
-#     }
-#     value_format_name: decimal_0
-#   }
-
 
   measure: agcp_actual_day_ly {
     label: "AGCP Day LY"
