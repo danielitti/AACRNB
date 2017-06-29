@@ -1071,34 +1071,199 @@ view: new_business_sale {
     value_format_name: gbp_0
   }
 
-  ###############################
-  ### AATV
-  ###############################
+  ##############################################################
+  ### Annualised Product and Add-on GCP
+  ##############################################################
+
+  measure: aatv {
+    label: "Annualised Average Transaction Value"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp},0) / NULLIF(${volume},0);;
+    value_format_name: decimal_2
+  }
+
+  ### Actual Day
+
+  measure: aatv_actual_day {
+    label: "AATV Day"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_day},0) / NULLIF(${volume_actual_day},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_day_ly {
+    label: "AATV Day LY"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_day_ly},0) / NULLIF(${volume_actual_day_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_fcast_day {
+    label: "AATV Day Forecast"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_day},0) / NULLIF(${volume_fcast_day},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_day_vs_ly {
+    label: "AATV Day VS LY %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_day},0) - COALESCE(${aatv_actual_day_ly},0))/NULLIF(${aatv_actual_day_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: aatv_actual_day_vs_fcast {
+    label: "AATV Day VS Forecast   %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_day},0) - COALESCE(${aatv_fcast_day},0))/NULLIF(${aatv_fcast_day},0),0)  ;;
+    value_format_name: percent_2
+  }
 
   ### Trading Week
 
   measure: aatv_actual_trdwk {
     label: "AATV Trading WK"
-    group_label: "AATV"
+    group_label: "Annualised Average Transaction Value"
     type: number
-    sql: NULLIF(${agcp_actual_trdwk},0) / NULLIF(${volume_actual_trdwk},0);;
+    sql: COALESCE(COALESCE(${agcp_actual_trdwk},0) / NULLIF(${volume_actual_trdwk},0),0);;
     value_format_name: decimal_2
   }
 
   measure: aatv_actual_trdwk_ly {
     label: "AATV Trading WK LY"
-    group_label: "AATV"
+    group_label: "Annualised Average Transaction Value"
     type: number
-    sql: NULLIF(${agcp_actual_trdwk_ly},0) / NULLIF(${volume_actual_trdwk_ly},0);;
+    sql: COALESCE(COALESCE(${agcp_actual_trdwk_ly},0) / NULLIF(${volume_actual_trdwk_ly},0),0);;
     value_format_name: decimal_2
+  }
+
+  measure: aatv_fcast_trdwk {
+    label: "AATV Trading WK Forecast"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_trdwk},0) / NULLIF(${volume_fcast_trdwk},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_trdwk_vs_ly {
+    label: "AATV Trading WK VS LY %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_actual_trdwk_ly},0))/NULLIF(${aatv_actual_trdwk_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: aatv_actual_trdwk_vs_fcast {
+    label: "AATV Trading WK VS Forecast %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_fcast_trdwk},0))/NULLIF(${aatv_fcast_trdwk},0),0)  ;;
+    value_format_name: percent_2
   }
 
   measure: aatv_actual_trdwk_minus_ly {
     label: "AATV Trading WK - WK LY"
-    group_label: "AATV"
+    group_label: "Annualised Average Transaction Value"
     type: number
-    sql: COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_actual_trdwk_ly},0);;
+    sql: COALESCE(COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_actual_trdwk_ly},0),0);;
     value_format_name: decimal_2
   }
 
+  ### MTD
+
+  measure: aatv_actual_mtd {
+    label: "AATV MTD"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_mtd},0) / NULLIF(${volume_actual_mtd},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_mtd_ly {
+    label: "AATV MTD LY"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_mtd_ly},0) / NULLIF(${volume_actual_mtd_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_fcast_mtd {
+    label: "AATV MTD Forecast"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_mtd},0) / NULLIF(${volume_fcast_mtd},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_mtd_vs_ly {
+    label: "AATV MTD VS LY %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_mtd},0) - COALESCE(${aatv_actual_mtd_ly},0))/NULLIF(${aatv_actual_mtd_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: aatv_actual_mtd_vs_fcast {
+    label: "AATV MTD VS Forecast %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_mtd},0) - COALESCE(${aatv_fcast_mtd},0))/NULLIF(${aatv_fcast_mtd},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: aatv_actual_fytd {
+    label: "AATV FYTD"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_fytd},0) / NULLIF(${volume_actual_fytd},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_fytd_ly {
+    label: "AATV FYTD LY"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_fytd_ly},0) / NULLIF(${volume_actual_fytd_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_fcast_fytd {
+    label: "AATV FYTD Forecast"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_fytd},0) / NULLIF(${volume_fcast_fytd},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_actual_fytd_vs_ly {
+    label: "AATV FYTD VS LY %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_actual_fytd_ly},0))/NULLIF(${aatv_actual_fytd_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: aatv_actual_fytd_vs_fcast {
+    label: "AATV FYTD VS Forecast %"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE((COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_fcast_fytd},0))/NULLIF(${aatv_fcast_fytd},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: aatv_actual_fytd_minus_ly {
+    label: "AATV FYTD - FYTD LY"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_actual_fytd_ly},0),0);;
+    value_format_name: decimal_2
+  }
 }
