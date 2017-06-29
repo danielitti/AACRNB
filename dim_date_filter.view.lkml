@@ -10,7 +10,7 @@ view: date_filter {
                   FINANCIAL_YEAR-1 AS FINANCIAL_YEAR_LY,
                   FINANCIAL_DAY_OF_YEAR
           FROM  SHARED_MRT_UAT7.DIM_DATE
-          WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy-mm-dd') {% endcondition %}
+          WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy/mm/dd') {% endcondition %}
             ;;
   }
 
