@@ -3,7 +3,9 @@
 
 
 ## Gaining access to LookAA
-LookAA is available to any member of AA Staff with a network account. Access is controlled via. Group Memberships which are stored within the AA Active Directory.
+LookAA is available to any member of AA Staff with a network account. If you can access [LookAA](https://theaa.eu.looker.com) then no further action is required.
+
+If you cannot access [LookAA](https://theaa.eu.looker.com) then you will need to request access via. 147  (permissions are controlled via. Group Memberships which are stored within the AA Active Directory).
 
 To gain access to LookAA, please submit a 147 request as follows:
 
@@ -24,10 +26,6 @@ Begin by reading the Looker documentation:
 * [Browse](https://looker.com/docs/sharing-and-publishing) explains how to navigate to existing content as located within **Spaces**, how to view content within **Dashboards** and **Looks**, to **Share** content via. links, to **Download** data and **Schedule** deliverables via. email.
 
 * [Explore](https://looker.com/docs/exploring-data) explains how to use **Explores** as the Starting Point for Exploration, to **Sort**, **Pivot** and **Filter**, how to apply **Table Calculations** and **Looker Expressions**, to **Save Looks** from an Explore, and to access these Looks within your **Spaces**.
-
-
-## Test yourself
-<span style="color:DarkRed">To come: example exercises based on the Consumer Road New Business reporting</span>.
 
 
 ## Need a hand?
