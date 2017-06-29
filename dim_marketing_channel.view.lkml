@@ -1,4 +1,4 @@
-view: dim_marketing_channel {
+view: marketing_channel {
   derived_table: {
     sql: SELECT SC.SOURCE_CODE_KEY
     ,  SC.SOURCE_CODE AS MARKETING_CHANNEL_SOURCE_CODE
@@ -31,6 +31,7 @@ ORDER BY 1            ;;
   dimension: marketing_channel_source_code {
     label: "Marketing Channel Source Code"
     group_label: "Marketing Channel Source Code"
+    hidden: yes
     type: string
     sql: ${TABLE}.MARKETING_CHANNEL_SOURCE_CODE;;
   }
@@ -38,6 +39,7 @@ ORDER BY 1            ;;
   dimension: marketing_channel_source_code_desc {
     label: "Marketing Channel Source Code Desc"
     group_label: "Marketing Channel Source Code"
+    hidden: yes
     type: string
     sql: ${TABLE}.MKTING_CHANNEL_SRC_CODE_DESC;;
   }
@@ -45,6 +47,7 @@ ORDER BY 1            ;;
   dimension: marketing_channel_source_code_active {
     label: "Marketing Channel Source Code Active"
     group_label: "Marketing Channel Source Code"
+    hidden: yes
     type: string
     sql: ${TABLE}.MKTING_CHANNEL_SRC_CODE_ACTIVE;;
   }

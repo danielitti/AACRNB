@@ -19,7 +19,7 @@ view: new_business_sale {
               PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
               --ADDON_PACKAGE_LEVEL_1_KEY,
               --DEVICE_TYPE_KEY,
-              --SOURCE_CODE_KEY, --xxx source group
+              SOURCE_CODE_KEY,
               --STAFF_KEY,
               --LEAD_CODE_KEY,
               --MEMBERSHIP_TYPE_LEVEL_2_KEY,
@@ -209,6 +209,13 @@ view: new_business_sale {
     sql: ${TABLE}.TRANS_SALES_CHANNEL_LEVEL2_KEY ;;
   }
 
+  dimension: source_code_key {
+    label: "Source Code Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.SOURCE_CODE_KEY;;
+  }
+
   dimension: policy_type_level_2_key {
     label: "Policy Type Level 2 Key"
     hidden:  yes
@@ -230,7 +237,7 @@ view: new_business_sale {
   }
 
   dimension: is_will_join {
-    label: "Will Join?"
+    label: "Is Will Join?"
     type: string
     sql: ${TABLE}.IS_WILL_JOIN ;;
   }
@@ -247,6 +254,10 @@ view: new_business_sale {
 
         WHEN {% condition split_by_filter %} 'Contract and Reccurence' {% endcondition %}
           THEN ${contract_and_reccurence.contract_and_reccurence_desc}
+
+        WHEN {% condition split_by_filter %} 'Marketing Channel' {% endcondition %}
+          THEN ${marketing_channel.marketing_channel_lvl1_full_desc}
+
 
       END;;
   }
@@ -385,7 +396,7 @@ view: new_business_sale {
   filter: split_by_filter {
     label: "Split By Filter"
     group_label: "Filters"
-    suggestions: ["Product Package", "Sales Channel", "Contract and Reccurence"]
+    suggestions: ["Product Package", "Sales Channel", "Contract and Reccurence", "Marketing Channel"]
     default_value: "Product Package"
   }
 
