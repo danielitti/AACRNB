@@ -1068,26 +1068,56 @@ Retention Outcomes apply to the following Sales Channels
 
 ### Date and Time measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Financial Year | Integer | The annual period defined for financial reporting, runs from 1 February – 31 January |
-| Calendar Year | Integer | The annual period used for calendar reporting, runs from 1 January – 31 December |
-| Financial Week | String | The AA defined week number within the Financial Year |
-| Calendar Month | String | The calendar month |
-| Transaction Date | Date | The date that the transaction is generated (normally via custromer contact or via system process) |
-| Expected cash date | Date | The date that Tiara believes that cash will be received. This may vary from the actual cash date. A deduction is made after the fact if the cash transaction is unpaid. |
-| Actual cash date | Date | The date that cash is received in the bank.  This might be the same as the transaction date (for credit card payments), or the policy inception date (for future dated inception dates paid for via. Direct Debit), or approx. 8-10 days from transaction and policy inception date (for immediate inception policies paid for via. Direct Debit). |
-| Policy Inception Date | Date | The data the policy first came in to force |
-| Policy change inception date | Date | The data that a policy change transaction takes effect |
-| Policy change effective date | Date | The maximum of the transaction date and the policy change inception date. The effective date is guaranteed to always be “append only”, i.e., will never be set to a past. |
-| Annual Cover Start Date | Date | The date cover commences for each policy year |
-| Annual Cover Effective Date | Date | The date cover is effective from for each policy year - i.e. the maximum of the annual cover start date & transaction date for the 1st transaction of each policy year.  The effective date is guaranteed to always be “append only”, i.e., will never be set to a past. |
-| Annual Cover End Date | Date | The date the current policy year expires. Also called Expiry Date. |
-| Schedule Cover Start Date | Date | The date the current schedule of cover comes in to force |
-| Schedule Effective Date | Date | The date the current schedule of cover is effective from - i.e. the maximum of the schedule cover start date & transaction date for the transaction creating the schedule.   The effective date is guaranteed to always be “append only”, i.e., will never be set to a past. |
-| Schedule Cover End Date | Date | The date the schedule of cover is effective to |
-| Renewal Date | Date | The date the next policy year is due to commence |
+#### Financial Year
+The annual period defined for financial reporting, runs from 1 February – 31 January
 
+#### Calendar Year
+The annual period used for calendar reporting, runs from 1 January – 31 December
+
+#### Financial Week
+The AA defined week number within the Financial Year
+
+#### Calendar Month
+The calendar month
+
+#### Transaction Date
+The date that the transaction is generated (normally via custromer contact or via system process)
+
+#### Expected cash date
+The date that Tiara believes that cash will be received. This may vary from the actual cash date. A deduction is made after the fact if the cash transaction is unpaid.
+
+#### Actual cash date
+The date that cash is received in the bank.  This might be the same as the transaction date (for credit card payments), or the policy inception date (for future dated inception dates paid for via. Direct Debit), or approx. 8-10 days from transaction and policy inception date (for immediate inception policies paid for via. Direct Debit).
+
+#### Policy Inception Date
+The data the policy first came in to force
+
+#### Policy change inception date
+The data that a policy change transaction takes effect
+
+#### Policy change effective date
+The maximum of the transaction date and the policy change inception date. The effective date is guaranteed to always be “append only”, i.e., will never be set to a past.
+
+#### Annual Cover Start Date
+The date cover commences for each policy year
+
+#### Annual Cover Effective Date
+The date cover is effective from for each policy year - i.e. the maximum of the annual cover start date & transaction date for the 1st transaction of each policy year.  The effective date is guaranteed to always be “append only”, i.e., will never be set to a past.
+
+#### Annual Cover End Date
+The date the current policy year expires. Also called Expiry Date.
+
+#### Schedule Cover Start Date
+The date the current schedule of cover comes in to force
+
+#### Schedule Effective Date
+The date the current schedule of cover is effective from - i.e. the maximum of the schedule cover start date & transaction date for the transaction creating the schedule.   The effective date is guaranteed to always be “append only”, i.e., will never be set to a past.
+
+#### Schedule Cover End Date
+The date the schedule of cover is effective to
+
+#### Renewal Date
+The date the next policy year is due to commence
 
 #### Selected date
 Date selected by User (will default to yesterday)
@@ -1112,8 +1142,8 @@ This is a change in logic from the legacy MI, which performs a comparison upon d
 #### Trading week up to selected day
 Trading week is the period starting from the Thursday before the selected date until the selected date.
 
-#### Last Year
-Trading week up to selected day The comparison between a Trading Week in this year and last year will be performed by comparing a given day of this year’s trading week against the same day of the equivalent week of last year.
+#### Last Year Trading week up to selected day
+The comparison between a Trading Week in this year and last year will be performed by comparing a given day of this year’s trading week against the same day of the equivalent week of last year.
 This is as per the legacy MI, e.g., Week 10 FY 2018 is compared with Week 10 FY 2017.
 There is a complication for week 53 which occurs every 7 years or so and is due to happen at the end of the current financial year.
 Our proposal is that, since there is no equivalent week 53 for last year, the TW LY fields will report week 1 for current year when we are reporting on TW 53.
@@ -1127,7 +1157,9 @@ Current Year                 Last Year
 
 #### Calendar Month to selected date
 The period between the first of the month and the selected date
-Last Year Calendar Month to selected date The period between the first of the month and the selected date equivalent for last year. So if selected date is 23 Feb 2018 then Last Year Calendar Month to selected date will be 1 – 23 Feb 2017.
+
+#### Last Year Calendar Month to selected date
+The period between the first of the month and the selected date equivalent for last year. So if selected date is 23 Feb 2018 then Last Year Calendar Month to selected date will be 1 – 23 Feb 2017.
 
 
 
@@ -1136,25 +1168,57 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 ### Financial measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Gross Customer Premium (GCP) | Currency | Total premium paid by customer for the transaction, including IPT and Net Rates |
-| Commission | Currency | The component of Gross Written Premium that is exclusive of the AA Arrangement Fee (AAF) |
-| AA Arrangement Fee (AAF) | Currency | Value of AAF charged, gross of discount. Also known as MAAF = Membership Administration and Arrangement Fee |
-| AA Arrangement Fee Discount | Currency | The value of discount given to the AAF amount |
-| Agent Discount | Currency | The value of discount given to the GCP amount by agents in quote negotiation |
-| Offer Discount | Currency | The value of discount given to the GCP amount via. a specific offer code |
-| Tax | Currency | The sum of applicable Tax and VAT |
-| Insurance Premium Tax (IPT) | Currency | Value of IPT charged on IPTable product transactions |
-| Value Added Tax (VAT) | Currency | Value of VAT charged on VATable product transactions |
-| Net Rates | Currency | The value of money to be paid to the underwriter, AICL. Also known as net premium or underwriter premium. Only populated for underwritten products (StayMobile, BRC) |
-| Gross Written Premium (GWP) | Currency | GCP less IPT and Net Rates |
-| Income | Currency | The income that flows through to EBITDA, calculated as the deferral of GWP |
-| Upfront Income | Currency | The component of Income that is not subject to the income deferral schedule and is therefore recognised upfront |
-| Contributed Deferred Income | Currency | The component of Income that is subject to the income deferral schedule |
-| Realised Deferred Income | Currency | The deferred income that has been recognized in specific period |
-| Average Transaction Value (ATV) | Currency | The total transaction value (typically GCP) divided by the transaction volume |
-| Annualised Average Transaction Value (AATV) | Currency | The ATV, annualised typically by multiplying monthly transactions by 12, quarterly transactions by 4 and annual transactions by 1 |
+#### Gross Customer Premium (GCP)
+Total premium paid by customer for the transaction, including IPT and Net Rates
+
+#### Commission
+The component of Gross Written Premium that is exclusive of the AA Arrangement Fee (AAF)
+
+#### AA Arrangement Fee (AAF)
+Value of AAF charged, gross of discount. Also known as MAAF = Membership Administration and Arrangement Fee
+
+#### AA Arrangement Fee Discount
+The value of discount given to the AAF amount
+
+#### Agent Discount
+The value of discount given to the GCP amount by agents in quote negotiation
+
+#### Offer Discount
+The value of discount given to the GCP amount via. a specific offer code
+
+#### Tax
+The sum of applicable Tax and VAT
+
+#### Insurance Premium Tax (IPT)
+Value of IPT charged on IPTable product transactions
+
+#### Value Added Tax (VAT)
+Value of VAT charged on VATable product transactions
+
+#### Net Rates
+The value of money to be paid to the underwriter, AICL. Also known as net premium or underwriter premium. Only populated for underwritten products (StayMobile, BRC)
+
+#### Gross Written Premium (GWP)
+GCP less IPT and Net Rates
+
+#### Income
+The income that flows through to EBITDA.
+Calculated as the deferral of GWP
+
+#### Upfront Income
+The component of Income that is not subject to the income deferral schedule and is therefore recognised upfront
+
+#### Contributed Deferred Income
+The component of Income that is subject to the income deferral schedule
+
+#### Realised Deferred Income
+The deferred income that has been recognized in specific period
+
+#### Average Transaction Value (ATV)
+The total transaction value (typically GCP) divided by the transaction volume
+
+#### Annualised Average Transaction Value (AATV)
+The ATV, annualised typically by multiplying monthly transactions by 12, quarterly transactions by 4 and annual transactions by 1
 
 
 ---
@@ -1162,18 +1226,35 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 ### Price measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Current policy price | Currency | <span style="color:DarkRed">[Definition to come]</span> |
-| Invitation policy price | Currency | <span style="color:DarkRed">[Definition to come]</span> |
-| Renewal policy price | Currency | <span style="color:DarkRed">[Definition to come]</span> |
-| Core Price | Currency | List price of membership |
-| Flex Price | Currency | Optimum price calculated based on individual policy |
-| Current policy price | Currency | Current amount paid by a customer for their membership |
-| Invitation policy price | Currency | Initial price offered to renewal customer for extension of membership |
-| Renewal policy price | Currency | Price accepted by customer upon renewal |
-| Mid term Upgrade price | Currency | Additional price of products added to policy prior to renewal cycle |
-| Mid term Downgrade price | Currency | Reduction in price due to removal of products prior to renewal cycle |
+#### Current policy price
+<span style="color:DarkRed">[Definition to come]</span>
+
+#### Invitation policy price
+<span style="color:DarkRed">[Definition to come]</span>
+
+#### Renewal policy price
+<span style="color:DarkRed">[Definition to come]</span>
+
+#### Core Price
+List price of membership
+
+#### Flex Price
+Optimum price calculated based on individual policy
+
+#### Current policy price
+Current amount paid by a customer for their membership
+
+#### Invitation policy price
+Initial price offered to renewal customer for extension of membership
+
+#### Renewal policy price
+Price accepted by customer upon renewal
+
+#### Mid term Upgrade price
+Additional price of products added to policy prior to renewal cycle
+
+#### Mid term Downgrade price
+Reduction in price due to removal of products prior to renewal cycle
 
 
 ---
@@ -1181,12 +1262,18 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 ### Discount measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| New Business customer offer/discount | Currency | Prescribed offers available for new business customers |
-| New Business agent discount | Currency | Additional discounts provided at agents discretion |
-| StayAA customer offer/discount | Currency | Prescribed offers available for new business customers |
-| StayAA agent discount | Currency | Additional discounts provided at agents discretion |
+#### New Business customer offer/discount
+Prescribed offers available for new business customers
+
+#### New Business agent discount
+Additional discounts provided at agents discretion
+
+#### StayAA customer offer/discount
+Prescribed offers available for new business customers
+
+#### StayAA agent discount
+Additional discounts provided at agents discretion
+
 
 
 ---
@@ -1194,18 +1281,36 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 ### Contact Centre Sales Effectiveness measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Calls Offered | Integer | The volume of inbound calls received (i.e., have heard a ringtone), across all inbound departments within the call centre. May be split by department or business process (e.g., New business).  |
-| Calls Answered | Integer | The volume of inbound calls answered by the call centre. Also known as Calls Handled. |
-| Calls Abandoned | Integer | Calls Offered minus Calls Answered |
-| Abandonment Rate | Percentage | The % of calls not answered, i.e., 1 - calls answered / calls offered. |
-| New Business Sales Volume | Integer | The volume of new business sales completed (i.e., in the call centre) |
-| New Business Call : Sale Conversion Rate | Percentage | The % new business calls converted to a new business sale.  Calculated by mapping the calls to the sales using the Agent. |
-| Handling Time | Decimal | The total duration in seconds spent working on a single call including callwork. Calculated as acdtime+holdtime+acwtime. |
-| Average Handling Time (AHT) | Decimal | The average total duration in seconds of a collection of telephone calls. Calculated as (acdtime+holdtime+acwtime)/acdcalls |
-| Service Level Met? | Y/N | Whether the call was answered within an agreed threshold. E.g., the threshold for NMU calls is 30 seconds |
-| Service Level Rate (SL) | Percentage | The % of calls that have been answered within an agreed threshold |
+#### Calls Offered
+The volume of inbound calls received (i.e., have heard a ringtone), across all inbound departments within the call centre. May be split by department or business process (e.g., New business).
+
+#### Calls Answered
+The volume of inbound calls answered by the call centre. Also known as Calls Handled.
+
+#### Calls Abandoned
+Calls Offered minus Calls Answered
+
+#### Abandonment Rate
+The % of calls not answered, i.e., 1 - calls answered / calls offered.
+
+#### New Business Sales Volume
+The volume of new business sales completed (i.e., in the call centre)
+
+#### New Business Call : Sale Conversion Rate
+The % new business calls converted to a new business sale.  Calculated by mapping the calls to the sales using the Agent.
+
+#### Handling Time
+The total duration in seconds spent working on a single call including callwork. Calculated as acdtime+holdtime+acwtime.
+
+#### Average Handling Time (AHT)
+The average total duration in seconds of a collection of telephone calls. Calculated as (acdtime+holdtime+acwtime)/acdcalls
+
+#### Was Service Level Met?
+Whether the call was answered within an agreed threshold. E.g., the threshold for NMU calls is 30 seconds
+
+#### Service Level Rate (SL)
+The % of calls that have been answered within an agreed threshold
+
 
 
 ---
@@ -1213,53 +1318,144 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 ### Digital Sales Effectiveness measures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Unique Visitors (UVs) | Integer | The count of unique visitors to the AA.com website or subdomains during a stipulated timeframe. Unique visitors are determined via. a persistent cookie that is delivered to the visitor’s web browser. Visitors are counted twice if they either clear their cookies or visit from different browsers or devices. |
-| Visits | Integer | The count of visitor sessions to the AA.com website / subdomains or the AA Apps during a stipulated timeframe. A session represents any period of interactivity in which the visitor is idle for no more than a than 30 minutes continuous period. Sessions are counted twice if there is a period of 30 minutes or more of continuous inactivity or if the user visis from a different browser or device, or if the user closes their tab/window/browser and relaunches the site/app. Also known as Sessions. |
-| Unique Page Views (UPVs) | Integer | Count of instances where a specified page was viewed at least once in a session (see above) – e.g., if a visitor views the homepage 3 times in 1 session, this report will show as 1 |
-| Page Views (PVs) | Integer | Raw count of times a specified page was viewed, e.g., if a visitor views the homepage 3 times in 1 session, this report will show as 3 |
-| Consumer Roadside New Business Online Lead | Integer | The count of visits to the Consumer Road New Business Landing page. |
-| Sales Volume | Integer | Count of sales transactions completed through the online sales journey(s) |
-| % Share of Sales Volume | Integer | % of Total Sales attributed to [Variable] |
-| Revenue | Currency | Gross Revenue generated from the Sales processed through the online sales journey(s). <span style="color:DarkRed">[Clarify whether this is inclusive of Charges and whether it equals GCP]</span> |
-| % Share of Revenue | Percentage | % of Total Revenue attributed to [Variable] |
-| % Conversion Rate […] (CR) | Percentage | The rate at which the website converts prospects into customers. The calculation is [Sales / starting point] where starting point may be Unique Visitors or Sessions, in total or broken down by variables such as Marketing Channels |
-| Digital Sales Channel Consumer Road New Business conversion rate | Percentage | The volume of New Business consumer road policy sales (gross of cancellations) / the volume of Consumer Roadside New Business Online Leads. <span style="color:DarkRed">[To be confirmed]</span> |
-| Average Transaction Value (ATV) | Currency | The average amount of revenue generated per Sale. The calculation is [Revenue / Sales]. <span style="color:DarkRed">[Clarify Annualised?]</span> |
-| Cost | Currency | The cost introduced into The AA in order to run the activity, most frequently to generate Visitors through marketing campaigns |
-| Cost per Click (CPC) | Currency | The amount we pay to Google & Bing search engines for a click on search listings which result in the customer landing on the website. These costs may be reported at Total level or broken down by keyword |
-| Cost per Acquisition (CPA) | Currency | The average cost to acquire each sale processed online. The calculation is [Costs / Sales]. These costs may be reported at Total level or broken down by keyword or Marketing channel |
-| % Share of Cost | Percentage | % of Total Cost attributed to [Variable] |
-| Retention Rate of Online Purchasers | Percentage | The % of Consumer Road policies that were purchased Online and were subsequently renewed. <span style="color:DarkRed">[Confirm definition]</span> |
-| Cancellations | Integer | The volume of road products that are cancelled within 90 days of purchasing the product through the online journey. <span style="color:DarkRed">[90 days?]</span> |
-| Cancellation Rate | Percentage | The % of Road sales that are subsequently cancelled within 90 days, the calculation is [Cancelled sales / Sales]. <span style="color:DarkRed">[90 days?]</span> |
-| Impressions | Integer | Instances where an advertisement or search listing was presented to user on search engine or external website |
-| Impression Share | Percentage | % of Searches for a specified keyword (or group of keywords) where our advertisement or listing was presented to the user |
-| Clicks | Integer | Volume of times a specified advertisement or listing was clicked, resulting in a user landing on theaa.com |
-| Click Through Rate (CTR) | Percentage | The % of times a listing or advertisement was clicked after having been displayed to a user, the calculation is [Clicks / Impressions] |
-| % Share of Clicks | Percentage | The % of Clicks from a specific listing, advertisement, page or menu attributed to stipulated link. [Clicks of specific element / total clicks] |
-| Opens | Integer | The number of times that an email campaign was opened by the recipients of that campaign (E-mail Marketing channel only) |
-| Open Rate | Percentage | The number of times the email was opened as % of emails sent [Opens / Emails sent] |
-| Bounce Rate | Percentage | % of sessions to land on a page or from a campaign that depart without interacting further. i.e they view only 1 page before leaving the website. The calculation is [One Page Sessions / times the page was the entry page] – Entry page is how many times this was the first page to be viewed by the customer, the page that brought traffic into the website |
-| % share of Entries | Percentage | % of sessions where a specified page was first page viewed (brought traffic into the site) |
-| Exits | Integer | Instances where this was final page viewed before departing the website |
-| Exit Rate | Percentage | % of times that this was the last page viewed by the user, calculation is [Exits / Page Views] |
-| Dwell Time | Duration | Average amount of time taken with each Session |
-| Time on Page | Duration | Average time spent on stipulated page |
-| Load Time | Duration | Average time taken for page to load |
-| Availability | Percentage | % of hour/day/week/month where the page/journey was online and functioning fully |
-| Step Conversion Rate | Percentage | % of people to progress forward from any given step in a conversion funnel. Calculation is [Volume of users to view following step / Volume of users to view preceding step] |
-| SEO Rank | Integer | The average position of SEO listings on Google/Bing search results page by keyword |
-| Registrations MyAA | Integer | Customer registrations to access MyAA content area |
-| % of Personal Members Registered for MyAA | Percentage | Customer registrations to access MyAA content area as % of Road Personal Members |
-| % Share of Personal Member Interactions | Percentage | The % of interactions that The AA has with its existing Road members that are undertaken online or via. the App. |
-| App Downloads | Integer | Instances where the AA App was downloaded from Apple and Android app stores |
-| Registrations App | Integer | Registrations within the App, this allows the member to book breakdowns and access member benefits within the App |
-| % of Personal Members Registered for App | Percentage | Members registered with the App as % of Total Personal Members |
-| Retention Rate of App Users | Percentage | % of App users to retain membership post-renewal |
-| App usage in Personal Breakdown Situation | Integer | Instances where App was used to book or track a personal breakdown job |
-| % Share of Personal Breakdowns Booked/Tracked | Percentage | Above as % of Total Breakdown Cases booked |
+
+#### Unique Visitors (UVs)
+The count of unique visitors to the AA.com website or subdomains during a stipulated timeframe. Unique visitors are determined via. a persistent cookie that is delivered to the visitor’s web browser. Visitors are counted twice if they either clear their cookies or visit from different browsers or devices.
+
+#### Visits
+The count of visitor sessions to the AA.com website / subdomains or the AA Apps during a stipulated timeframe. A session represents any period of interactivity in which the visitor is idle for no more than a than 30 minutes continuous period. Sessions are counted twice if there is a period of 30 minutes or more of continuous inactivity or if the user visis from a different browser or device, or if the user closes their tab/window/browser and relaunches the site/app. Also known as Sessions.
+
+#### Unique Page Views (UPVs)
+Count of instances where a specified page was viewed at least once in a session (see above) – e.g., if a visitor views the homepage 3 times in 1 session, this report will show as 1
+
+#### Page Views (PVs)
+Raw count of times a specified page was viewed, e.g., if a visitor views the homepage 3 times in 1 session, this report will show as 3
+
+#### Consumer Roadside New Business Online Lead
+The count of visits to the Consumer Road New Business Landing page.
+
+#### Sales Volume
+Count of sales transactions completed through the online sales journey(s)
+
+#### % Share of Sales Volume
+% of Total Sales attributed to [Variable]
+
+#### Revenue
+Gross Revenue generated from the Sales processed through the online sales journey(s). <span style="color:DarkRed">[Clarify whether this is inclusive of Charges and whether it equals GCP]</span>
+
+#### % Share of Revenue
+% of Total Revenue attributed to [Variable]
+
+#### % Conversion Rate […] (CR)
+The rate at which the website converts prospects into customers. The calculation is [Sales / starting point] where starting point may be Unique Visitors or Sessions, in total or broken down by variables such as Marketing Channels
+
+#### Digital Sales Channel Consumer Road New Business conversion rate
+The volume of New Business consumer road policy sales (gross of cancellations) / the volume of Consumer Roadside New Business Online Leads. <span style="color:DarkRed">[To be confirmed]</span>
+
+#### Average Transaction Value (ATV)
+The average amount of revenue generated per Sale. The calculation is [Revenue / Sales]. <span style="color:DarkRed">[Clarify Annualised?]</span>
+
+#### Cost
+The cost introduced into The AA in order to run the activity, most frequently to generate Visitors through marketing campaigns
+
+#### Cost per Click (CPC)
+The amount we pay to Google & Bing search engines for a click on search listings which result in the customer landing on the website. These costs may be reported at Total level or broken down by keyword
+
+#### Cost per Acquisition (CPA)
+The average cost to acquire each sale processed online. The calculation is [Costs / Sales]. These costs may be reported at Total level or broken down by keyword or Marketing channel
+
+#### % Share of Cost
+% of Total Cost attributed to [Variable]
+
+#### Retention Rate of Online Purchasers
+The % of Consumer Road policies that were purchased Online and were subsequently renewed. <span style="color:DarkRed">[Confirm definition]</span>
+
+#### Cancellations
+The volume of road products that are cancelled within 90 days of purchasing the product through the online journey. <span style="color:DarkRed">[90 days?]</span>
+
+#### Cancellation Rate
+The % of Road sales that are subsequently cancelled within 90 days, the calculation is [Cancelled sales / Sales]. <span style="color:DarkRed">[90 days?]</span>
+
+#### Impressions
+Instances where an advertisement or search listing was presented to user on search engine or external website
+
+#### Impression Share
+% of Searches for a specified keyword (or group of keywords) where our advertisement or listing was presented to the user
+
+#### Clicks
+Volume of times a specified advertisement or listing was clicked, resulting in a user landing on theaa.com
+
+#### Click Through Rate (CTR)
+The % of times a listing or advertisement was clicked after having been displayed to a user, the calculation is [Clicks / Impressions]
+
+#### % Share of Clicks
+The % of Clicks from a specific listing, advertisement, page or menu attributed to stipulated link. [Clicks of specific element / total clicks]
+
+#### Opens
+The number of times that an email campaign was opened by the recipients of that campaign (E-mail Marketing channel only)
+
+#### Open Rate
+The number of times the email was opened as % of emails sent [Opens / Emails sent]
+
+#### Bounce Rate
+% of sessions to land on a page or from a campaign that depart without interacting further. i.e they view only 1 page before leaving the website. The calculation is [One Page Sessions / times the page was the entry page] – Entry page is how many times this was the first page to be viewed by the customer, the page that brought traffic into the website
+
+#### % share of Entries
+% of sessions where a specified page was first page viewed (brought traffic into the site)
+
+#### Exits
+Instances where this was final page viewed before departing the website
+
+#### Exit Rate
+% of times that this was the last page viewed by the user, calculation is [Exits / Page Views]
+
+#### Dwell Time
+Average amount of time taken with each Session
+
+#### Time on Page
+Average time spent on stipulated page
+
+#### Load Time
+Average time taken for page to load
+
+#### Availability
+% of hour/day/week/month where the page/journey was online and functioning fully
+
+#### Step Conversion Rate
+% of people to progress forward from any given step in a conversion funnel. Calculation is [Volume of users to view following step / Volume of users to view preceding step]
+
+#### SEO Rank
+The average position of SEO listings on Google/Bing search results page by keyword
+
+#### Registrations MyAA
+Customer registrations to access MyAA content area
+
+#### % of Personal Members Registered for MyAA
+Customer registrations to access MyAA content area as % of Road Personal Members
+
+#### % Share of Personal Member Interactions
+The % of interactions that The AA has with its existing Road members that are undertaken online or via. the App.
+
+#### App Downloads
+Instances where the AA App was downloaded from Apple and Android app stores
+
+#### Registrations App
+Registrations within the App, this allows the member to book breakdowns and access member benefits within the App
+
+#### % of Personal Members Registered for App
+Members registered with the App as % of Total Personal Members
+
+#### Retention Rate of App Users
+% of App users to retain membership post-renewal
+
+#### App usage in Personal Breakdown Situation
+Instances where App was used to book or track a personal breakdown job
+
+#### % Share of Personal Breakdowns Booked/Tracked
+Above as % of Total Breakdown Cases booked
+
+
+
 
 
 ---
@@ -1268,10 +1464,11 @@ Last Year Calendar Month to selected date The period between the first of the mo
 ### Membership Usage measures
 <span style="color:DarkRed">[Definitions to come from Sarah Keyes, Roadside Operations]</span>
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Call Out count | Integer | The number of recorded breakdown jobs |
-| BRC Claim count | Integer | The  number of BRC Claims made |
+#### Call Out count
+The number of recorded breakdown jobs
+
+#### BRC Claim count
+The number of BRC Claims made
 
 
 ---
@@ -1280,24 +1477,54 @@ Last Year Calendar Month to selected date The period between the first of the mo
 ### Holding measures
 <span style="color:DarkRed">[Upgrade/Downgrade definitions to be defined as part of Trade-up module]</span>
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Policy Holding Volume | Integer | The volume of active policies, including policies in pending-lapse or pending-cancel state until point of lapse/cancel. <span style="color:DarkRed">[Leanne checking if this includes suspended policies]</span> |
-| Total Member Volume | Integer | The volume of Main plus Associate members linked to active policies |
-| Main Member Volume | Integer | The volume of Main members linked to active policies |
-| Associate Member Volume | Integer | The volume of Associate members linked to active policies |
-| Holding/Status Movements | Integer | The movement of policies between customer/policy types and/or the movement of policies between active and non-active states |
-| Product Upgrades – New | Integer | The number of instances where a new paid for product is added to a policy. <span style="color:DarkRed">[What if the policyholder adds more than one product at once / in one policy year?]</span> |
-| Product Upgrades – Free to Paid | Integer | The number of instances where a free product on a policy changes to the same paid for product. <span style="color:DarkRed">[What if the policyholder removes more than one product at once / in one policy year?]</span> |
-| Product Downgrades – Paid | Integer | The number of instances where a paid for product is removed from a policy |
-| Product Downgrades – Free | Integer | The number of instances where a free paid for product is removed from a policy |
-| BRC Level Upgrade | Integer | The number of instances where additional vehicles are added to BRC cover |
-| BRC Level Downgrade | Integer | The number of instances where vehicles are removed from BRC cover |
-| Membership Type Upgrade – New | Integer | The number of instances where additional paid for members are added to cover. <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span> |
-| Membership Type Upgrade – Free to Paid | Integer | The number of instances where additional free members on a policy change to the same additional members but paid for. <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span> |
-| Membership Type Downgrade –Paid | Integer | The number of instances where additional paid for members are removed from cover . <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span> |
-| Membership Type Downgrade –Free | Integer | The number of instances where additional free members are removed from cover . <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span> |
-| Paid […] () |  | Subset of ‘Term’, where the Policy Type = Paid |
+#### Policy Holding Volume
+The volume of active policies, including policies in pending-lapse or pending-cancel state until point of lapse/cancel. <span style="color:DarkRed">[Leanne checking if this includes suspended policies]</span>
+
+#### Total Member Volume
+The volume of Main plus Associate members linked to active policies
+
+#### Main Member Volume
+The volume of Main members linked to active policies
+
+#### Associate Member Volume
+The volume of Associate members linked to active policies
+
+#### Holding/Status Movements
+The movement of policies between customer/policy types and/or the movement of policies between active and non-active states
+
+#### Product Upgrades – New
+The number of instances where a new paid for product is added to a policy. <span style="color:DarkRed">[What if the policyholder adds more than one product at once / in one policy year?]</span>
+
+#### Product Upgrades – Free to Paid
+The number of instances where a free product on a policy changes to the same paid for product. <span style="color:DarkRed">[What if the policyholder removes more than one product at once / in one policy year?]</span>
+
+#### Product Downgrades – Paid
+The number of instances where a paid for product is removed from a policy
+
+#### Product Downgrades – Free
+The number of instances where a free paid for product is removed from a policy
+
+#### BRC Level Upgrade
+The number of instances where additional vehicles are added to BRC cover
+
+#### BRC Level Downgrade
+The number of instances where vehicles are removed from BRC cover
+
+#### Membership Type Upgrade – New
+The number of instances where additional paid for members are added to cover. <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span>
+
+#### Membership Type Upgrade – Free to Paid
+The number of instances where additional free members on a policy change to the same additional members but paid for. <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span>
+
+#### Membership Type Downgrade –Paid
+The number of instances where additional paid for members are removed from cover . <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span>
+
+#### Membership Type Downgrade –Free
+The number of instances where additional free members are removed from cover . <span style="color:DarkRed">[What happens to free junior associates that move to paid?]</span>
+
+#### Paid […]
+Subset of ‘Term’, where the Policy Type = Paid
+
 
 
 ---
@@ -1307,76 +1534,154 @@ Last Year Calendar Month to selected date The period between the first of the mo
 
 #### Volumes
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Total Invitations volume | Integer | The number of policies with a fixed term policy Renewal invitation price or a continuous policy Reprice generated in Tiara (not necessarily mailed) |
-| Fixed term invitations volume | Integer | The number of policies with a fixed term policy Renewal invitation price generated in Tiara (not necessarily mailed) |
-| Continuous invitations volume | Integer | The number of policies with a continuous policy Reprice generated in Tiara (not necessarily mailed) |
-| Sent invitations volume – total | Integer | The number of policies where a fixed term policy Renewal or continuous policy Reprice invitation was mailed |
-| Sent invitations volume – fixed term | Integer | The number of policies where a fixed term policy Renewal invitation was mailed |
-| Sent invitations volume – continuous | Integer | The number of policies where a continuous policy Reprice invitation was mailed |
-| Lapsers volume | Integer | The number of policies that were cancelled due to a Lapse. Also known as Non-contact Closures.  |
-| Invitation with Opt In volume | Integer | The number of policies with invitations generated in Tiara that include an opt in offer (not necessarily mailed) |
-| Sent Invitation with Opt In volume | Integer | The number of policies where invitations that included an opt in offer were mailed |
-| Auto-renewal volume | Integer | Any renewal or reprice event without a call outcome associated with it and where invitation price/package matches the paid renewal price/package |
-| Assisted renewal volume | Integer | Any renewal or reprice event with a call outcome associated with it and where invitation price/package matches the paid renewal price/package –split by contract and recurrence type |
-| Saved renewal volume | Integer | Any renewal or reprice event with a call outcome associated with it and where invitation price/package does not match the paid renewal price/package –split by contract and recurrence type |
-| Total reinvite volume | Integer | The number of policies with a fixed term renewal reinvite or a continuous policy reprice reinvite generated in Tiara (not necessarily mailed) |
-| Fixed term reinvite volume | Integer | The number of policies with a fixed term renewal reinvite generated in Tiara (not necessarily mailed) |
-| Continuous reinvite volume | Integer | The number of policies with a continuous policy reprice reinvite generated in Tiara (not necessarily mailed) |
-| Sent reinvite volume – total | Integer | The number of policies where a fixed term renewal or continuous policy reprice reinvite was mailed |
-| Sent reinvite volume – fixed term | Integer | The number of policies where a fixed term renewal reinvite was mailed |
-| Sent reinvite volume – continuous | Integer | The number of policies where a continuous policy reprice reinvite was mailed |
+##### Total Invitations volume
+The number of policies with a fixed term policy Renewal invitation price or a continuous policy Reprice generated in Tiara (not necessarily mailed)
+
+##### Fixed term invitations volume
+The number of policies with a fixed term policy Renewal invitation price generated in Tiara (not necessarily mailed)
+
+##### Continuous invitations volume
+The number of policies with a continuous policy Reprice generated in Tiara (not necessarily mailed)
+
+##### Sent invitations volume – total
+The number of policies where a fixed term policy Renewal or continuous policy Reprice invitation was mailed
+
+##### Sent invitations volume – fixed term
+The number of policies where a fixed term policy Renewal invitation was mailed
+
+##### Sent invitations volume – continuous
+The number of policies where a continuous policy Reprice invitation was mailed
+
+##### Lapsers volume
+The number of policies that were cancelled due to a Lapse. Also known as Non-contact Closures.
+
+##### Invitation with Opt In volume
+The number of policies with invitations generated in Tiara that include an opt in offer (not necessarily mailed)
+
+##### Sent Invitation with Opt In volume
+The number of policies where invitations that included an opt in offer were mailed
+
+##### Auto-renewal volume
+Any renewal or reprice event without a call outcome associated with it and where invitation price/package matches the paid renewal price/package
+
+##### Assisted renewal volume
+Any renewal or reprice event with a call outcome associated with it and where invitation price/package matches the paid renewal price/package –split by contract and recurrence type
+
+##### Saved renewal volume
+Any renewal or reprice event with a call outcome associated with it and where invitation price/package does not match the paid renewal price/package –split by contract and recurrence type
+
+##### Total reinvite volume
+The number of policies with a fixed term renewal reinvite or a continuous policy reprice reinvite generated in Tiara (not necessarily mailed)
+
+##### Fixed term reinvite volume
+The number of policies with a fixed term renewal reinvite generated in Tiara (not necessarily mailed)
+
+##### Continuous reinvite volume
+The number of policies with a continuous policy reprice reinvite generated in Tiara (not necessarily mailed)
+
+##### Sent reinvite volume – total
+The number of policies where a fixed term renewal or continuous policy reprice reinvite was mailed
+
+##### Sent reinvite volume – fixed term
+The number of policies where a fixed term renewal reinvite was mailed
+
+##### Sent reinvite volume – continuous
+The number of policies where a continuous policy reprice reinvite was mailed
+
 
 
 #### Retention Rates
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Survival to Invite Rate | Percentage | New policies and policies renewed or repriced in prior window who have a membership status of active at point of invite / All new policies and policies renewed or repriced in prior window |
-| Retention rate | Percentage | Policies Renewed or Repriced / Policies Invited to Renew or Reprice –drill down by policy type at point of invite |
-| Retention from invite rate | Percentage | Policies Renewed or Repriced on or before renewal date / Policies Invited to Renew or Reprice |
-| Retention from lapse journey rate | Percentage | ‘Retention rate –total’ minus ‘Retention rate -from invite’ |
-| Persistency rate | Percentage | Policies renewed or repriced in this window / new policies plus policies renewed or repriced in prior window. Should be equal to survival to invite rate and retention rate |
-| Volume Save Rate | Percentage | Assisted renewals + Saved renewals / Assisted renewals + Saved renewals + Closure cancellations + Suspensions |
-| Revenue Save Rate | Percentage | The invited & renewed price equivalent of the Volume Save Rate |
-| Non-renewal Rate | Percentage | 1 minus the Retention rate -total |
-| Auto-renewal Rate | Percentage | Subset of Renewal Rate. Auto-renewal volume/Invitations issued on Recurring Fixed, Quarterly or Monthly. |
-| Lapse Rate | Percentage | Lapser cancellations /total customer base.  |
-| Invited Suspension Rate | Percentage | Suspended after invite issued/Invited to Renew |
+##### Survival to Invite Rate
+New policies and policies renewed or repriced in prior window who have a membership status of active at point of invite / All new policies and policies renewed or repriced in prior window
+
+##### Retention rate
+Policies Renewed or Repriced / Policies Invited to Renew or Reprice –drill down by policy type at point of invite
+
+##### Retention from invite rate
+Policies Renewed or Repriced on or before renewal date / Policies Invited to Renew or Reprice
+
+##### Retention from lapse journey rate
+‘Retention rate –total’ minus ‘Retention rate -from invite’
+
+##### Persistency rate
+Policies renewed or repriced in this window / new policies plus policies renewed or repriced in prior window. Should be equal to survival to invite rate and retention rate
+
+##### Volume Save Rate
+Assisted renewals + Saved renewals / Assisted renewals + Saved renewals + Closure cancellations + Suspensions
+
+##### Revenue Save Rate
+The invited & renewed price equivalent of the Volume Save Rate
+
+##### Non-renewal Rate
+1 minus the Retention rate -total
+
+##### Auto-renewal Rate
+Subset of Renewal Rate. Auto-renewal volume/Invitations issued on Recurring Fixed, Quarterly or Monthly.
+
+##### Lapse Rate
+Lapser cancellations /total customer base.
+
+##### Invited Suspension Rate
+Suspended after invite issued/Invited to Renew
+
+
 
 
 #### Prices
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Invites Flexed | Integer | The number of invites with a flexed price applied |
-| Invited Flexed % | Percentage | The percentage of invites with a flexed price applied |
-| Invited Price | Currency | Fixed or continuous price offered to the customer |
-| Invited-to-renewed Discount Rate | Currency | Renewed price compared to the core price |
-| Renewed Price | Currency | Fixed or continuous price price that the customer renewed on |
-| Leakage Rate | Percentage | Actual renewal price/invited price |
-| Nominal Discount Amount | Currency | The amount of discount attributed to a non-financial offer (e.g. 15 for 12 = 25%) |
-| Adjusted Discount Amount | Currency | Used for Agent performance - reduces value of real discount to encourage use of certain offers/discounts by agents without penalising them for usage |
+##### Invites Flexed
+The number of invites with a flexed price applied
+
+##### Invited Flexed %
+The percentage of invites with a flexed price applied
+
+##### Invited Price
+Fixed or continuous price offered to the customer
+
+##### Invited-to-renewed Discount Rate
+Renewed price compared to the core price
+
+##### Renewed Price
+Fixed or continuous price price that the customer renewed on
+
+##### Leakage Rate
+Actual renewal price/invited price
+
+##### Nominal Discount Amount
+The amount of discount attributed to a non-financial offer (e.g. 15 for 12 = 25%)
+
+##### Adjusted Discount Amount
+Used for Agent performance - reduces value of real discount to encourage use of certain offers/discounts by agents without penalising them for usage
+
 
 
 #### Outcomes, saves, closures
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Outcomes Save Rate | Percentage | Outcome Type=Save/Total Outcomes. Total of the three next items |
-| Outcomes Closure Rate | Percentage | (Outcome Type=Deferred+Immediate Close)/Total Outcomes. |
+##### Outcomes Save Rate
+Outcome Type=Save/Total Outcomes.
+
+##### Outcomes Closure Rate
+(Outcome Type=Deferred+Immediate Close)/Total Outcomes
 
 
 #### Outbound campaigns
 
-| Measure                    | Type | Definition                                              |
-|:---------------------------|:-----|:--------------------------------------------------------|
-| Gross Campaign Renewal Rate | Percentage | % of members selected for a campaign that renew |
-| Target Campaign Renewal Rate | Percentage | % of members selected in the target group for a campaign that renew |
-| Control Campaign Renewal Rate | Percentage | % of members selected in the control group for a campaign that renew |
-| Incremental Campaign Renewal Rate | Percentage | Difference between target & control renewal rates in a campaign test |
-| Incremental Cost Per Retain | Currency | − |
+##### Gross Campaign Renewal Rate
+% of members selected for a campaign that renew
+
+##### Target Campaign Renewal Rate
+% of members selected in the target group for a campaign that renew
+
+##### Control Campaign Renewal Rate
+% of members selected in the control group for a campaign that renew
+
+##### Incremental Campaign Renewal Rate
+Difference between target & control renewal rates in a campaign test
+
+##### Incremental Cost Per Retain
+<span style="color:DarkRed">[Definition to come from Viv]</span>
+
 
 
 ---
