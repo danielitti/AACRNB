@@ -263,8 +263,59 @@ view: new_business_sale {
   }
 
   dimension: product_package_level_2_key {
+    hidden:  yes
     type: number
     sql: ${TABLE}.PRODUCT_PACKAGE_LEVEL_2_KEY ;;
+  }
+
+  ### Supporting dimension from dim_date_filter
+
+  dimension: trdwk_number_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_number} END;;
+  }
+
+  dimension: trdwk_number_ly_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${trdwk_number_by_date_filter} = 53 THEN 1 ELSE ${trdwk_number_by_date_filter} END;;
+  }
+
+  dimension: trdwk_day_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_day_number_of_week} END;;
+  }
+
+  dimension: trdwk_year_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_year} END;;
+  }
+
+  dimension: trdwk_year_ly_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${trdwk_number_by_date_filter} = 53 THEN ${trdwk_year_by_date_filter} ELSE ${date_filter.trdwk_year_ly}  END;;
+  }
+
+  dimension: financial_year_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.financial_year} END;;
+  }
+
+  dimension: financial_year_ly_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.financial_year_ly} END;;
+  }
+
+  dimension: financial_doy_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN ${date_filter.financial_day_of_year} END;;
   }
 
   ### Supporting dimensions for measure calculation
@@ -276,16 +327,45 @@ view: new_business_sale {
   }
 
   dimension: is_selected_day {
-    #hidden: yes
+    hidden: yes
     type: yesno
     sql: ${trx_date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
   }
 
-  dimension: is_selected_day_ly {
+  dimension: is_selected_trading_week {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} + 365 = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
-    #sql:  ${trx_trdwk_number}=${date_filter_trdwk_number} AND ${trx_trdwk_day_of_week}=${date_filter_trdwk_day_of_week} AND ${trx_trdwk_year}=${date_filter_trdwk_year_ly};;
+    sql: ${trx_trdwk_number}=${trdwk_number_by_date_filter}  ;;
+  }
+
+  dimension: is_selected_trading_week_ly {
+    hidden: yes
+    type: yesno
+    sql: ${trx_trdwk_number}=${trdwk_number_ly_by_date_filter}  ;;
+  }
+
+  dimension: is_selected_trading_week_day {
+    hidden: yes
+    type: yesno
+    sql: ${trx_trdwk_day_of_week}=${trdwk_day_by_date_filter}  ;;
+  }
+
+  dimension: is_up_to_trading_week_day {
+    hidden: yes
+    type: yesno
+    sql: ${trx_trdwk_day_of_week}<=${trdwk_day_by_date_filter}  ;;
+  }
+
+  dimension: is_selected_trading_week_year {
+    hidden: yes
+    type: yesno
+    sql: ${trx_trdwk_year}=${trdwk_year_by_date_filter}  ;;
+  }
+
+  dimension: is_selected_trading_week_year_ly {
+    hidden: yes
+    type: yesno
+    sql: ${trx_trdwk_year}=${trdwk_year_ly_by_date_filter}  ;;
   }
 
   dimension: is_up_to_selected_day {
@@ -297,67 +377,25 @@ view: new_business_sale {
   dimension: is_up_to_selected_day_ly {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} + 365 <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') ;;
-  }
-
-  dimension: trdwk_derived_by_date_filter {
-    type: string
-    #hidden:  yes
-    sql:
-        CASE
-            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
-              FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('29-Jan-15'))/7)+1
-
-             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('26-Jan-17') THEN
-               FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('28-Jan-16'))/7)+1
-
-             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('25-Jan-18') THEN
-               FLOOR((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('26-Jan-17'))/7)+1
-
-        END ;;
-  }
-
-  dimension: trdwk_day_by_date_filter {
-    type: string
-    #hidden:  yes
-    sql:
-        CASE
-            WHEN TO_DATE('29-Jan-15') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') < TO_DATE('28-Jan-16') THEN
-              MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('29-Jan-15')),7)+1
-
-             WHEN TO_DATE('28-Jan-16') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('26-Jan-17') THEN
-               MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('28-Jan-16')),7)+1
-
-             WHEN TO_DATE('26-Jan-17') <= TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') AND TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd')  < TO_DATE('25-Jan-18') THEN
-               MOD((TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') - TO_DATE('26-Jan-17')),7)+1
-
-        END ;;
-  }
-
-  dimension: is_selected_trading_week {
-    # xxx probably  need to implement trading_year because it is different for the last week of January
-    hidden: yes
-    type: yesno
-    sql: ${trx_trdwk_number}=${trdwk_derived_by_date_filter}  ;;
-  }
-
-  dimension: is_up_to_trading_week_day {
-    # xxx nned to have trading_week_day in the database; this to solve the problem with last year same week but different day number. Need to trading_week_day <= trading_week_day_derived_by_date_filter_parameter
-    hidden: yes
-    type: yesno
-    sql: ${trx_trdwk_day_of_week}<=${trdwk_day_by_date_filter}  ;;
+    sql: ${trx_date_raw} <= ADD_MONTHS(TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'), -12) ;;
   }
 
   dimension: is_selected_fy {
     hidden: yes
     type: yesno
-    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS(TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'),11)  , 'YYYY') AS INT)  ;;
+    sql: ${trx_financial_year}=${financial_year_by_date_filter} ;;
   }
 
   dimension: is_selected_last_fy {
     hidden: yes
     type: yesno
-    sql: ${trx_financial_year}=CAST(TO_CHAR(ADD_MONTHS(TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd'),11)  , 'YYYY') AS INT)-1  ;;
+    sql: ${trx_financial_year}=${financial_year_ly_by_date_filter} ;;
+  }
+
+  dimension: is_up_to_selected_doy_fy {
+    hidden: yes
+    type: yesno
+    sql: ${trx_financial_day_of_year}<=${financial_doy_by_date_filter} ;;
   }
 
   dimension: is_selected_year_month {
@@ -440,7 +478,15 @@ view: new_business_sale {
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
-      field: is_selected_day_ly
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
       value: "yes"
     }
     filters: {
@@ -498,7 +544,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_fy
+      field: is_selected_trading_week_year
       value: "yes"
     }
     filters: {
@@ -514,7 +560,7 @@ view: new_business_sale {
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
-      field: is_selected_trading_week
+      field: is_selected_trading_week_ly
       value: "yes"
     }
     filters: {
@@ -522,7 +568,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_last_fy
+      field: is_selected_trading_week_year_ly
       value: "yes"
     }
     filters: {
@@ -546,7 +592,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_fy
+      field: is_selected_trading_week_year
       value: "yes"
     }
     filters: {
@@ -669,7 +715,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -689,7 +735,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day_ly
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -709,7 +755,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -779,7 +825,15 @@ view: new_business_sale {
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
-      field: is_selected_day_ly
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
       value: "yes"
     }
     filters: {
@@ -837,7 +891,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_fy
+      field: is_selected_trading_week_year
       value: "yes"
     }
     filters: {
@@ -853,7 +907,7 @@ view: new_business_sale {
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
-      field: is_selected_trading_week
+      field: is_selected_trading_week_ly
       value: "yes"
     }
     filters: {
@@ -861,7 +915,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_last_fy
+      field: is_selected_trading_week_year_ly
       value: "yes"
     }
     filters: {
@@ -885,7 +939,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_selected_fy
+      field: is_selected_trading_week_year
       value: "yes"
     }
     filters: {
@@ -1008,7 +1062,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -1028,7 +1082,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day_ly
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -1048,7 +1102,7 @@ view: new_business_sale {
       value: "yes"
     }
     filters: {
-      field: is_up_to_selected_day
+      field: is_up_to_selected_doy_fy
       value: "yes"
     }
     filters: {
@@ -1277,4 +1331,5 @@ view: new_business_sale {
     sql: COALESCE(COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_actual_fytd_ly},0),0);;
     value_format_name: decimal_2
   }
+
 }
