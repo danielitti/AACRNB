@@ -1,4 +1,4 @@
-connection: "tcid"
+connection: "pcid_p"
 
 # include all the views
 include: "*.view"
