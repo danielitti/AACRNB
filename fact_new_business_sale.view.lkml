@@ -271,18 +271,26 @@ view: new_business_sale {
     type: "string"
     sql:
         CASE
-        WHEN {% condition split_by_filter %} 'Product Package' {% endcondition %}
+        WHEN {% condition split_by_filter %} 'Product Package Level 1' {% endcondition %}
           THEN ${package.package_lvl1_full_desc}
 
-        WHEN {% condition split_by_filter %} 'Sales Channel' {% endcondition %}
+        WHEN {% condition split_by_filter %} 'Product Package Level 2' {% endcondition %}
+          THEN ${package.package_lvl2_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Sales Channel Level 1' {% endcondition %}
           THEN ${sales_channel.sales_channel_lvl1_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Sales Channel Level 2' {% endcondition %}
+          THEN ${sales_channel.sales_channel_lvl2_full_desc}
 
         WHEN {% condition split_by_filter %} 'Contract and Reccurence' {% endcondition %}
           THEN ${contract_and_reccurence.contract_and_reccurence_desc}
 
-        WHEN {% condition split_by_filter %} 'Marketing Channel' {% endcondition %}
+        WHEN {% condition split_by_filter %} 'Marketing Channel Level 1' {% endcondition %}
           THEN ${marketing_channel.marketing_channel_lvl1_full_desc}
 
+        WHEN {% condition split_by_filter %} 'Marketing Channel Level 2' {% endcondition %}
+          THEN ${marketing_channel.marketing_channel_lvl2_full_desc}
 
       END;;
   }
@@ -459,8 +467,8 @@ view: new_business_sale {
   filter: split_by_filter {
     label: "Split By Filter"
     group_label: "Filters"
-    suggestions: ["Product Package", "Sales Channel", "Contract and Reccurence", "Marketing Channel"]
-    default_value: "Product Package"
+    suggestions: ["Product Package Level 1", "Sales Channel Level 1", "Sales Channel Level 2", "Contract and Reccurence", "Marketing Channel Level 1", "Marketing Channel Level 2"]
+    default_value: "Product Package Level 1"
   }
 
   ###########################################################################################
