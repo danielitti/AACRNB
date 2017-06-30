@@ -814,6 +814,40 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Financial Year
+
+  measure: volume_actual_fy_ly {
+    label: "Volume FY LY"
+    group_label: "Volume"
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: volume_fcast_fy {
+    label: "Volume FY Forecast"
+    group_label: "Volume"
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
   ##############################################################
   ### Annualised Product and Add-on GCP
   ##############################################################
@@ -1161,6 +1195,40 @@ view: new_business_sale {
     value_format_name: gbp_0
   }
 
+  ### Financial Year
+
+  measure: agcp_actual_fy_ly {
+    label: "AGCP FY LY"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: gbp_0
+  }
+
+  measure: agcp_fcast_fy {
+    label: "AGCP FY Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: gbp_0
+  }
+
   ##############################################################
   ### Annualised Product and Add-on GCP
   ##############################################################
@@ -1354,6 +1422,24 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_actual_fytd_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+### Financial Year
+
+  measure: aatv_actual_fy_ly {
+    label: "AATV FY LY"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_fy_ly},0) / NULLIF(${volume_actual_fy_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: aatv_fcast_fy {
+    label: "AATV FY Forecast"
+    group_label: "Annualised Average Transaction Value"
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_fy},0) / NULLIF(${volume_fcast_fy},0),0);;
     value_format_name: decimal_2
   }
 
