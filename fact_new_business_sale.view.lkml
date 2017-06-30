@@ -18,7 +18,7 @@ view: new_business_sale {
               CONTRACT_AND_RECURRENCE_KEY,
               PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
               --ADDON_PACKAGE_LEVEL_1_KEY,
-              --DEVICE_TYPE_KEY,
+              DEVICE_TYPE_KEY,
               SOURCE_CODE_KEY,
               --STAFF_KEY,
               --LEAD_CODE_KEY,
@@ -232,6 +232,13 @@ view: new_business_sale {
     hidden:  yes
     type: string
     sql: ${TABLE}.TRANS_SALES_CHANNEL_LEVEL2_KEY ;;
+  }
+
+  dimension: device_type_key {
+    label: "Device Type Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.DEVICE_TYPE_KEY;;
   }
 
   dimension: source_code_key {

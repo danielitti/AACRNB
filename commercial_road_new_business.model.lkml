@@ -33,6 +33,12 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.source_code_key} = ${marketing_channel.source_code_key} ;;
     relationship: many_to_one
   }
+  join: device_type {
+    type: inner
+    sql_on: ${new_business_sale.device_type_key} = ${device_type.device_type_key} ;;
+    relationship: many_to_one
+  }
+
   # join: date {
   #   type: full_outer
   #   sql_on: ${new_business_sale.date_key} = ${date.date_date} ;;
