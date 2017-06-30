@@ -45,7 +45,7 @@ view: new_business_sale {
               TRANSACTION_DATE.FINANCIAL_YEAR,
               TRANSACTION_DATE.FINANCIAL_YEAR_NAME,
               TRANSACTION_DATE.FINANCIAL_DAY_OF_YEAR
-              FROM  SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE
+              FROM  SHARED_MRT.FACT_NEW_BUSINESS_SALE
               INNER JOIN
                     (SELECT   DATE_KEY AS DIM_DATE_KEY,
                               DATE_DTTM,
@@ -63,8 +63,8 @@ view: new_business_sale {
                               --FINANCIAL_WEEK_NUMBER,
                               --FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR_NAME
-                              FROM  SHARED_MRT_UAT7.DIM_DATE) TRANSACTION_DATE
-              ON SHARED_MRT_UAT7.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
+                              FROM  SHARED_MRT.DIM_DATE) TRANSACTION_DATE
+              ON SHARED_MRT.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
             ;;
   }
 
