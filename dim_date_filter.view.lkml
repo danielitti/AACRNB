@@ -8,7 +8,10 @@ view: date_filter {
                   TRADING_YEAR-1 AS TRADING_YEAR_LY,
                   FINANCIAL_YEAR,
                   FINANCIAL_YEAR-1 AS FINANCIAL_YEAR_LY,
-                  FINANCIAL_DAY_OF_YEAR
+                  FINANCIAL_DAY_OF_YEAR,
+                  to_char(DATE_DTTM, 'Dy') || ' ' || TO_CHAR(DATE_DTTM, 'DD MON YYYY') AS HEADER_DAY,
+                  to_char(TRADING_WEEK_START_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_START_DATE, 'DD Mon YYYY') AS HEADER_TW_START,
+                  to_char(TRADING_WEEK_END_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_END_DATE, 'DD Mon YYYY') AS HEADER_TW_END
           FROM  SHARED_MRT.DIM_DATE
           WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy/mm/dd') {% endcondition %}
             ;;
@@ -69,6 +72,24 @@ view: date_filter {
     hidden: yes
     type: string
     sql: ${TABLE}.FINANCIAL_DAY_OF_YEAR ;;
+  }
+
+  dimension: header_day {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.HEADER_DAY ;;
+  }
+
+  dimension: header_tw_start {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.HEADER_TW_START ;;
+  }
+
+  dimension: header_tw_end {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.HEADER_TW_END ;;
   }
 
 }
