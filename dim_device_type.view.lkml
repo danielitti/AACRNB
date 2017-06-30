@@ -2,7 +2,7 @@ view: device_type {
   derived_table: {
     sql:  SELECT  DEVICE_TYPE_KEY,
                   DEVICE_TYPE_DESC
-          FROM    SHARED_MRT_UAT7.DIM_DEVICE_TYPE ;;
+          FROM    SHARED_MRT.DIM_DEVICE_TYPE ;;
   }
 
   dimension: device_type_key {
