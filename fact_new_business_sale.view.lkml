@@ -36,6 +36,7 @@ view: new_business_sale {
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
+              TRANSACTION_DATE.TRADING_DAY_SHORT_NAME,
               TRANSACTION_DATE.TRADING_YEAR,
               --TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
               --TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
@@ -48,10 +49,10 @@ view: new_business_sale {
                               DATE_DTTM,
                               TRADING_WEEK_NUMBER,
                               TRADING_DAY_NUMBER_OF_WEEK,
+                              CALENDAR_DAY_SHORT_NAME AS TRADING_DAY_SHORT_NAME,
                               TRADING_YEAR,
                               FINANCIAL_YEAR,
                               FINANCIAL_DAY_OF_YEAR,
-
                               TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
                               TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
                               TRADING_WEEK_NAME,
@@ -134,13 +135,19 @@ view: new_business_sale {
     sql: ${TABLE}.TRADING_DAY_NUMBER_OF_WEEK ;;
   }
 
+  dimension: trx_trdwk_day_short_name {
+    label: "Trading Week Day Short Name"
+    group_label: "Transaction Date Indentifiers"
+    type: string
+    sql: ${TABLE}.TRADING_DAY_SHORT_NAME ;;
+  }
+
   dimension: trx_trdwk_year {
     label: "Trading Year"
     group_label: "Transaction Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_YEAR ;;
   }
-
 
   dimension: trx_financial_year {
     label: "Financial Year"
