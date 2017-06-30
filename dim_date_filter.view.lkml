@@ -9,7 +9,7 @@ view: date_filter {
                   FINANCIAL_YEAR,
                   FINANCIAL_YEAR-1 AS FINANCIAL_YEAR_LY,
                   FINANCIAL_DAY_OF_YEAR,
-                  to_char(DATE_DTTM, 'Dy') || ' ' || TO_CHAR(DATE_DTTM, 'DD MON YYYY') AS HEADER_DAY,
+                  to_char(DATE_DTTM, 'Dy') || ' ' || TO_CHAR(DATE_DTTM, 'DD Mon YYYY') AS HEADER_DAY,
                   to_char(TRADING_WEEK_START_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_START_DATE, 'DD Mon YYYY') AS HEADER_TW_START,
                   to_char(TRADING_WEEK_END_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_END_DATE, 'DD Mon YYYY') AS HEADER_TW_END
           FROM  SHARED_MRT.DIM_DATE
