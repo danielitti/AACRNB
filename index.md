@@ -20,7 +20,7 @@ LookAA is being introduced by Hawking, the AA's Data & Insight transformation pr
 
 | Dashboard                                                  | Content |
 |:-----------------------------------------------------------|:--------|
-| [Commercial → Consumer Road → New Business](/dashboards/5) | Comprises:<br />– Sales volume, value and ATV<br />– Delta to last year and to forecast<br />– Demand and Converson<br />– ...Overall, by Sales Channel and by Marketing Channel |
+| [Commercial → Consumer Road → New Business](/dashboards/5) | – Sales volume, value and ATV<br />– Delta to last year and to forecast<br />– Demand and Converson<br />– ...Overall, by Sales Channel and by Marketing Channel |
 
 
 ## Release notes and Bugs / Issues
