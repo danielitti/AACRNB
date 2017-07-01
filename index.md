@@ -29,7 +29,7 @@ Our [Outstanding issues list](/projects/commercial_road_new_business/documents/o
 
 If you come across a Bug / Issue, please inform us by,
 
-1. Checking whether the item is already known about on the [Bugs and Issues list]()
+1. Checking whether the item is already known about on the [Outstanding issues list](/projects/commercial_road_new_business/documents/outstanding_issues.md)
 2. If not, then [log into Jira](https://theaacom.atlassian.net/secure/RapidBoard.jspa?rapidView=386&projectKey=CUD&selectedIssue=CUD-2286). If you do not have a Jira account then please email [Simon Teff](mailto:Simon.Teff@TheAA.com) to request one
 3. Click "Create" to create a new issue, and fill in the Summary and Description, ideally with steps to replicate the issue, as well as a link to the relevant dashboard and/or a screenshot of the problem.
 
