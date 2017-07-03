@@ -191,7 +191,7 @@ view: new_business_sale {
   dimension: trx_financial_week_number{
     label: "Financial Week Number"
     group_label: "Transaction Date Indentifiers"
-    type: string
+    type: number
     sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
 
