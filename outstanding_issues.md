@@ -32,6 +32,7 @@ Known issues are as follows:
 
 | Issue list |
 |------------|
+| New Business sales undertaken on CATHHIE are recorded as with an "Unknown" sales channel. This will be fixed in the coming weeks once we repoint our CATHIE data source from the Hosking-Slim report to the BIX. |
 | Outbound dials corresponding to the "Internet Call backs" lead group are not currently accessible. |
 |  Digital Visits and Sales that occur via. the Marketing Channel “Digital Marketing – Breakdown App” will be reported on as the Marketing Channel "Other" |
 |  Digital Visits and Sales that occur via. the Marketing Channel “Digital Marketing – AA.com” will be reported on as the Marketing Channel "Digital Marketing – Direct, including MyAA" |
