@@ -31,8 +31,6 @@ view: new_business_sale {
               TRANSACTION_COUNT,
               SERIES_IDENTIFIER,
               TRANSACTION_DATE.DATE_DTTM,
-              TRANSACTION_DATE.DATE_DD_MON,
-              TRANSACTION_DATE.DATE_MM_DD,
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
               TRANSACTION_DATE.TRADING_WEEK_START_DATE,
@@ -40,8 +38,6 @@ view: new_business_sale {
               TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
               TRANSACTION_DATE.TRADING_DAY_SHORT_NAME,
               TRANSACTION_DATE.TRADING_YEAR,
-              --TRANSACTION_DATE.FINANCIAL_WEEK_NUMBER,
-              --TRANSACTION_DATE.FINANCIAL_WEEK_YYYYWW,
               TRANSACTION_DATE.FINANCIAL_YEAR,
               TRANSACTION_DATE.FINANCIAL_YEAR_NAME,
               TRANSACTION_DATE.FINANCIAL_DAY_OF_YEAR
@@ -55,13 +51,9 @@ view: new_business_sale {
                               TRADING_YEAR,
                               FINANCIAL_YEAR,
                               FINANCIAL_DAY_OF_YEAR,
-                              TO_CHAR(date_dttm, 'DD-MON') as DATE_DD_MON,
-                              TO_CHAR(date_dttm, 'MMDD') as DATE_MM_DD,
                               TRADING_WEEK_NAME,
                               TRADING_WEEK_START_DATE,
                               TRADING_WEEK_END_DATE,
-                              --FINANCIAL_WEEK_NUMBER,
-                              --FINANCIAL_WEEK_YYYYWW,
                               FINANCIAL_YEAR_NAME
                               FROM  SHARED_MRT.DIM_DATE) TRANSACTION_DATE
               ON SHARED_MRT.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
@@ -99,98 +91,79 @@ view: new_business_sale {
     sql: ${TABLE}.DATE_DTTM ;;
   }
 
-  dimension: trx_date_2_raw {
-    type: string
-    sql: ${trx_date_raw} ;;
-  }
-
-  dimension: trx_day_month {
-    label: "Calendar Day And Month"
-    group_label: "Transaction Date Indentifiers"
-    type: string
-    sql: ${TABLE}.DATE_DD_MON ;;
-  }
-
-  dimension: trx_month_day {
-    label: "Calendar Month And Day"
-    group_label: "Transaction Date Indentifiers"
-    type: string
-    sql: ${TABLE}.DATE_MM_DD ;;
-  }
-
   dimension: trx_trdwk_number {
     label: "Trading Week Number"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
 
   dimension: trx_trdwk_name {
     label: "Trading Week Name"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_WEEK_NAME ;;
   }
 
   dimension: trx_trdwk_start_date {
     label: "Trading Week Start Date"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: date
     sql: ${TABLE}.TRADING_WEEK_START_DATE ;;
   }
 
   dimension: trx_trdwk_end_date {
     label: "Trading Week End Date"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: date
     sql: ${TABLE}.TRADING_WEEK_END_DATE ;;
   }
 
   dimension: trx_trdwk_day_of_week {
     label: "Trading Week Day Number"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_DAY_NUMBER_OF_WEEK ;;
   }
 
   dimension: trx_trdwk_day_short_name {
     label: "Trading Week Day Short Name"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_DAY_SHORT_NAME ;;
   }
 
   dimension: trx_trdwk_year {
     label: "Trading Year"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Trading Date Indentifiers"
     type: string
     sql: ${TABLE}.TRADING_YEAR ;;
   }
 
   dimension: trx_financial_year {
     label: "Financial Year"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Financial Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_YEAR ;;
   }
 
   dimension: trx_financial_year_name {
     label: "Financial Year Name"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Financial Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_YEAR_NAME ;;
   }
 
   dimension: trx_financial_day_of_year {
     label: "Financial Day of Year"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Financial Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_DAY_OF_YEAR ;;
   }
 
   dimension: trx_financial_week_number{
     label: "Financial Week Number"
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Financial Date Indentifiers"
     type: number
     sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
@@ -204,7 +177,7 @@ view: new_business_sale {
 
   dimension: trx_financial_day_n_of_year {
     label: "Financial Year and Week "
-    group_label: "Transaction Date Indentifiers"
+    group_label: "Transaction Financial Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_DAY_NUMBER_OF_YEAR ;;
   }
@@ -223,6 +196,7 @@ view: new_business_sale {
 
   dimension: series_identifier_fcast {
     label: "Series Identifier Forecast"
+    hidden:  yes
     type: string
     sql: CASE WHEN SUBSTR(${TABLE}.SERIES_IDENTIFIER, 1, 2) = 'FY' THEN ${TABLE}.SERIES_IDENTIFIER END  ;;
   }
