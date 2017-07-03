@@ -1252,7 +1252,7 @@ view: new_business_sale {
     label: "Annualised Average Transaction Value"
     group_label: "Annualised Average Transaction Value"
     type: number
-    sql: COALESCE(COALESCE(${agcp},0) / NULLIF(${volume},0);;
+    sql: COALESCE((COALESCE(${agcp},0) / NULLIF(${volume},0)),0);;
     value_format_name: decimal_2
   }
 
