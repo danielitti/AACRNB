@@ -279,10 +279,10 @@ view: new_business_sale {
     sql:
         CASE
         WHEN {% condition split_by_filter %} 'Product Package Level 1' {% endcondition %}
-          THEN ${package.package_lvl1_full_desc}
+          THEN ${product_package.product_pkg_lvl1_full_desc}
 
         WHEN {% condition split_by_filter %} 'Product Package Level 2' {% endcondition %}
-          THEN ${package.package_lvl2_full_desc}
+          THEN ${product_package.product_pkg_lvl2_full_desc}
 
         WHEN {% condition split_by_filter %} 'Sales Channel Level 1' {% endcondition %}
           THEN ${sales_channel.sales_channel_lvl1_full_desc}
@@ -474,7 +474,7 @@ view: new_business_sale {
   filter: split_by_filter {
     label: "Split By Filter"
     group_label: "Filters"
-    suggestions: ["Product Package Level 1", "Sales Channel Level 1", "Sales Channel Level 2", "Contract and Reccurence", "Marketing Channel Level 1", "Marketing Channel Level 2"]
+    suggestions: ["Product Package Level 1", "Product Package Level 2", "Sales Channel Level 1", "Sales Channel Level 2", "Contract and Reccurence", "Marketing Channel Level 1", "Marketing Channel Level 2"]
     default_value: "Product Package Level 1"
   }
 

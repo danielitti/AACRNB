@@ -1,4 +1,4 @@
-view: package {
+view: product_package {
   derived_table: {
     sql: SELECT LVL2.PACKAGE_KEY AS PACKAGE_LEVEL_2_KEY,
                 LVL2.PACKAGE_LEVEL,
@@ -13,43 +13,43 @@ view: package {
  ;;
   }
 
-  dimension: package_level_2_key {
+  dimension: product_pkg_level_2_key {
     primary_key: yes
     hidden: yes
     type: string
     sql: ${TABLE}.PACKAGE_LEVEL_2_KEY ;;
   }
 
-  dimension: package_level {
-    label: "Package Level"
+  dimension: product_pkg_level {
+    label: "Product Package Level"
     type: string
     sql: ${TABLE}.PACKAGE_LEVEL ;;
   }
 
-  dimension: package_lvl1_desc {
-    label: "Package Lvl 1 Desc"
-    group_label: "Package Lvl 1"
+  dimension: product_pkg_lvl1_desc {
+    label: "Product Package Lvl 1 Desc"
+    group_label: "Product Package Lvl 1"
     type: string
     sql: ${TABLE}.LEVEL_1_PACKAGE_DESC ;;
   }
 
-  dimension: package_lvl1_full_desc {
-    label: "Package Lvl 1 Full Desc"
-    group_label: "Package Lvl 1"
+  dimension: product_pkg_lvl1_full_desc {
+    label: "Product Package Lvl 1 Full Desc"
+    group_label: "Product Package Lvl 1"
     type: string
     sql: ${TABLE}.LEVEL_1_PACKAGE_FULL_DESC ;;
   }
 
-  dimension: package_lvl2_desc {
-    label: "Package Lvl 2 Desc"
-    group_label: "Package Lvl 2"
+  dimension: product_pkg_lvl2_desc {
+    label: "Product Package Lvl 2 Desc"
+    group_label: "Product Package Lvl 2"
     type: string
     sql: ${TABLE}.LEVEL_2_PACKAGE_DESC ;;
   }
 
-  dimension: package_lvl2_full_desc {
-    label: "Package Lvl 2 Full Desc"
-    group_label: "Package Lvl 2"
+  dimension: product_pkg_lvl2_full_desc {
+    label: "Product Package Lvl 2 Full Desc"
+    group_label: "Product Package Lvl 2"
     type: string
     sql: ${TABLE}.LEVEL_2_PACKAGE_FULL_DESC ;;
   }
