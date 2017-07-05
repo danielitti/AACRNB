@@ -28,6 +28,12 @@ ORDER BY 1            ;;
     sql: ${TABLE}.SOURCE_CODE_KEY ;;
   }
 
+  dimension: marketing_channel_level_2_key {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.MARKETING_CHANNEL_L2_KEY ;;
+  }
+
   dimension: marketing_channel_source_code {
     label: "Marketing Channel Source Code"
     group_label: "Marketing Channel Source Code"
