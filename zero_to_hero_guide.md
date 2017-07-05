@@ -2,12 +2,12 @@
 [← Back to Welcome page](/projects/commercial_road_new_business/documents/index.md)
 
 
-## Gaining access to LookAA
-LookAA is available to any member of AA Staff with a network account. If you can access [LookAA](https://theaa.eu.looker.com) then no further action is required.
+## Gaining access to Looker
+Looker is available to any member of AA Staff with a network account. If you can access [Looker](https://theaa.eu.looker.com) then no further action is required.
 
-If you cannot access [LookAA](https://theaa.eu.looker.com) then you will need to request access via. 147  (permissions are controlled via. Group Memberships which are stored within the AA Active Directory).
+If you cannot access [Looker](https://theaa.eu.looker.com) then you will need to request access via. 147  (permissions are controlled via. Group Memberships which are stored within the AA Active Directory).
 
-To gain access to LookAA, please submit a 147 request as follows:
+To gain access to Looker, please submit a 147 request as follows:
 
 1. [Log-in to 147](https://ntlmspprod.service-now.com/aa) using Chrome. Select "Use external login" and type in your network username, i.e., [Surname][Initial]
 
@@ -15,7 +15,7 @@ To gain access to LookAA, please submit a 147 request as follows:
 
 3. Type in a cost centre and your business justification, then select "Standard Users Access Management" and Type of Service as "Additions"
 
-4. Under "Other" select "Yes" and within "Other Details" add that you would like to be added to the groups "GGRP-CommercialBI-Privilege-BusinessUser" and "GGRP-CommercialBI-ContentBoundary-ConsumerCommercial". The former group will provide access to LookAA, whilst the latter group will provide access within LookAA to the Consumer Commercial Spaces and Explores
+4. Under "Other" select "Yes" and within "Other Details" add that you would like to be added to the groups "GGRP-CommercialBI-Privilege-BusinessUser" and "GGRP-CommercialBI-ContentBoundary-ConsumerCommercial". The former group will provide access to Looker, whilst the latter group will provide access within Looker to the Consumer Commercial Spaces and Explores
 
 5. Under "Select Users" enter your User name and click "Add Row". Click Submit.
 

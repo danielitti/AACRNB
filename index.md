@@ -1,13 +1,13 @@
-# Welcome to LookAA
+# Welcome to Looker
 
 
 ## Introduction
 
-Welcome to LookAA, the AA's Management Information / Business Intelligence (MI/BI) analytics tool.
+Welcome to Looker, the AA's Management Information / Business Intelligence (MI/BI) analytics tool.
 
-LookAA exists to enable better commercial decision-making by providing you with data-driven insight, conformed to the AA's KPIs and definitions, and in a format that is both structured around standard decision-processes and provides you easy, self-service drill-down and exploration.
+Looker exists to enable better commercial decision-making by providing you with data-driven insight, conformed to the AA's KPIs and definitions, and in a format that is both structured around standard decision-processes and provides you easy, self-service drill-down and exploration.
 
-LookAA is being introduced by Hawking, the AA's Data & Insight transformation programme.
+Looker is being introduced by Hawking, the AA's Data & Insight transformation programme.
 
 
 ## Getting started
@@ -54,7 +54,7 @@ If you come across a Bug / Issue, please inform us by,
 | Consumer Road Conduct | October 2017 | – |
 
 
-## Resources for BI Developers and LookAA Administrators
+## Resources for BI Developers and Looker Administrators
 
 * [BI Development Guide]()
 * [Usage KPIs](/dashboards/4)
