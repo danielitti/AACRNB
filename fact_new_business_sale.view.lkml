@@ -842,7 +842,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: agcp {
-    label: "Annualised Product and Add-on GCP"
+    label: "AGCP"
     group_label: "Annualised Product and Add-on GCP"
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
@@ -1223,7 +1223,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: aatv {
-    label: "Annualised Average Transaction Value"
+    label: "AATV"
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE((COALESCE(${agcp},0) / NULLIF(${volume},0)),0);;
