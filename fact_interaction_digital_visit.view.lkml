@@ -71,7 +71,7 @@ view: interaction_digital_visit {
   ##############################################################
 
   measure: interaction {
-    label: "Interaction"
+    label: "Digital Visit"
     group_label: "Interaction"
     hidden:  yes
     type: sum_distinct
@@ -83,7 +83,7 @@ view: interaction_digital_visit {
   ### Financial YTD
 
   measure: interaction_actual_fytd {
-    label: "Interaction FYTD"
+    label: "Digital Visit FYTD"
     group_label: "Interaction"
     hidden:  yes
     type: sum_distinct
@@ -105,7 +105,7 @@ view: interaction_digital_visit {
   }
 
   measure: interaction_actual_fytd_ly {
-    label: "Interaction FYTD LY"
+    label: "Digital Visit FYTD LY"
     group_label: "Interaction"
     hidden:  yes
     type: sum_distinct
@@ -131,8 +131,8 @@ view: interaction_digital_visit {
   ##############################################################
 
   measure: digital_cr {
-    label: "Digital Conversion Rate"
-    group_label: "Digital Conversion Rate"
+    label: "Digital Visit Conversion Rate"
+    group_label: "Conversion Rate"
     hidden:  yes
     type: number
     sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${interaction},0),0);;
@@ -142,8 +142,8 @@ view: interaction_digital_visit {
   ### Financial YTD
 
   measure: digital_cr_actual_fytd {
-    label: "Digital Conversion Rate FYTD"
-    group_label: "Digital Conversion Rate"
+    label: "Digital Visit Conversion Rate FYTD"
+    group_label: "Conversion Rate"
     hidden:  yes
     type: number
     sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${interaction_actual_fytd},0),0);;
@@ -151,8 +151,8 @@ view: interaction_digital_visit {
   }
 
   measure: digital_cr_actual_fytd_ly {
-    label: "Digital Conversion Rate FYTD LY"
-    group_label: "Digital Conversion Rate"
+    label: "Digital Visit Conversion Rate FYTD LY"
+    group_label: "Conversion Rate"
     hidden:  yes
     type: number
     sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${interaction_actual_fytd_ly},0),0);;
