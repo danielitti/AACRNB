@@ -30,6 +30,7 @@ view: new_business_sale {
               ANNUALISED_PRODUCT_ADDON_GCP,
               TRANSACTION_COUNT,
               SERIES_IDENTIFIER,
+              DAR_CHANNEL,
               TRANSACTION_DATE.DATE_DTTM,
               TRANSACTION_DATE.TRADING_WEEK_NUMBER,
               TRANSACTION_DATE.TRADING_WEEK_NAME,
@@ -192,6 +193,12 @@ view: new_business_sale {
     label: "Series Identifier"
     type: string
     sql: ${TABLE}.SERIES_IDENTIFIER ;;
+  }
+
+  dimension: dar_channel {
+    label: "DAR Channel"
+    type: string
+    sql: ${TABLE}.DAR_CHANNEL ;;
   }
 
   dimension: series_identifier_fcast {
