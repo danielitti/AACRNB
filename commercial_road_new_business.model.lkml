@@ -1,4 +1,4 @@
-connection: "pcid_p"
+connection: "hawking_presentation"
 
 # include all the views
 include: "*.view"
