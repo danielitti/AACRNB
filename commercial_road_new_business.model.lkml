@@ -7,7 +7,6 @@ include: "*.view"
 include: "*.dashboard"
 
 # test comment 20170717_1651
-# test comment 20170717_1734
 
 explore: new_business_sale {
   join: policy_type {
