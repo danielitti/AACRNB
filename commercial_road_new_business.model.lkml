@@ -43,7 +43,6 @@ explore: new_business_sale {
   join: interaction_digital_visit {
     type: full_outer
     sql_on: ${new_business_sale.date_key} = ${interaction_digital_visit.date_key}
-            AND ${new_business_sale.accounting_treatmenr} = ${interaction_digital_visit.accounting_treatmenr}
             AND ${new_business_sale.policy_type_level_2_key} = ${interaction_digital_visit.policy_type_level_2_key}
             AND ${new_business_sale.device_type_key} = ${interaction_digital_visit.device_type_key}
             AND ${marketing_channel.marketing_channel_level_2_key} = ${interaction_digital_visit.marketing_channel_level_2_key}
