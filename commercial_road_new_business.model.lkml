@@ -6,6 +6,7 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
+# test comment 20170717
 
 explore: new_business_sale {
   join: policy_type {
