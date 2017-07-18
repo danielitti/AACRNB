@@ -114,6 +114,25 @@ view: interaction_digital_visit {
     value_format_name: decimal_0
   }
 
+  ### Financial Year
+
+  measure: digital_visit_actual_fy_ly {
+    label: "Digital Visit FY LY"
+    group_label: "Interaction"
+    type: sum_distinct
+    sql: ${TABLE}.INTERACTION_CNT ;;
+    sql_distinct_key: ${row_id};;
+    filters: {
+      field: new_business_sale.is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
   ##############################################################
   ### Digital Visit Conversion Rate
   ##############################################################
@@ -143,5 +162,17 @@ view: interaction_digital_visit {
     sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${digital_visit_actual_fytd_ly},0),0);;
     value_format_name: percent_2
   }
+
+  ### Financial Year
+
+  measure: digital_cr_actual_fy_ly {
+    label: "Digital Visit Conversion Rate FY LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${digital_visit_actual_fy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+
 
 }
