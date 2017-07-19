@@ -1028,7 +1028,7 @@ view: new_business_sale {
     group_label: "Annualised Product and Add-on GCP"
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
-    value_format_name: decimal_0
+    value_format_name: gbp_0
   }
 
   ### Actual Day
@@ -1409,7 +1409,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE((COALESCE(${agcp},0) / NULLIF(${volume},0)),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   ### Actual Day
@@ -1419,7 +1419,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_day},0) / NULLIF(${volume_actual_day},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_day_ly {
@@ -1427,7 +1427,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_day_ly},0) / NULLIF(${volume_actual_day_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_fcast_day {
@@ -1435,7 +1435,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_day},0) / NULLIF(${volume_fcast_day},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_day_vs_ly {
@@ -1461,7 +1461,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_trdwk},0) / NULLIF(${volume_actual_trdwk},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_trdwk_ly {
@@ -1469,7 +1469,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_trdwk_ly},0) / NULLIF(${volume_actual_trdwk_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_fcast_trdwk {
@@ -1477,7 +1477,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_trdwk},0) / NULLIF(${volume_fcast_trdwk},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_trdwk_vs_ly {
@@ -1501,7 +1501,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${aatv_actual_trdwk},0) - COALESCE(${aatv_actual_trdwk_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   ### MTD
@@ -1511,7 +1511,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_mtd},0) / NULLIF(${volume_actual_mtd},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_mtd_ly {
@@ -1519,7 +1519,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_mtd_ly},0) / NULLIF(${volume_actual_mtd_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_fcast_mtd {
@@ -1527,7 +1527,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_mtd},0) / NULLIF(${volume_fcast_mtd},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_mtd_vs_ly {
@@ -1553,7 +1553,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_fytd},0) / NULLIF(${volume_actual_fytd},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_fytd_ly {
@@ -1561,7 +1561,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_fytd_ly},0) / NULLIF(${volume_actual_fytd_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_fcast_fytd {
@@ -1569,7 +1569,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_fytd},0) / NULLIF(${volume_fcast_fytd},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_actual_fytd_vs_ly {
@@ -1593,7 +1593,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${aatv_actual_fytd},0) - COALESCE(${aatv_actual_fytd_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
 ### Financial Year
@@ -1603,7 +1603,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_fy_ly},0) / NULLIF(${volume_actual_fy_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   measure: aatv_fcast_fy {
@@ -1611,7 +1611,7 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_fy},0) / NULLIF(${volume_fcast_fy},0),0);;
-    value_format_name: decimal_2
+    value_format_name: gbp
   }
 
   ##############################################################
@@ -1771,7 +1771,7 @@ view: new_business_sale {
     group_label: "Conversion Rate"
     type: number
     sql: COALESCE(COALESCE(${volume_actual_trdwk},0) / NULLIF(${digital_visit_actual_trdwk},0),0);;
-    value_format_name: decimal_2
+    value_format_name: percent_2
   }
 
   measure: digital_cr_actual_trdwk_ly {
@@ -1779,7 +1779,7 @@ view: new_business_sale {
     group_label: "Conversion Rate"
     type: number
     sql: COALESCE(COALESCE(${volume_actual_trdwk_ly},0) / NULLIF(${digital_visit_actual_trdwk_ly},0),0);;
-    value_format_name: decimal_2
+    value_format_name: percent_2
   }
 
   measure: digital_cr_actual_trdwk_vs_ly {
