@@ -1619,6 +1619,64 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Trading Week
+
+  measure: digital_visit_actual_trdwk {
+    label: "Digital Visit Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: digital_visit_actual_trdwk_ly {
+    label: "Digital Visit Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: digital_visit_actual_trdwk_vs_ly {
+    label: "Digital Visit Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${digital_visit_actual_trdwk},0) - COALESCE(${digital_visit_actual_trdwk_ly},0))/NULLIF(${digital_visit_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
   ### Financial YTD
 
   measure: digital_visit_actual_fytd {
@@ -1661,6 +1719,14 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  measure: digital_visit_actual_fytd_vs_ly {
+    label: "Digital Visit FYTD VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: COALESCE((COALESCE(${digital_visit_actual_fytd},0) - COALESCE(${digital_visit_actual_fytd_ly},0))/NULLIF(${digital_visit_actual_fytd_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
   ### Financial Year
 
   measure: digital_visit_actual_fy_ly {
@@ -1691,6 +1757,32 @@ view: new_business_sale {
     value_format_name: percent_2
   }
 
+  ### Trading Week
+
+  measure: digital_cr_actual_trdwk {
+    label: "Digital Visit Conversion Rate Trading WK"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk},0) / NULLIF(${digital_visit_actual_trdwk},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: digital_cr_actual_trdwk_ly {
+    label: "Digital Visit Conversion Rate Trading WK LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk_ly},0) / NULLIF(${digital_visit_actual_trdwk_ly},0),0);;
+    value_format_name: decimal_2
+  }
+
+  measure: digital_cr_actual_trdwk_vs_ly {
+    label: "Digital Visit Conversion Rate Trading WK VS LY %"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE((COALESCE(${digital_cr_actual_trdwk},0) - COALESCE(${digital_cr_actual_trdwk_ly},0))/NULLIF(${digital_cr_actual_trdwk_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
   ### Financial YTD
 
   measure: digital_cr_actual_fytd {
@@ -1706,6 +1798,14 @@ view: new_business_sale {
     group_label: "Conversion Rate"
     type: number
     sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${digital_visit_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: digital_cr_actual_fytd_vs_ly {
+    label: "Digital Visit Conversion Rate FYTD VS LY %"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE((COALESCE(${digital_cr_actual_fytd},0) - COALESCE(${digital_cr_actual_fytd_ly},0))/NULLIF(${digital_cr_actual_fytd_ly},0),0)  ;;
     value_format_name: percent_2
   }
 
