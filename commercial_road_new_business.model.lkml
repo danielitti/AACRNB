@@ -6,8 +6,6 @@ include: "*.view"
 # include all the dashboards
 include: "*.dashboard"
 
-# test comment 20170717_1651
-
 explore: new_business_sale {
   join: policy_type {
     type: inner
@@ -39,14 +37,9 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.device_type_key} = ${device_type.device_type_key} ;;
     relationship: many_to_one
   }
-  join: interaction_digital_visit {
-    type: full_outer
-    sql_on: ${new_business_sale.date_key} = ${interaction_digital_visit.date_key}
-            AND ${new_business_sale.policy_type_level_2_key} = ${interaction_digital_visit.policy_type_level_2_key}
-            AND ${new_business_sale.device_type_key} = ${interaction_digital_visit.device_type_key}
-            AND ${marketing_channel.marketing_channel_level_2_key} = ${interaction_digital_visit.marketing_channel_level_2_key}
-            AND ${new_business_sale.series_identifier} = ${interaction_digital_visit.series_identifier}
-            ;;
+  join: staff {
+    type: inner
+    sql_on: ${new_business_sale.staff_key} = ${staff.staff_key} ;;
     relationship: many_to_one
   }
   join:  date_filter {

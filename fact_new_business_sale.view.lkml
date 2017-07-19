@@ -1,49 +1,210 @@
 view: new_business_sale {
   derived_table: {
-    sql: SELECT
-              ROW_NUMBER() OVER (ORDER BY DATE_KEY) as ROW_ID,
-              ACCOUNTING_TREATMENT,
-              DATE_KEY,
-              TIME_KEY,
-              --TRANSACTION_KEY,
-              --TRANSACTION_ID,
-              --POLICY_KEY,
-              --TRANSACTION_TYPE_LEVEL_3_KEY,
-              TRANS_SALES_CHANNEL_LEVEL2_KEY,
-              --CUSTOMER_TYPE_KEY,
-              POLICY_TYPE_LEVEL_2_KEY,
-              --CONTRACT_TYPE_LEVEL_2_KEY,
-              --RECURRENCE_PATTERN_KEY,
-              --PAYMENT_METHOD_LEVEL_1_KEY
-              CONTRACT_AND_RECURRENCE_KEY,
-              PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
-              --ADDON_PACKAGE_LEVEL_1_KEY,
-              DEVICE_TYPE_KEY,
-              SOURCE_CODE_KEY,
-              --STAFF_KEY,
-              --LEAD_CODE_KEY,
-              --MEMBERSHIP_TYPE_LEVEL_2_KEY,
-              OFFER_CODE,
-              IS_WILL_JOIN,
-              --ANNUALISATION_FACTOR,
-              --PRODUCT_AND_ADDON_GCP,
-              ANNUALISED_PRODUCT_ADDON_GCP,
-              TRANSACTION_COUNT,
-              SERIES_IDENTIFIER,
-              DAR_CHANNEL,
-              TRANSACTION_DATE.DATE_DTTM,
-              TRANSACTION_DATE.TRADING_WEEK_NUMBER,
-              TRANSACTION_DATE.TRADING_WEEK_NAME,
-              TRANSACTION_DATE.TRADING_WEEK_START_DATE,
-              TRANSACTION_DATE.TRADING_WEEK_END_DATE,
-              TRANSACTION_DATE.TRADING_DAY_NUMBER_OF_WEEK,
-              TRANSACTION_DATE.TRADING_DAY_SHORT_NAME,
-              TRANSACTION_DATE.TRADING_YEAR,
-              TRANSACTION_DATE.FINANCIAL_YEAR,
-              TRANSACTION_DATE.FINANCIAL_YEAR_NAME,
-              TRANSACTION_DATE.FINANCIAL_DAY_OF_YEAR
-              FROM  SHARED_MRT.FACT_NEW_BUSINESS_SALE
-              INNER JOIN
+    sql:  SELECT    ROW_NUMBER() OVER (ORDER BY DATE_KEY) as ROW_ID,
+                    FACTS.*,
+                    DIM_DATE.DATE_DTTM,
+                    DIM_DATE.TRADING_WEEK_NUMBER, DIM_DATE.TRADING_DAY_NUMBER_OF_WEEK, DIM_DATE.TRADING_DAY_SHORT_NAME, DIM_DATE.TRADING_YEAR, DIM_DATE.TRADING_WEEK_NAME, DIM_DATE.TRADING_WEEK_START_DATE, DIM_DATE.TRADING_WEEK_END_DATE,
+                    DIM_DATE.FINANCIAL_YEAR, DIM_DATE.FINANCIAL_DAY_OF_YEAR, DIM_DATE.FINANCIAL_YEAR_NAME
+          FROM      (
+                    -- FACT_NEW_BUSINESS_SALE
+                    SELECT      ACCOUNTING_TREATMENT,
+                                DATE_KEY,
+                                TIME_KEY,
+                                TRANSACTION_KEY,
+                                TRANSACTION_ID,
+                                POLICY_KEY,
+                                null as FIRST_POLICY_KEY,
+                                TRANSACTION_TYPE_LEVEL_3_KEY,
+                                TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                CUSTOMER_TYPE_KEY,
+                                POLICY_TYPE_LEVEL_2_KEY,
+                                CONTRACT_TYPE_LEVEL_2_KEY,
+                                RECURRENCE_PATTERN_KEY,
+                                PAYMENT_METHOD_LEVEL_1_KEY,
+                                CONTRACT_AND_RECURRENCE_KEY,
+                                PRODUCT_PACKAGE_LEVEL_2_KEY, --this one for waterfall
+                                ADDON_PACKAGE_LEVEL_1_KEY,
+                                DEVICE_TYPE_KEY,
+                                SOURCE_CODE_KEY,
+                                STAFF_KEY,
+                                LEAD_CODE_KEY,
+                                MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                OFFER_CODE,
+                                IS_WILL_JOIN,
+                                SERIES_IDENTIFIER, /* Assume Actual */
+                                DAR_CHANNEL,
+                                ANNUALISATION_FACTOR,
+                                PRODUCT_AND_ADDON_GCP,
+                                ANNUALISED_PRODUCT_ADDON_GCP,
+                                TRANSACTION_COUNT,
+                                null as INBOUND_CALL_CNT,
+                                null as INBOUND_CALL_HTS,
+                                null AS DIGITAL_VISIT_CNT,
+                                null AS INBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CNT
+                    FROM        SHARED_MRT.FACT_NEW_BUSINESS_SALE
+
+                    UNION ALL
+                    -- FACT_INTERACTION_INBOUND_CALL
+                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
+                                CALL_DATE_KEY as DATE_KEY,
+                                CALL_TIME_KEY as TIME_KEY,
+                                null as TRANSACTION_KEY,
+                                null as TRANSACTION_ID,
+                                null as POLICY_KEY,
+                                FIRST_POLICY_KEY as FIRST_POLICY_KEY,
+                                null as TRANSACTION_TYPE_LEVEL_3_KEY,
+                                null as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                null as CUSTOMER_TYPE_KEY,
+                                3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
+                                null as CONTRACT_TYPE_LEVEL_2_KEY,
+                                null as RECURRENCE_PATTERN_KEY,
+                                null as PAYMENT_METHOD_LEVEL_1_KEY,
+                                null as CONTRACT_AND_RECURRENCE_KEY,
+                                null as PRODUCT_PACKAGE_LEVEL_2_KEY,
+                                null as ADDON_PACKAGE_LEVEL_1_KEY,
+                                null as DEVICE_TYPE_KEY,
+                                null as SOURCE_CODE_KEY,
+                                STAFF_KEY,
+                                null as LEAD_CODE_KEY,
+                                null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as OFFER_CODE,
+                                null as IS_WILL_JOIN,
+                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                null as DAR_CHANNEL,
+                                null as ANNUALISATION_FACTOR,
+                                null as PRODUCT_AND_ADDON_GCP,
+                                null as ANNUALISED_PRODUCT_ADDON_GCP,
+                                null as TRANSACTION_COUNT,
+                                INTERACTION_CNT AS INBOUND_CALL_CNT,
+                                HANDLING_TIME_SECONDS AS INBOUND_CALL_HTS,
+                                null AS DIGITAL_VISIT_CNT,
+                                null AS INBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CNT
+                    FROM        SHARED_MRT.FACT_INTERACTION_INBOUND_CALL
+                    WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
+
+                    UNION ALL
+                    -- FACT_INTERACTION_DIGITAL_VISIT
+                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
+                                VISIT_DATE_KEY as DATE_KEY,
+                                VISIT_TIME_KEY as TIME_KEY,
+                                null as TRANSACTION_KEY,
+                                null as TRANSACTION_ID,
+                                null as POLICY_KEY,
+                                null as FIRST_POLICY_KEY,
+                                null as TRANSACTION_TYPE_LEVEL_3_KEY,
+                                5 as TRANS_SALES_CHANNEL_LEVEL2_KEY, --XXX NEED TO HAVE THIS IN THE FACT TABLE
+                                null as CUSTOMER_TYPE_KEY,
+                                3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
+                                null as CONTRACT_TYPE_LEVEL_2_KEY,
+                                null as RECURRENCE_PATTERN_KEY,
+                                null as PAYMENT_METHOD_LEVEL_1_KEY,
+                                null as CONTRACT_AND_RECURRENCE_KEY,
+                                null as PRODUCT_PACKAGE_LEVEL_2_KEY,
+                                null as ADDON_PACKAGE_LEVEL_1_KEY,
+                                DEVICE_TYPE_KEY,
+                                SOURCE_CODE_KEY,
+                                null as STAFF_KEY,
+                                null as LEAD_CODE_KEY,
+                                null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as OFFER_CODE,
+                                null as IS_WILL_JOIN,
+                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                null as DAR_CHANNEL,
+                                null as ANNUALISATION_FACTOR,
+                                null as PRODUCT_AND_ADDON_GCP,
+                                null as ANNUALISED_PRODUCT_ADDON_GCP,
+                                null as TRANSACTION_COUNT,
+                                null AS INBOUND_CALL_CNT,
+                                null AS INBOUND_CALL_HTS,
+                                INTERACTION_CNT AS DIGITAL_VISIT_CNT,
+                                null AS INBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CNT
+                    FROM        SHARED_MRT.FACT_INTERACTION_DIGITAL_VISIT
+                    WHERE       DIGITAL_VISIT_TYPE_KEY = 1 /* Consumer Road New Business */
+
+                    UNION ALL
+                    -- FACT_INTERACTION_INBOUND_DIAL
+                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
+                                DIAL_DATE_KEY as DATE_KEY,
+                                DIAL_TIME_KEY as TIME_KEY,
+                                null as TRANSACTION_KEY,
+                                null as TRANSACTION_ID,
+                                null as POLICY_KEY,
+                                null as FIRST_POLICY_KEY,
+                                null as TRANSACTION_TYPE_LEVEL_3_KEY,
+                                null as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                null as CUSTOMER_TYPE_KEY,
+                                3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
+                                null as CONTRACT_TYPE_LEVEL_2_KEY,
+                                null as RECURRENCE_PATTERN_KEY,
+                                null as PAYMENT_METHOD_LEVEL_1_KEY,
+                                null as CONTRACT_AND_RECURRENCE_KEY,
+                                null as PRODUCT_PACKAGE_LEVEL_2_KEY,
+                                null as ADDON_PACKAGE_LEVEL_1_KEY,
+                                null as DEVICE_TYPE_KEY,
+                                null as SOURCE_CODE_KEY, --XXX MARKETING_CHANNEL_LEVEL_2_KEY ONLY AVAILABLE
+                                null as STAFF_KEY,
+                                null as LEAD_CODE_KEY,
+                                null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as OFFER_CODE,
+                                null as IS_WILL_JOIN,
+                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                null as DAR_CHANNEL,
+                                null as ANNUALISATION_FACTOR,
+                                null as PRODUCT_AND_ADDON_GCP,
+                                null as ANNUALISED_PRODUCT_ADDON_GCP,
+                                null as TRANSACTION_COUNT,
+                                null as INBOUND_CALL_CNT,
+                                null as INBOUND_CALL_HTS,
+                                null AS DIGITAL_VISIT_CNT,
+                                INTERACTION_CNT AS INBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CNT
+                    FROM        SHARED_MRT.FACT_INTERACTION_INBOUND_DIAL
+                    WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
+
+                    UNION ALL
+                    -- FACT_INTERACTION_OUTBOUND_DIAL
+                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
+                                DIAL_DATE_KEY as DATE_KEY,
+                                DIAL_TIME_KEY as TIME_KEY,
+                                null as TRANSACTION_KEY,
+                                null as TRANSACTION_ID,
+                                POLICY_KEY,
+                                null as FIRST_POLICY_KEY,
+                                null as TRANSACTION_TYPE_LEVEL_3_KEY,
+                                null as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                null as CUSTOMER_TYPE_KEY,
+                                3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
+                                null as CONTRACT_TYPE_LEVEL_2_KEY,
+                                null as RECURRENCE_PATTERN_KEY,
+                                null as PAYMENT_METHOD_LEVEL_1_KEY,
+                                null as CONTRACT_AND_RECURRENCE_KEY,
+                                null as PRODUCT_PACKAGE_LEVEL_2_KEY,
+                                null as ADDON_PACKAGE_LEVEL_1_KEY,
+                                null as DEVICE_TYPE_KEY,
+                                null as SOURCE_CODE_KEY,
+                                STAFF_KEY,
+                                LEAD_CODE_KEY,
+                                null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as OFFER_CODE,
+                                null as IS_WILL_JOIN,
+                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                null as DAR_CHANNEL,
+                                null as ANNUALISATION_FACTOR,
+                                null as PRODUCT_AND_ADDON_GCP,
+                                null as ANNUALISED_PRODUCT_ADDON_GCP,
+                                null as TRANSACTION_COUNT,
+                                null as INBOUND_CALL_CNT,
+                                null as INBOUND_CALL_HTS,
+                                null AS DIGITAL_VISIT_CNT,
+                                null AS INBOUND_DIAL_CNT,
+                                INTERACTION_CNT AS OUTBOUND_DIAL_CNT
+                    FROM        SHARED_MRT.FACT_INTERACTION_OUTBOUND_DIAL
+                    WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
+                    ) FACTS
+          INNER JOIN
                     (SELECT   DATE_KEY AS DIM_DATE_KEY,
                               DATE_DTTM,
                               TRADING_WEEK_NUMBER,
@@ -56,8 +217,8 @@ view: new_business_sale {
                               TRADING_WEEK_START_DATE,
                               TRADING_WEEK_END_DATE,
                               FINANCIAL_YEAR_NAME
-                              FROM  SHARED_MRT.DIM_DATE) TRANSACTION_DATE
-              ON SHARED_MRT.FACT_NEW_BUSINESS_SALE.DATE_KEY = TRANSACTION_DATE.DIM_DATE_KEY
+                    FROM      SHARED_MRT.DIM_DATE) DIM_DATE
+          ON        FACTS.DATE_KEY = DIM_DATE.DIM_DATE_KEY
             ;;
   }
 
@@ -169,13 +330,6 @@ view: new_business_sale {
     sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
 
-#   dimension: trx_financial_week_yyyyww {
-#     label: "Financial Year and Week "
-#     group_label: "Transaction Date Indentifiers"
-#     type: string
-#     sql: ${TABLE}.FINANCIAL_WEEK_YYYYWW ;;
-#   }
-
   dimension: trx_financial_day_n_of_year {
     label: "Financial Year and Week "
     group_label: "Transaction Financial Date Indentifiers"
@@ -227,6 +381,20 @@ view: new_business_sale {
     hidden:  yes
     type: string
     sql: ${TABLE}.SOURCE_CODE_KEY;;
+  }
+
+  dimension: staff_key {
+    label: "Staff Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.STAFF_KEY;;
+  }
+
+  dimension: lead_code_key {
+    label: "Lead Code Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.LEAD_CODE_KEY;;
   }
 
   dimension: policy_type_level_2_key {
@@ -1437,6 +1605,455 @@ view: new_business_sale {
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_fy},0) / NULLIF(${volume_fcast_fy},0),0);;
     value_format_name: decimal_2
+  }
+
+  ##############################################################
+  ### Digital Visit
+  ##############################################################
+
+  measure: digital_visit {
+    label: "Digital Visit"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT ;;
+    value_format_name: decimal_0
+  }
+
+  ### Financial YTD
+
+  measure: digital_visit_actual_fytd {
+    label: "Digital Visit FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT ;;
+    filters: {
+      field: new_business_sale.is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: digital_visit_actual_fytd_ly {
+    label: "Digital Visit FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT ;;
+    filters: {
+      field: new_business_sale.is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Financial Year
+
+  measure: digital_visit_actual_fy_ly {
+    label: "Digital Visit FY LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT ;;
+    filters: {
+      field: new_business_sale.is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ##############################################################
+  ### Digital Visit Conversion Rate
+  ##############################################################
+
+  measure: digital_cr {
+    label: "Digital Visit Conversion Rate"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${digital_visit},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: digital_cr_actual_fytd {
+    label: "Digital Visit Conversion Rate FYTD"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${digital_visit_actual_fytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: digital_cr_actual_fytd_ly {
+    label: "Digital Visit Conversion Rate FYTD LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${digital_visit_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial Year
+
+  measure: digital_cr_actual_fy_ly {
+    label: "Digital Visit Conversion Rate FY LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${digital_visit_actual_fy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ##############################################################
+  ### Inbound Call
+  ##############################################################
+
+  measure: inbound_call {
+    label: "Inbound Call"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT ;;
+    value_format_name: decimal_0
+  }
+
+  ### Financial YTD
+
+  measure: inbound_call_actual_fytd {
+    label: "Inbound Call FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT ;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: inbound_call_actual_fytd_ly {
+    label: "Inbound Call FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT ;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Financial Year
+
+  measure: inbound_call_actual_fy_ly {
+    label: "Inbound Call FY LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT ;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ##############################################################
+  ### Inbound Call Conversion Rate
+  ##############################################################
+
+  measure: inbound_call_cr {
+    label: "Inbound Call Conversion Rate"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${inbound_call},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: inbound_call_cr_actual_fytd {
+    label: "Inbound Call Conversion Rate FYTD"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${inbound_call_actual_fytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: inbound_call_cr_actual_fytd_ly {
+    label: "Inbound Call Conversion Rate FYTD LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${inbound_call_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial Year
+
+  measure: inbound_call_cr_actual_fy_ly {
+    label: "Inbound Call Conversion Rate FY LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${inbound_call_actual_fy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ##############################################################
+  ### Inbound Dial
+  ##############################################################
+
+  measure: inbound_dial {
+    label: "Inbound Dial"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_DIAL_CNT ;;
+    value_format_name: decimal_0
+  }
+
+  ### Financial YTD
+
+  measure: inbound_dial_actual_fytd {
+    label: "Inbound Dial FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_DIAL_CNT ;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: inbound_dial_actual_fytd_ly {
+    label: "Inbound Dial FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_DIAL_CNT ;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Financial Year
+
+  measure: inbound_dial_actual_fy_ly {
+    label: "Inbound Dial FY LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_DIAL_CNT ;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ##############################################################
+  ### Inbound Dial Conversion Rate
+  ##############################################################
+
+  measure: inbound_dial_cr {
+    label: "Inbound Dial Conversion Rate"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${inbound_dial},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: inbound_dial_cr_actual_fytd {
+    label: "Inbound Dial Conversion Rate FYTD"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${inbound_dial_actual_fytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: inbound_dial_cr_actual_fytd_ly {
+    label: "Inbound Dial Conversion Rate FYTD LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${inbound_dial_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial Year
+
+  measure: inbound_dial_cr_actual_fy_ly {
+    label: "Inbound Dial Conversion Rate FY LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${inbound_dial_actual_fy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ##############################################################
+  ### Outbound Dial
+  ##############################################################
+
+  measure: outbound_dial {
+    label: "Outbound Dial"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    value_format_name: decimal_0
+  }
+
+  ### Financial YTD
+
+  measure: outbound_dial_actual_fytd {
+    label: "Outbound Dial FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    filters: {
+      field: new_business_sale.is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: outbound_dial_actual_fytd_ly {
+    label: "Outbound Dial FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    filters: {
+      field: new_business_sale.is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: new_business_sale.series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+
+  ### Financial Year
+
+  measure: outbound_dial_actual_fy_ly {
+    label: "Outbound Dial FY LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ##############################################################
+  ### Outbound Dial Conversion Rate
+  ##############################################################
+
+  measure: outbound_dial_cr {
+    label: "Outbound Dial Conversion Rate"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${outbound_dial},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: outbound_dial_cr_actual_fytd {
+    label: "Outbound Dial Conversion Rate FYTD"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${outbound_dial_actual_fytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: outbound_call_cr_actual_fytd_ly {
+    label: "Outbound Dial Conversion Rate FYTD LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${outbound_dial_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Financial Year
+
+  measure: outbound_dial_cr_actual_fy_ly {
+    label: "Outbound Dial Conversion Rate FY LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${outbound_dial_actual_fy_ly},0),0);;
+    value_format_name: percent_2
   }
 
 }
