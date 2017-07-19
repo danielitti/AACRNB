@@ -42,6 +42,11 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.staff_key} = ${staff.staff_key} ;;
     relationship: many_to_one
   }
+  join: policy {
+    type: inner
+    sql_on: ${new_business_sale.policy_key} = ${policy.policy_key} ;;
+    relationship: many_to_one
+  }
   join:  date_filter {
     type: cross
     relationship: many_to_one

@@ -245,6 +245,127 @@ view: new_business_sale {
     sql: ${TABLE}.TIME_KEY ;;
   }
 
+  dimension: accounting_treatmenr {
+    label: "Accounting Treatment"
+    type: string
+    sql: ${TABLE}.ACCOUNTING_TREATMENT ;;
+  }
+
+  dimension: series_identifier {
+    label: "Series Identifier"
+    type: string
+    sql: ${TABLE}.SERIES_IDENTIFIER ;;
+  }
+
+  dimension: dar_channel {
+    label: "DAR Channel"
+    type: string
+    sql: ${TABLE}.DAR_CHANNEL ;;
+  }
+
+  dimension: series_identifier_fcast {
+    label: "Series Identifier Forecast"
+    hidden:  yes
+    type: string
+    sql: CASE WHEN SUBSTR(${TABLE}.SERIES_IDENTIFIER, 1, 2) = 'FY' THEN ${TABLE}.SERIES_IDENTIFIER END  ;;
+  }
+
+  dimension: trans_sales_channel_level_2_key {
+    label: "Policy Type Level 2 Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.TRANS_SALES_CHANNEL_LEVEL2_KEY ;;
+  }
+
+  dimension: device_type_key {
+    label: "Device Type Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.DEVICE_TYPE_KEY;;
+  }
+
+  dimension: source_code_key {
+    label: "Source Code Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.SOURCE_CODE_KEY;;
+  }
+
+  dimension: staff_key {
+    label: "Staff Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.STAFF_KEY;;
+  }
+
+  dimension: policy_key {
+    label: "Policy Key"
+    hidden: yes
+    type: string
+    sql: ${TABLE}.POLICY_KEY ;;
+  }
+
+  dimension: lead_code_key {
+    label: "Lead Code Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.LEAD_CODE_KEY;;
+  }
+
+  dimension: policy_type_level_2_key {
+    label: "Policy Type Level 2 Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.POLICY_TYPE_LEVEL_2_KEY ;;
+  }
+
+  dimension: contract_and_reccurence_key {
+    label: "Contract and Reccurence Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.CONTRACT_AND_RECURRENCE_KEY ;;
+  }
+
+  dimension: offer_code {
+    label: "Offer Code"
+    type: string
+    sql: ${TABLE}.OFFER_CODE ;;
+  }
+
+  dimension: is_will_join {
+    label: "Is Will Join?"
+    type: string
+    sql: ${TABLE}.IS_WILL_JOIN ;;
+  }
+
+  dimension: split_by_dimension {
+    type: "string"
+    sql:
+        CASE
+        WHEN {% condition split_by_filter %} 'Product Package Level 1' {% endcondition %}
+          THEN ${product_package.product_pkg_lvl1_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Product Package Level 2' {% endcondition %}
+          THEN ${product_package.product_pkg_lvl2_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Sales Channel Level 1' {% endcondition %}
+          THEN ${sales_channel.sales_channel_lvl1_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Sales Channel Level 2' {% endcondition %}
+          THEN ${sales_channel.sales_channel_lvl2_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Contract and Reccurence' {% endcondition %}
+          THEN ${contract_and_reccurence.contract_and_reccurence_desc}
+
+        WHEN {% condition split_by_filter %} 'Marketing Channel Level 1' {% endcondition %}
+          THEN ${marketing_channel.marketing_channel_lvl1_full_desc}
+
+        WHEN {% condition split_by_filter %} 'Marketing Channel Level 2' {% endcondition %}
+          THEN ${marketing_channel.marketing_channel_lvl2_full_desc}
+
+      END;;
+  }
+
   dimension_group: trx_date {
     label: "Transaction Calendar"
     type: time
@@ -335,120 +456,6 @@ view: new_business_sale {
     group_label: "Transaction Financial Date Indentifiers"
     type: string
     sql: ${TABLE}.FINANCIAL_DAY_NUMBER_OF_YEAR ;;
-  }
-
-  dimension: accounting_treatmenr {
-    label: "Accounting Treatment"
-    type: string
-    sql: ${TABLE}.ACCOUNTING_TREATMENT ;;
-  }
-
-  dimension: series_identifier {
-    label: "Series Identifier"
-    type: string
-    sql: ${TABLE}.SERIES_IDENTIFIER ;;
-  }
-
-  dimension: dar_channel {
-    label: "DAR Channel"
-    type: string
-    sql: ${TABLE}.DAR_CHANNEL ;;
-  }
-
-  dimension: series_identifier_fcast {
-    label: "Series Identifier Forecast"
-    hidden:  yes
-    type: string
-    sql: CASE WHEN SUBSTR(${TABLE}.SERIES_IDENTIFIER, 1, 2) = 'FY' THEN ${TABLE}.SERIES_IDENTIFIER END  ;;
-  }
-
-  dimension: trans_sales_channel_level_2_key {
-    label: "Policy Type Level 2 Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.TRANS_SALES_CHANNEL_LEVEL2_KEY ;;
-  }
-
-  dimension: device_type_key {
-    label: "Device Type Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.DEVICE_TYPE_KEY;;
-  }
-
-  dimension: source_code_key {
-    label: "Source Code Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.SOURCE_CODE_KEY;;
-  }
-
-  dimension: staff_key {
-    label: "Staff Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.STAFF_KEY;;
-  }
-
-  dimension: lead_code_key {
-    label: "Lead Code Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.LEAD_CODE_KEY;;
-  }
-
-  dimension: policy_type_level_2_key {
-    label: "Policy Type Level 2 Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.POLICY_TYPE_LEVEL_2_KEY ;;
-  }
-
-  dimension: contract_and_reccurence_key {
-    label: "Contract and Reccurence Key"
-    hidden:  yes
-    type: string
-    sql: ${TABLE}.CONTRACT_AND_RECURRENCE_KEY ;;
-  }
-
-  dimension: offer_code {
-    label: "Offer Code"
-    type: string
-    sql: ${TABLE}.OFFER_CODE ;;
-  }
-
-  dimension: is_will_join {
-    label: "Is Will Join?"
-    type: string
-    sql: ${TABLE}.IS_WILL_JOIN ;;
-  }
-
-  dimension: split_by_dimension {
-    type: "string"
-    sql:
-        CASE
-        WHEN {% condition split_by_filter %} 'Product Package Level 1' {% endcondition %}
-          THEN ${product_package.product_pkg_lvl1_full_desc}
-
-        WHEN {% condition split_by_filter %} 'Product Package Level 2' {% endcondition %}
-          THEN ${product_package.product_pkg_lvl2_full_desc}
-
-        WHEN {% condition split_by_filter %} 'Sales Channel Level 1' {% endcondition %}
-          THEN ${sales_channel.sales_channel_lvl1_full_desc}
-
-        WHEN {% condition split_by_filter %} 'Sales Channel Level 2' {% endcondition %}
-          THEN ${sales_channel.sales_channel_lvl2_full_desc}
-
-        WHEN {% condition split_by_filter %} 'Contract and Reccurence' {% endcondition %}
-          THEN ${contract_and_reccurence.contract_and_reccurence_desc}
-
-        WHEN {% condition split_by_filter %} 'Marketing Channel Level 1' {% endcondition %}
-          THEN ${marketing_channel.marketing_channel_lvl1_full_desc}
-
-        WHEN {% condition split_by_filter %} 'Marketing Channel Level 2' {% endcondition %}
-          THEN ${marketing_channel.marketing_channel_lvl2_full_desc}
-
-      END;;
   }
 
   dimension: product_package_level_2_key {
