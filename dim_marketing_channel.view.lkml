@@ -1,5 +1,5 @@
 view: marketing_channel {
-  sql_table_name: SHARED_MRT.DIM_MARKETING_SOURCE ;;
+  sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_MARKETING_SOURCE ;;
 
   dimension: source_code_key {
     primary_key: yes

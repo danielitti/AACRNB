@@ -12,7 +12,7 @@ view: date_filter {
                   to_char(DATE_DTTM, 'Dy') || ' ' || TO_CHAR(DATE_DTTM, 'DD Mon YYYY') AS HEADER_DAY,
                   to_char(TRADING_WEEK_START_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_START_DATE, 'DD Mon YYYY') AS HEADER_TW_START,
                   to_char(TRADING_WEEK_END_DATE, 'Dy') || ' ' || TO_CHAR(TRADING_WEEK_END_DATE, 'DD Mon YYYY') AS HEADER_TW_END
-          FROM  SHARED_MRT.DIM_DATE
+          FROM  {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_DATE
           WHERE {% condition new_business_sale.date_filter_parameter %} TO_CHAR(DATE_DTTM, 'yyyy/mm/dd') {% endcondition %}
             ;;
   }

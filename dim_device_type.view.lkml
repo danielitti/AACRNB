@@ -2,7 +2,7 @@ view: device_type {
   derived_table: {
     sql:  SELECT  DEVICE_TYPE_KEY,
                   DEVICE_TYPE_DESC
-          FROM    SHARED_MRT.DIM_DEVICE_TYPE ;;
+          FROM    {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_DEVICE_TYPE ;;
   }
 
   dimension: device_type_key {

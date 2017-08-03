@@ -1,5 +1,5 @@
 view: policy_type {
-  sql_table_name: SHARED_MRT.DIM_POLICY_TYPE_LEVEL_2 ;;
+  sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_POLICY_TYPE_LEVEL_2 ;;
 
   dimension: policy_type_level_2_key {
     primary_key: yes

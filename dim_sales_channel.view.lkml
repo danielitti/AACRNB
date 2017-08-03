@@ -1,5 +1,5 @@
 view: sales_channel {
-  sql_table_name: SHARED_MRT.DIM_SALES_CHANNEL_LEVEL_2 ;;
+  sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_SALES_CHANNEL_LEVEL_2 ;;
 
   dimension: trans_sales_channel_level2_key {
     primary_key: yes

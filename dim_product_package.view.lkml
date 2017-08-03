@@ -1,5 +1,5 @@
 view: product_package {
-  sql_table_name: SHARED_MRT.DIM_PACKAGE_LEVEL_2 ;;
+  sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_PACKAGE_LEVEL_2 ;;
 
   dimension: product_pkg_level_2_key {
     primary_key: yes

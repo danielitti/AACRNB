@@ -1,6 +1,6 @@
 view: contract_and_reccurence {
   derived_table: {
-    sql:  SELECT CONTRACT_AND_RECURRENCE_KEY, CONTRACT_AND_RECURRENCE_DESC FROM SHARED_MRT.DIM_CONTRACT_AND_RECURRENCE;;
+    sql:  SELECT CONTRACT_AND_RECURRENCE_KEY, CONTRACT_AND_RECURRENCE_DESC FROM {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_CONTRACT_AND_RECURRENCE;;
   }
 
   dimension: contract_and_reccurence_key {

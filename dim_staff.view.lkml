@@ -1,5 +1,5 @@
 view: staff {
-  sql_table_name: SHARED_MRT.DIM_STAFF ;;
+  sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_STAFF ;;
 
   dimension: staff_key {
     primary_key: yes

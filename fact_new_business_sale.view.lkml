@@ -42,7 +42,7 @@ view: new_business_sale {
                                 null AS DIGITAL_VISIT_CNT,
                                 null AS INBOUND_DIAL_CNT,
                                 null AS OUTBOUND_DIAL_CNT
-                    FROM        SHARED_MRT.FACT_NEW_BUSINESS_SALE
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_NEW_BUSINESS_SALE
 
                     UNION ALL
                     -- FACT_INTERACTION_INBOUND_CALL
@@ -81,7 +81,7 @@ view: new_business_sale {
                                 null AS DIGITAL_VISIT_CNT,
                                 null AS INBOUND_DIAL_CNT,
                                 null AS OUTBOUND_DIAL_CNT
-                    FROM        SHARED_MRT.FACT_INTERACTION_INBOUND_CALL
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_INBOUND_CALL
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
 
                     UNION ALL
@@ -121,7 +121,7 @@ view: new_business_sale {
                                 INTERACTION_CNT AS DIGITAL_VISIT_CNT,
                                 null AS INBOUND_DIAL_CNT,
                                 null AS OUTBOUND_DIAL_CNT
-                    FROM        SHARED_MRT.FACT_INTERACTION_DIGITAL_VISIT
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_DIGITAL_VISIT
                     WHERE       DIGITAL_VISIT_TYPE_KEY = 1 /* Consumer Road New Business */
 
                     UNION ALL
@@ -161,7 +161,7 @@ view: new_business_sale {
                                 null AS DIGITAL_VISIT_CNT,
                                 INTERACTION_CNT AS INBOUND_DIAL_CNT,
                                 null AS OUTBOUND_DIAL_CNT
-                    FROM        SHARED_MRT.FACT_INTERACTION_INBOUND_DIAL
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_INBOUND_DIAL
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
 
                     UNION ALL
@@ -201,7 +201,7 @@ view: new_business_sale {
                                 null AS DIGITAL_VISIT_CNT,
                                 null AS INBOUND_DIAL_CNT,
                                 INTERACTION_CNT AS OUTBOUND_DIAL_CNT
-                    FROM        SHARED_MRT.FACT_INTERACTION_OUTBOUND_DIAL
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_OUTBOUND_DIAL
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
                     ) FACTS
           INNER JOIN
@@ -217,7 +217,7 @@ view: new_business_sale {
                               TRADING_WEEK_START_DATE,
                               TRADING_WEEK_END_DATE,
                               FINANCIAL_YEAR_NAME
-                    FROM      SHARED_MRT.DIM_DATE) DIM_DATE
+                    FROM      {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_DATE) DIM_DATE
           ON        FACTS.DATE_KEY = DIM_DATE.DIM_DATE_KEY
             ;;
   }
