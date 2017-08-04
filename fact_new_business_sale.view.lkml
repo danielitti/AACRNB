@@ -377,7 +377,7 @@ view: new_business_sale {
   dimension: trx_trdwk_number {
     label: "Trading Week Number"
     group_label: "Transaction Trading Date Indentifiers"
-    type: string
+    type: number
     sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
   }
 
@@ -496,6 +496,12 @@ view: new_business_sale {
     sql: CASE WHEN ${trdwk_number_by_date_filter} = 53 THEN ${trdwk_year_by_date_filter} ELSE ${date_filter.trdwk_year_ly}  END;;
   }
 
+  dimension: trading_doy_by_date_filter {
+    hidden:  yes
+    type: string
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE({% parameter date_filter_parameter %}, 'yyyy/mm/dd') THEN 200 END;; ###UPDATE HERE! ${date_filter.financial_day_of_year} END;;
+  }
+
   dimension: financial_year_by_date_filter {
     hidden:  yes
     type: string
@@ -562,6 +568,13 @@ view: new_business_sale {
     hidden: yes
     type: yesno
     sql: ${trx_trdwk_year}=${trdwk_year_ly_by_date_filter}  ;;
+  }
+
+  dimension: is_up_to_selected_doy_trdy {
+    hidden: yes
+    type: yesno
+    ###UPDATE HERE with trading
+    sql: ${trx_financial_day_of_year}<=${trading_doy_by_date_filter} ;;
   }
 
   dimension: is_up_to_selected_day {
@@ -1010,6 +1023,66 @@ view: new_business_sale {
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
       field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Trading YTD
+
+  measure: volume_actual_trdytd {
+    label: "Volume Trading YTD"
+    group_label: "Volume"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Trading Year
+
+  measure: volume_actual_trdy_ly {
+    label: "Volume Trading Year LY"
+    group_label: "Volume"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: volume_fcast_trdy {
+    label: "Volume Trading Year Forecast"
+    group_label: "Volume"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_trading_week_year
       value: "yes"
     }
     filters: {
