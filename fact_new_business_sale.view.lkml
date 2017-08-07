@@ -1072,6 +1072,28 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  measure: volume_actual_trdytd_ly {
+    label: "Volume Trading YTD LY"
+    group_label: "Volume"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.TRANSACTION_COUNT;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
   ### Trading Year
 
   measure: volume_actual_trdy_ly {
@@ -1489,8 +1511,90 @@ view: new_business_sale {
     value_format_name: gbp_0
   }
 
+  ### Trading YTD
+
+  measure: agcp_actual_trdytd {
+    label: "AGCP Trading YTD"
+    group_label: "Annualised Product and Add-on GCP"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: gbp_0
+  }
+
+  measure: agcp_actual_trdytd_ly {
+    label: "AGCP Trading YTD LY"
+    group_label: "Annualised Product and Add-on GCP"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: gbp_0
+  }
+
+  ### Trading Year
+
+  measure: agcp_actual_trdy_ly {
+    label: "AGCP Trading Year LY"
+    group_label: "Annualised Product and Add-on GCP"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: gbp_0
+  }
+
+  measure: agcp_fcast_trdy {
+    label: "AGCP Trading Year Forecast"
+    group_label: "Annualised Product and Add-on GCP"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: gbp_0
+  }
+
   ##############################################################
-  ### Annualised Product and Add-on GCP
+  ### Annualised Average Transaction Value
   ##############################################################
 
   measure: aatv {
@@ -1700,6 +1804,46 @@ view: new_business_sale {
     group_label: "Annualised Average Transaction Value"
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_fy},0) / NULLIF(${volume_fcast_fy},0),0);;
+    value_format_name: gbp
+  }
+
+  ### Trading YTD
+
+  measure: aatv_actual_trdytd {
+    label: "AATV Trading YTD"
+    group_label: "Annualised Average Transaction Value"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_trdytd},0) / NULLIF(${volume_actual_trdytd},0),0);;
+    value_format_name: gbp
+  }
+
+  measure: aatv_actual_trdytd_ly {
+    label: "AATV Trading YTD LY"
+    group_label: "Annualised Average Transaction Value"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_trdytd_ly},0) / NULLIF(${volume_actual_trdytd_ly},0),0);;
+    value_format_name: gbp
+  }
+
+  ### Trading Year
+
+  measure: aatv_actual_trdy_ly {
+    label: "AATV Trading Year LY"
+    group_label: "Annualised Average Transaction Value"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${agcp_actual_trdy_ly},0) / NULLIF(${volume_actual_trdy_ly},0),0);;
+    value_format_name: gbp
+  }
+
+  measure: aatv_fcast_trdy {
+    label: "AATV Trading Year Forecast"
+    group_label: "Annualised Average Transaction Value"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${agcp_fcast_trdy},0) / NULLIF(${volume_fcast_trdy},0),0);;
     value_format_name: gbp
   }
 
