@@ -2034,6 +2034,88 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Trading YTD
+
+  measure: digital_visit_actual_trdytd {
+    label: "Digital Visit Trading YTD"
+    group_label: "Interaction"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: digital_visit_actual_trdytd_ly {
+    label: "Digital Visit Trading YTD LY"
+    group_label: "Interaction"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    ### xxx REMOVE comments here
+#     filters: {
+#       field: is_up_to_selected_doy_trdy
+#       value: "yes"
+#     }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Trading Year
+
+  measure: digital_visit_actual_trdy_ly {
+    label: "Digital Visit Trading Year LY"
+    group_label: "Interaction"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: digital_visit_fcast_trdy {
+    label: "Digital Visit Trading Year Forecast"
+    group_label: "Interaction"
+    hidden: yes
+    type: sum
+    sql: ${TABLE}.DIGITAL_VISIT_CNT;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
   ##############################################################
   ### Digital Visit Conversion Rate
   ##############################################################
@@ -2042,7 +2124,7 @@ view: new_business_sale {
     label: "Digital Visit Conversion Rate"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${digital_visit},0),0);;
+    sql: COALESCE(COALESCE(${volume},0) / NULLIF(${digital_visit},0),0);;
     value_format_name: percent_2
   }
 
@@ -2095,7 +2177,7 @@ view: new_business_sale {
     label: "Digital Visit Conversion Rate FYTD"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${digital_visit_actual_fytd},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_fytd},0) / NULLIF(${digital_visit_actual_fytd},0),0);;
     value_format_name: percent_2
   }
 
@@ -2103,7 +2185,7 @@ view: new_business_sale {
     label: "Digital Visit Conversion Rate FYTD LY"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${digital_visit_actual_fytd_ly},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_fytd_ly},0) / NULLIF(${digital_visit_actual_fytd_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -2121,7 +2203,7 @@ view: new_business_sale {
     label: "Digital Visit Conversion Rate FY LY"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${digital_visit_actual_fy_ly},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_fy_ly},0) / NULLIF(${digital_visit_actual_fy_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -2130,7 +2212,47 @@ view: new_business_sale {
         group_label: "Conversion Rate"
     type: number
     sql: COALESCE(COALESCE(${volume_fcast_fy},0) / NULLIF(${digital_visit_fcast_fy},0),0);;
-    value_format_name: gbp
+    value_format_name: percent_2
+  }
+
+  ### Trading YTD
+
+  measure: digital_cr_actual_trdytd {
+    label: "Digital Visit Conversion Rate Trading YTD"
+    group_label: "Conversion Rate"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdytd},0) / NULLIF(${digital_visit_actual_trdytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: digital_cr_actual_trdytd_ly {
+    label: "Digital Visit Conversion Rate Trading YTD LY"
+    group_label: "Conversion Rate"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdytd_ly},0) / NULLIF(${digital_visit_actual_trdytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Trading Year
+
+  measure: digital_cr_actual_trdy_ly {
+    label: "Digital Visit Conversion Rate Trading Year LY"
+    group_label: "Conversion Rate"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdy_ly},0) / NULLIF(${digital_visit_actual_trdy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: digital_cr_fcast_trdy {
+    label: "Digital Visit Conversion Rate Trading Year Forecast"
+    group_label: "Conversion Rate"
+    hidden: yes
+    type: number
+    sql: COALESCE(COALESCE(${volume_fcast_trdy},0) / NULLIF(${digital_visit_fcast_trdy},0),0);;
+    value_format_name: percent_2
   }
 
   ##############################################################
