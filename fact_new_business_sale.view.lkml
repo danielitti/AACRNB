@@ -1009,7 +1009,6 @@ view: new_business_sale {
   measure: volume_actual_trdytd {
     label: "Volume Trading YTD"
     group_label: "Volume"
-    hidden: yes
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
@@ -1031,7 +1030,6 @@ view: new_business_sale {
   measure: volume_actual_trdytd_ly {
     label: "Volume Trading YTD LY"
     group_label: "Volume"
-    hidden: yes
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
@@ -1055,7 +1053,6 @@ view: new_business_sale {
   measure: volume_actual_trdy_ly {
     label: "Volume Trading Year LY"
     group_label: "Volume"
-    hidden: yes
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
@@ -1072,7 +1069,6 @@ view: new_business_sale {
   measure: volume_fcast_trdy {
     label: "Volume Trading Year Forecast"
     group_label: "Volume"
-    hidden: yes
     type: sum
     sql: ${TABLE}.TRANSACTION_COUNT;;
     filters: {
@@ -1472,7 +1468,6 @@ view: new_business_sale {
   measure: agcp_actual_trdytd {
     label: "AGCP Trading YTD"
     group_label: "Annualised Product and Add-on GCP"
-    hidden: yes
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -1494,7 +1489,6 @@ view: new_business_sale {
   measure: agcp_actual_trdytd_ly {
     label: "AGCP Trading YTD LY"
     group_label: "Annualised Product and Add-on GCP"
-    hidden: yes
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -1518,7 +1512,6 @@ view: new_business_sale {
   measure: agcp_actual_trdy_ly {
     label: "AGCP Trading Year LY"
     group_label: "Annualised Product and Add-on GCP"
-    hidden: yes
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -1535,7 +1528,6 @@ view: new_business_sale {
   measure: agcp_fcast_trdy {
     label: "AGCP Trading Year Forecast"
     group_label: "Annualised Product and Add-on GCP"
-    hidden: yes
     type: sum
     sql: ${TABLE}.ANNUALISED_PRODUCT_ADDON_GCP;;
     filters: {
@@ -1768,7 +1760,6 @@ view: new_business_sale {
   measure: aatv_actual_trdytd {
     label: "AATV Trading YTD"
     group_label: "Annualised Average Transaction Value"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_trdytd},0) / NULLIF(${volume_actual_trdytd},0),0);;
     value_format_name: gbp
@@ -1777,7 +1768,6 @@ view: new_business_sale {
   measure: aatv_actual_trdytd_ly {
     label: "AATV Trading YTD LY"
     group_label: "Annualised Average Transaction Value"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_trdytd_ly},0) / NULLIF(${volume_actual_trdytd_ly},0),0);;
     value_format_name: gbp
@@ -1788,7 +1778,6 @@ view: new_business_sale {
   measure: aatv_actual_trdy_ly {
     label: "AATV Trading Year LY"
     group_label: "Annualised Average Transaction Value"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${agcp_actual_trdy_ly},0) / NULLIF(${volume_actual_trdy_ly},0),0);;
     value_format_name: gbp
@@ -1797,7 +1786,6 @@ view: new_business_sale {
   measure: aatv_fcast_trdy {
     label: "AATV Trading Year Forecast"
     group_label: "Annualised Average Transaction Value"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${agcp_fcast_trdy},0) / NULLIF(${volume_fcast_trdy},0),0);;
     value_format_name: gbp
@@ -1995,7 +1983,6 @@ view: new_business_sale {
   measure: digital_visit_actual_trdytd {
     label: "Digital Visit Trading YTD"
     group_label: "Interaction"
-    hidden: yes
     type: sum
     sql: ${TABLE}.DIGITAL_VISIT_CNT;;
     filters: {
@@ -2017,7 +2004,6 @@ view: new_business_sale {
   measure: digital_visit_actual_trdytd_ly {
     label: "Digital Visit Trading YTD LY"
     group_label: "Interaction"
-    hidden: yes
     type: sum
     sql: ${TABLE}.DIGITAL_VISIT_CNT;;
     filters: {
@@ -2041,7 +2027,6 @@ view: new_business_sale {
   measure: digital_visit_actual_trdy_ly {
     label: "Digital Visit Trading Year LY"
     group_label: "Interaction"
-    hidden: yes
     type: sum
     sql: ${TABLE}.DIGITAL_VISIT_CNT;;
     filters: {
@@ -2058,7 +2043,6 @@ view: new_business_sale {
   measure: digital_visit_fcast_trdy {
     label: "Digital Visit Trading Year Forecast"
     group_label: "Interaction"
-    hidden: yes
     type: sum
     sql: ${TABLE}.DIGITAL_VISIT_CNT;;
     filters: {
@@ -2176,7 +2160,6 @@ view: new_business_sale {
   measure: digital_cr_actual_trdytd {
     label: "Digital Visit Conversion Rate Trading YTD"
     group_label: "Conversion Rate"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${volume_actual_trdytd},0) / NULLIF(${digital_visit_actual_trdytd},0),0);;
     value_format_name: percent_2
@@ -2185,7 +2168,6 @@ view: new_business_sale {
   measure: digital_cr_actual_trdytd_ly {
     label: "Digital Visit Conversion Rate Trading YTD LY"
     group_label: "Conversion Rate"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${volume_actual_trdytd_ly},0) / NULLIF(${digital_visit_actual_trdytd_ly},0),0);;
     value_format_name: percent_2
@@ -2196,7 +2178,6 @@ view: new_business_sale {
   measure: digital_cr_actual_trdy_ly {
     label: "Digital Visit Conversion Rate Trading Year LY"
     group_label: "Conversion Rate"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${volume_actual_trdy_ly},0) / NULLIF(${digital_visit_actual_trdy_ly},0),0);;
     value_format_name: percent_2
@@ -2205,7 +2186,6 @@ view: new_business_sale {
   measure: digital_cr_fcast_trdy {
     label: "Digital Visit Conversion Rate Trading Year Forecast"
     group_label: "Conversion Rate"
-    hidden: yes
     type: number
     sql: COALESCE(COALESCE(${volume_fcast_trdy},0) / NULLIF(${digital_visit_fcast_trdy},0),0);;
     value_format_name: percent_2
