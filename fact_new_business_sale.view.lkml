@@ -499,7 +499,7 @@ view: new_business_sale {
   dimension: trading_doy_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN 200 END;; ###UPDATE HERE! ${date_filter.financial_day_of_year} END;;
+    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN 183 END;; ### 190  UPDATE HERE! ${date_filter.financial_day_of_year} END;;
   }
 
   dimension: financial_year_by_date_filter {
@@ -573,7 +573,7 @@ view: new_business_sale {
   dimension: is_up_to_selected_doy_trdy {
     hidden: yes
     type: yesno
-    ###UPDATE HERE with trading
+    ###UPDATE HERE with trading year
     sql: ${trx_financial_day_of_year}<=${trading_doy_by_date_filter} ;;
   }
 
