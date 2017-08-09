@@ -27,6 +27,19 @@ Begin by reading the Looker documentation:
 
 * [Explore](https://looker.com/docs/exploring-data) explains how to use **Explores** as the Starting Point for Exploration, to **Sort**, **Pivot** and **Filter**, how to apply **Table Calculations** and **Looker Expressions**, to **Save Looks** from an Explore, and to access these Looks within your **Spaces**.
 
+## Specific AA Looker functions
+Please note that the Looker dashboards date are set to the last Wedneday as default; this will apply to all days except for Thursday when data is refreshed within Looker. Consequently Thursday is defaulted to the previous week as a precaution for any issues that may arise during data reload.
+
+The screenshot below shows the default position and how you are able to change to a desired date of your choice:
+
+### Dashboard default date:
+
+<a href="https://tippco-web.s3-eu-west-1.amazonaws.com/lookaa/consumer-road-dashboard-default-date-1.png" target="_blank"><img src='https://tippco-web.s3-eu-west-1.amazonaws.com/lookaa/consumer-road-dashboard-default-date-1.png' width="50%" height="50%"></a>
+
+### Selecting a desired date:
+
+<a href="https://tippco-web.s3-eu-west-1.amazonaws.com/lookaa/consumer-road-dashboard-default-date-2.png" target="_blank"><img src='https://tippco-web.s3-eu-west-1.amazonaws.com/lookaa/consumer-road-dashboard-default-date-2.png' width="75%" height="75%"></a>
+
 
 ## Need a hand?
 Please contact one of the [Commercial Data & BI team](/projects/commercial_road_new_business/documents/index.md).
