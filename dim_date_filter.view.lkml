@@ -6,6 +6,7 @@ view: date_filter {
                   TRADING_DAY_NUMBER_OF_WEEK,
                   TRADING_YEAR,
                   TRADING_YEAR-1 AS TRADING_YEAR_LY,
+                  TRADING_DAY_OF_YEAR,
                   FINANCIAL_YEAR,
                   FINANCIAL_YEAR-1 AS FINANCIAL_YEAR_LY,
                   FINANCIAL_DAY_OF_YEAR,
@@ -62,6 +63,12 @@ view: date_filter {
     hidden: yes
     type: string
     sql: ${TABLE}.TRADING_YEAR_LY ;;
+  }
+
+  dimension: trading_day_of_year {
+    hidden: yes
+    type: string
+    sql: ${TABLE}.TRADING_DAY_OF_YEAR ;;
   }
 
   dimension: financial_year {
