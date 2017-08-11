@@ -2205,7 +2205,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic {
-    label: "Inbound Call Offered"
+    label: "Inbound Calls Offered"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_CNT;;
@@ -2215,7 +2215,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_actual_trdytd {
-    label: "Inbound Call Offered Trading YTD"
+    label: "Inbound Calls Offered Trading YTD"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_CNT;;
@@ -2235,7 +2235,7 @@ view: new_business_sale {
   }
 
   measure: ic_actual_trdytd_ly {
-    label: "Inbound Call Offered Trading YTD LY"
+    label: "Inbound Calls Offered Trading YTD LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_CNT;;
@@ -2257,7 +2257,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_actual_trdy_ly {
-    label: "Inbound Call Offered Trading Year LY"
+    label: "Inbound Calls Offered Trading Year LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_CNT;;
@@ -2273,7 +2273,7 @@ view: new_business_sale {
   }
 
   measure: ic_fcast_trdy {
-    label: "Inbound Call Offered Trading Year Forecast"
+    label: "Inbound Calls Offered Trading Year Forecast"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_CNT;;
@@ -2293,7 +2293,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_answered {
-    label: "Inbound Call Answered"
+    label: "Inbound Calls Answered"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
@@ -2303,7 +2303,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_answered_actual_trdytd {
-    label: "Inbound Call Answered Trading YTD"
+    label: "Inbound Calls Answered Trading YTD"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
@@ -2323,7 +2323,7 @@ view: new_business_sale {
   }
 
   measure: ic_answered_actual_trdytd_ly {
-    label: "Inbound Call Answered Trading YTD LY"
+    label: "Inbound Calls Answered Trading YTD LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
@@ -2345,7 +2345,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_answered_actual_trdy_ly {
-    label: "Inbound Call Answered Trading Year LY"
+    label: "Inbound Calls Answered Trading Year LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
@@ -2361,7 +2361,7 @@ view: new_business_sale {
   }
 
   measure: ic_answered_fcast_trdy {
-    label: "Inbound Call Answered Trading Year Forecast"
+    label: "Inbound Calls Answered Trading Year Forecast"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
@@ -2381,7 +2381,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_abandoned {
-    label: "Inbound Call Abandoned"
+    label: "Inbound Calls Abandoned"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ABANDONED ;;
@@ -2391,7 +2391,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_abandoned_actual_trdytd {
-    label: "Inbound Call Abandoned Trading YTD"
+    label: "Inbound Calls Abandoned Trading YTD"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
@@ -2411,7 +2411,7 @@ view: new_business_sale {
   }
 
   measure: ic_abandoned_actual_trdytd_ly {
-    label: "Inbound Call Abandoned Trading YTD LY"
+    label: "Inbound Calls Abandoned Trading YTD LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
@@ -2433,7 +2433,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_abandoned_actual_trdy_ly {
-    label: "Inbound Call Abandoned Trading Year LY"
+    label: "Inbound Calls Abandoned Trading Year LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
@@ -2449,7 +2449,7 @@ view: new_business_sale {
   }
 
   measure: ic_abandoned_fcast_trdy {
-    label: "Inbound Call Abandoned Trading Year Forecast"
+    label: "Inbound Calls Abandoned Trading Year Forecast"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
@@ -2469,7 +2469,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_sale {
-    label: "Inbound Call Sale"
+    label: "Inbound Calls Sale"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_SALE ;;
@@ -2479,7 +2479,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_sale_actual_trdytd {
-    label: "Inbound Call Sale Trading YTD"
+    label: "Inbound Calls Sale Trading YTD"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_SALE;;
@@ -2499,7 +2499,7 @@ view: new_business_sale {
   }
 
   measure: ic_sale_actual_trdytd_ly {
-    label: "Inbound Call Sale Trading YTD LY"
+    label: "Inbound Calls Sale Trading YTD LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_SALE;;
@@ -2521,7 +2521,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_sale_actual_trdy_ly {
-    label: "Inbound Call Sale Trading Year LY"
+    label: "Inbound Calls Sale Trading Year LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_SALE;;
@@ -2537,7 +2537,7 @@ view: new_business_sale {
   }
 
   measure: ic_sale_fcast_trdy {
-    label: "Inbound Call Sale Trading Year Forecast"
+    label: "Inbound Calls Sale Trading Year Forecast"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_SALE;;
@@ -2557,7 +2557,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_agcp {
-    label: "Inbound Call AGCP"
+    label: "Inbound Calls AGCP"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_AGCP ;;
@@ -2567,7 +2567,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_agcp_actual_trdytd {
-    label: "Inbound Call AGCP Trading YTD"
+    label: "Inbound Calls AGCP Trading YTD"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_AGCP;;
@@ -2587,7 +2587,7 @@ view: new_business_sale {
   }
 
   measure: ic_agcp_actual_trdytd_ly {
-    label: "Inbound Call AGCP Trading YTD LY"
+    label: "Inbound Calls AGCP Trading YTD LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_AGCP;;
@@ -2609,7 +2609,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_agcp_actual_trdy_ly {
-    label: "Inbound Call AGCP Trading Year LY"
+    label: "Inbound Calls AGCP Trading Year LY"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_AGCP;;
@@ -2625,7 +2625,7 @@ view: new_business_sale {
   }
 
   measure: ic_agcp_fcast_trdy {
-    label: "Inbound Call AGCP Trading Year Forecast"
+    label: "Inbound Calls AGCP Trading Year Forecast"
     group_label: "Interaction"
     type: sum
     sql: ${TABLE}.INBOUND_CALL_AGCP;;
@@ -2645,7 +2645,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_aatv {
-    label: "Inbound Call AATV"
+    label: "Inbound Calls AATV"
     group_label: "Interaction"
     type: number
     sql: COALESCE((COALESCE(${ic_agcp},0) / NULLIF(${ic_sale},0)),0);;
@@ -2655,7 +2655,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_aatv_actual_trdytd {
-    label: "Inbound Call AATV Trading YTD"
+    label: "Inbound Calls AATV Trading YTD"
     group_label: "Interaction"
     type: number
     sql: COALESCE(COALESCE(${ic_agcp_actual_trdytd},0) / NULLIF(${ic_sale_actual_trdytd},0),0);;
@@ -2663,7 +2663,7 @@ view: new_business_sale {
   }
 
   measure: ic_aatv_actual_trdytd_ly {
-    label: "Inbound Call AATV Trading YTD LY"
+    label: "Inbound Calls AATV Trading YTD LY"
     group_label: "Interaction"
     type: number
     sql: COALESCE(COALESCE(${ic_agcp_actual_trdytd_ly},0) / NULLIF(${ic_sale_actual_trdytd_ly},0),0);;
@@ -2673,7 +2673,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_aatv_actual_trdy_ly {
-    label: "Inbound Call AATV Trading Year LY"
+    label: "Inbound Calls AATV Trading Year LY"
     group_label: "Interaction"
     type: number
     sql: COALESCE(COALESCE(${ic_agcp_actual_trdy_ly},0) / NULLIF(${ic_sale_actual_trdy_ly},0),0);;
@@ -2681,7 +2681,7 @@ view: new_business_sale {
   }
 
   measure: ic_aatv_fcast_trdy {
-    label: "Inbound Call AATV Trading Year Forecast"
+    label: "Inbound Calls AATV Trading Year Forecast"
     group_label: "Interaction"
     type: number
     sql: COALESCE(COALESCE(${ic_agcp_fcast_trdy},0) / NULLIF(${ic_sale_fcast_trdy},0),0);;
@@ -2693,7 +2693,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_cr {
-    label: "Inbound Call Conversion Rate"
+    label: "Inbound Calls Conversion Rate"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_sale},0) / NULLIF(${ic},0),0);;
@@ -2703,7 +2703,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_cr_actual_trdytd {
-    label: "Inbound Call Conversion Rate Trading YTD"
+    label: "Inbound Calls Conversion Rate Trading YTD"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_sale_actual_trdytd},0) / NULLIF(${ic_actual_trdytd},0),0);;
@@ -2711,7 +2711,7 @@ view: new_business_sale {
   }
 
   measure: ic_cr_actual_trdytd_ly {
-    label: "Inbound Call Conversion Rate Trading YTD LY"
+    label: "Inbound Calls Conversion Rate Trading YTD LY"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_sale_actual_trdytd_ly},0) / NULLIF(${ic_actual_trdytd_ly},0),0);;
@@ -2721,7 +2721,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_cr_actual_trdy_ly {
-    label: "Inbound Call Conversion Rate Trading Year LY"
+    label: "Inbound Calls Conversion Rate Trading Year LY"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_sale_actual_trdy_ly},0) / NULLIF(${ic_actual_trdy_ly},0),0);;
@@ -2729,7 +2729,7 @@ view: new_business_sale {
   }
 
   measure: ic_cr_fcast_trdy {
-    label: "Inbound Call Conversion Rate Trading Year Forecast"
+    label: "Inbound Calls Conversion Rate Trading Year Forecast"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_sale_fcast_trdy},0) / NULLIF(${ic_fcast_trdy},0),0);;
@@ -2741,7 +2741,7 @@ view: new_business_sale {
   ##############################################################
 
   measure: ic_ar {
-    label: "Inbound Call Abandoned Rate"
+    label: "Inbound Calls Abandoned Rate"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned},0) / NULLIF(${ic},0),0);;
@@ -2751,7 +2751,7 @@ view: new_business_sale {
   ### Trading YTD
 
   measure: ic_ar_actual_trdytd {
-    label: "Inbound Call Abandoned Rate Trading YTD"
+    label: "Inbound Calls Abandoned Rate Trading YTD"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned_actual_trdytd},0) / NULLIF(${ic_actual_trdytd},0),0);;
@@ -2759,7 +2759,7 @@ view: new_business_sale {
   }
 
   measure: ic_ar_actual_trdytd_ly {
-    label: "Inbound Call Abandoned Rate Trading YTD LY"
+    label: "Inbound Calls Abandoned Rate Trading YTD LY"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned_actual_trdytd_ly},0) / NULLIF(${ic_actual_trdytd_ly},0),0);;
@@ -2769,7 +2769,7 @@ view: new_business_sale {
   ### Trading Year
 
   measure: ic_ar_actual_trdy_ly {
-    label: "Inbound Call Abandoned Rate Trading Year LY"
+    label: "Inbound Calls Abandoned Rate Trading Year LY"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned_actual_trdy_ly},0) / NULLIF(${ic_actual_trdy_ly},0),0);;
@@ -2777,7 +2777,7 @@ view: new_business_sale {
   }
 
   measure: ic_ar_fcast_trdy {
-    label: "Inbound Call Abandoned Rate Trading Year Forecast"
+    label: "Inbound Calls Abandoned Rate Trading Year Forecast"
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned_fcast_trdy},0) / NULLIF(${ic_fcast_trdy},0),0);;
