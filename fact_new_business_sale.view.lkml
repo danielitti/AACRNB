@@ -426,13 +426,6 @@ view: new_business_sale {
     sql: ${TABLE}.FINANCIAL_DAY_OF_YEAR ;;
   }
 
-  dimension: trx_financial_week_number{
-    label: "Financial Week Number"
-    group_label: "Transaction Financial Date Indentifiers"
-    type: number
-    sql: ${TABLE}.TRADING_WEEK_NUMBER ;;
-  }
-
   dimension: product_package_level_2_key {
     hidden:  yes
     type: number
