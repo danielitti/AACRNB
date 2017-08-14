@@ -47,6 +47,11 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.policy_key} = ${policy.policy_key} ;;
     relationship: many_to_one
   }
+  join: manufacturer {
+    type: inner
+    sql_on: ${new_business_sale.manufacturer_key} = ${manufacturer.manufacturer_key} ;;
+    relationship: many_to_one
+  }
   join:  date_filter {
     type: cross
     relationship: many_to_one

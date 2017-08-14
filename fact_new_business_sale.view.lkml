@@ -28,6 +28,7 @@ view: new_business_sale {
                                 STAFF_KEY,
                                 LEAD_CODE_KEY,
                                 MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                MANUFACTURER_KEY,
                                 OFFER_CODE,
                                 IS_WILL_JOIN,
                                 SERIES_IDENTIFIER, /* Assume Actual */
@@ -68,6 +69,7 @@ view: new_business_sale {
                                 STAFF_KEY,
                                 null as LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as MANUFACTURER_KEY,
                                 null as OFFER_CODE,
                                 IS_WILL_JOIN,
                                 'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
@@ -113,6 +115,7 @@ view: new_business_sale {
                                 null as STAFF_KEY,
                                 null as LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as MANUFACTURER_KEY,
                                 null as OFFER_CODE,
                                 null as IS_WILL_JOIN,
                                 'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
@@ -154,6 +157,7 @@ view: new_business_sale {
                                 STAFF_KEY,
                                 LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
+                                null as MANUFACTURER_KEY,
                                 null as OFFER_CODE,
                                 null as IS_WILL_JOIN,
                                 'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
@@ -294,6 +298,14 @@ view: new_business_sale {
     type: string
     sql: ${TABLE}.CONTRACT_AND_RECURRENCE_KEY ;;
   }
+
+  dimension: manufacturer_key {
+    label: "Manufacturer Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.MANUFACTURER_KEY ;;
+  }
+
 
   dimension: offer_code {
     label: "Offer Code"
