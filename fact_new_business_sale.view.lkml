@@ -2696,7 +2696,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale},0) / NULLIF(${ic},0),0);;
+    sql: COALESCE(COALESCE(${ic_sale},0) / NULLIF(${ic_answered},0),0);;
     value_format_name: percent_2
   }
 
@@ -2706,7 +2706,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading YTD"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd},0) / NULLIF(${ic_actual_trdytd},0),0);;
+    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd},0) / NULLIF(${ic_answered_actual_trdytd},0),0);;
     value_format_name: percent_2
   }
 
@@ -2714,7 +2714,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading YTD LY"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd_ly},0) / NULLIF(${ic_actual_trdytd_ly},0),0);;
+    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd_ly},0) / NULLIF(${ic_answered_actual_trdytd_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -2724,7 +2724,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading Year LY"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdy_ly},0) / NULLIF(${ic_actual_trdy_ly},0),0);;
+    sql: COALESCE(COALESCE(${ic_sale_actual_trdy_ly},0) / NULLIF(${ic_answered_actual_trdy_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -2732,7 +2732,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading Year Forecast"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_fcast_trdy},0) / NULLIF(${ic_fcast_trdy},0),0);;
+    sql: COALESCE(COALESCE(${ic_sale_fcast_trdy},0) / NULLIF(${ic_answered_fcast_trdy},0),0);;
     value_format_name: percent_2
   }
 
