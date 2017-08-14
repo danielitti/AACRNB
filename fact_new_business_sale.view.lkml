@@ -54,7 +54,7 @@ view: new_business_sale {
                                 null as TRANSACTION_ID,
                                 FIRST_POLICY_KEY as POLICY_KEY,
                                 null as TRANSACTION_TYPE_LEVEL_3_KEY,
-                                null as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                8 as TRANS_SALES_CHANNEL_LEVEL2_KEY,
                                 null as CUSTOMER_TYPE_KEY,
                                 3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
                                 null as CONTRACT_TYPE_LEVEL_2_KEY,
@@ -79,7 +79,7 @@ view: new_business_sale {
                                 SUM(ic.INTERACTION_CNT) AS INBOUND_CALL_CNT, --xxx DO I NEED OFFERED_CALLS HERE?
                                 null AS DIGITAL_VISIT_CNT,
                                 null AS OUTBOUND_DIAL_CNT,
-                                SUM(CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE NULL END) AS INBOUND_CALL_ANSWERED,
+                                SUM(CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ANSWERED,
                                 SUM(CASE WHEN IS_CALL_ABANDONED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ABANDONED,
                                 SUM(s.ANNUALISED_PRODUCT_ADDON_GCP) as INBOUND_CALL_AGCP,
                                 SUM(s.TRANSACTION_COUNT) as INBOUND_CALL_SALE
@@ -140,7 +140,7 @@ view: new_business_sale {
                                 null as TRANSACTION_ID,
                                 POLICY_KEY,
                                 null as TRANSACTION_TYPE_LEVEL_3_KEY,
-                                null as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                9 as TRANS_SALES_CHANNEL_LEVEL2_KEY,
                                 null as CUSTOMER_TYPE_KEY,
                                 3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
                                 null as CONTRACT_TYPE_LEVEL_2_KEY,
