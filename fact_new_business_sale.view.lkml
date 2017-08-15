@@ -43,9 +43,7 @@ view: new_business_sale {
                                 null as OUTBOUND_DIAL_DIALLED,
                                 null as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED,
-                                null as INBOUND_CALL_AGCP,
-                                null as INBOUND_CALL_SALE
+                                null AS INBOUND_CALL_ABANDONED
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_NEW_BUSINESS_SALE
 
                     UNION ALL
@@ -80,21 +78,15 @@ view: new_business_sale {
                                 null as PRODUCT_AND_ADDON_GCP,
                                 null as ANNUALISED_PRODUCT_ADDON_GCP,
                                 null as TRANSACTION_COUNT,
-                                SUM(ic.INTERACTION_CNT) AS INBOUND_CALL_CNT, --xxx DO I NEED OFFERED_CALLS HERE?
+                                INTERACTION_CNT AS INBOUND_CALL_CNT, --xxx DO I NEED OFFERED_CALLS HERE?
                                 null AS DIGITAL_VISIT_CNT,
                                 null AS OUTBOUND_DIAL_CLOSED,
                                 null as OUTBOUND_DIAL_DIALLED,
                                 null as OUTBOUND_DIAL_NEW_LEAD,
-                                SUM(CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ANSWERED,
-                                SUM(CASE WHEN IS_CALL_ABANDONED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ABANDONED,
-                                SUM(s.ANNUALISED_PRODUCT_ADDON_GCP) as INBOUND_CALL_AGCP,
-                                SUM(s.TRANSACTION_COUNT) as INBOUND_CALL_SALE
+                                CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE 0 END AS INBOUND_CALL_ANSWERED,
+                                CASE WHEN IS_CALL_ABANDONED = 'Y' THEN 1 ELSE 0 END AS INBOUND_CALL_ABANDONED
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_INBOUND_CALL ic
-                    LEFT JOIN   (SELECT POLICY_KEY, TRANSACTION_COUNT, ANNUALISED_PRODUCT_ADDON_GCP FROM {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_NEW_BUSINESS_SALE WHERE ACCOUNTING_TREATMENT = 'Transacted' and SERIES_IDENTIFIER = 'Actual') s
-                    ON          ic.FIRST_POLICY_KEY = s.POLICY_KEY
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
-                    GROUP BY    CALL_DATE_KEY, CALL_TIME_KEY, FIRST_POLICY_KEY, STAFF_KEY, IS_WILL_JOIN
-
 
                     UNION ALL
                     -- FACT_INTERACTION_DIGITAL_VISIT
@@ -134,9 +126,7 @@ view: new_business_sale {
                                 null as OUTBOUND_DIAL_DIALLED,
                                 null as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED,
-                                null as INBOUND_CALL_AGCP,
-                                null as INBOUND_CALL_SALE
+                                null AS INBOUND_CALL_ABANDONED
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_DIGITAL_VISIT
                     WHERE       DIGITAL_VISIT_TYPE_KEY = 1 /* Consumer Road New Business */
 
@@ -178,9 +168,7 @@ view: new_business_sale {
                                 0 as OUTBOUND_DIAL_DIALLED,
                                 0 as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED,
-                                null as INBOUND_CALL_AGCP,
-                                null as INBOUND_CALL_SALE
+                                null AS INBOUND_CALL_ABANDONED
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_OUTBOUND_DIAL
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
                     ) FACTS
@@ -2391,6 +2379,57 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Financial YTD
+
+  measure: ic_actual_fytd {
+    label: "Inbound Calls Offered FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_actual_fytd_ly {
+    label: "Inbound Calls Offered FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_actual_fytd_vs_ly {
+    label: "Inbound Calls Offered FYTD VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_actual_fytd},0) - COALESCE(${ic_actual_fytd_ly},0))/NULLIF(${ic_actual_fytd_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+
   ##############################################################
   ### Inbound Call Answered
   ##############################################################
@@ -2569,6 +2608,56 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Financial YTD
+
+  measure: ic_answered_actual_fytd {
+    label: "Inbound Calls Answered FYTD"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_answered_actual_fytd_ly {
+    label: "Inbound Calls Answered FYTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_answered_actual_fytd_vs_ly {
+    label: "Inbound Calls Answered FYTD VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_answered_actual_fytd},0) - COALESCE(${ic_answered_actual_fytd_ly},0))/NULLIF(${ic_answered_actual_fytd_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
   ##############################################################
   ### Inbound Call Abandoned
   ##############################################################
@@ -2658,306 +2747,6 @@ view: new_business_sale {
   }
 
   ##############################################################
-  ### Inbound Call Sale
-  ##############################################################
-
-  measure: ic_sale {
-    label: "Inbound Calls Sale"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE ;;
-    value_format_name: decimal_0
-  }
-
-  ### Trading Week
-
-  measure: ic_sale_actual_trdwk {
-    label: "Inbound Calls Sale Trading WK"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_trading_week_day
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: decimal_0
-  }
-
-  measure: ic_sale_actual_trdwk_ly {
-    label: "Inbound Calls Sale Trading WK LY"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week_ly
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_trading_week_day
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_trading_week_year_ly
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: decimal_0
-  }
-
-  measure: ic_sale_fcast_trdwk {
-    label: "Inbound Calls Sale Trading WK Forecast"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_trading_week_day
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_forecast_series
-      value: "yes"
-    }
-    value_format_name: decimal_0
-  }
-
-  ### Trading YTD
-
-  measure: ic_sale_actual_trdytd {
-    label: "Inbound Calls Sale Trading YTD"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_selected_doy_trdy
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: decimal_0
-  }
-
-  measure: ic_sale_actual_trdytd_ly {
-    label: "Inbound Calls Sale Trading YTD LY"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week_year_ly
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_selected_doy_trdy
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: decimal_0
-  }
-
-  ### Trading Year
-
-  measure: ic_sale_actual_trdy_ly {
-    label: "Inbound Calls Sale Trading Year LY"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week_year_ly
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: decimal_0
-  }
-
-  measure: ic_sale_fcast_trdy {
-    label: "Inbound Calls Sale Trading Year Forecast"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_SALE;;
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_forecast_series
-      value: "Yes"
-    }
-    value_format_name: decimal_0
-  }
-
-  ##############################################################
-  ### Inbound Call AGCP
-  ##############################################################
-
-  measure: ic_agcp {
-    label: "Inbound Calls AGCP"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_AGCP ;;
-    value_format_name: gbp_0
-  }
-
-
-
-  ### Trading YTD
-
-  measure: ic_agcp_actual_trdytd {
-    label: "Inbound Calls AGCP Trading YTD"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_AGCP;;
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_selected_doy_trdy
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: gbp_0
-  }
-
-  measure: ic_agcp_actual_trdytd_ly {
-    label: "Inbound Calls AGCP Trading YTD LY"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_AGCP;;
-    filters: {
-      field: is_selected_trading_week_year_ly
-      value: "yes"
-    }
-    filters: {
-      field: is_up_to_selected_doy_trdy
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: gbp_0
-  }
-
-  ### Trading Year
-
-  measure: ic_agcp_actual_trdy_ly {
-    label: "Inbound Calls AGCP Trading Year LY"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_AGCP;;
-    filters: {
-      field: is_selected_trading_week_year_ly
-      value: "yes"
-    }
-    filters: {
-      field: series_identifier
-      value: "Actual"
-    }
-    value_format_name: gbp_0
-  }
-
-  measure: ic_agcp_fcast_trdy {
-    label: "Inbound Calls AGCP Trading Year Forecast"
-    group_label: "Interaction"
-    type: sum
-    sql: ${TABLE}.INBOUND_CALL_AGCP;;
-    filters: {
-      field: is_selected_trading_week_year
-      value: "yes"
-    }
-    filters: {
-      field: is_selected_forecast_series
-      value: "Yes"
-    }
-    value_format_name: gbp_0
-  }
-
-  ##############################################################
-  ### Inbound Call AATV
-  ##############################################################
-
-  measure: ic_aatv {
-    label: "Inbound Calls AATV"
-    group_label: "Interaction"
-    type: number
-    sql: COALESCE((COALESCE(${ic_agcp},0) / NULLIF(${ic_sale},0)),0);;
-    value_format_name: gbp
-  }
-
-  ### Trading YTD
-
-  measure: ic_aatv_actual_trdytd {
-    label: "Inbound Calls AATV Trading YTD"
-    group_label: "Interaction"
-    type: number
-    sql: COALESCE(COALESCE(${ic_agcp_actual_trdytd},0) / NULLIF(${ic_sale_actual_trdytd},0),0);;
-    value_format_name: gbp
-  }
-
-  measure: ic_aatv_actual_trdytd_ly {
-    label: "Inbound Calls AATV Trading YTD LY"
-    group_label: "Interaction"
-    type: number
-    sql: COALESCE(COALESCE(${ic_agcp_actual_trdytd_ly},0) / NULLIF(${ic_sale_actual_trdytd_ly},0),0);;
-    value_format_name: gbp
-  }
-
-  ### Trading Year
-
-  measure: ic_aatv_actual_trdy_ly {
-    label: "Inbound Calls AATV Trading Year LY"
-    group_label: "Interaction"
-    type: number
-    sql: COALESCE(COALESCE(${ic_agcp_actual_trdy_ly},0) / NULLIF(${ic_sale_actual_trdy_ly},0),0);;
-    value_format_name: gbp
-  }
-
-  measure: ic_aatv_fcast_trdy {
-    label: "Inbound Calls AATV Trading Year Forecast"
-    group_label: "Interaction"
-    type: number
-    sql: COALESCE(COALESCE(${ic_agcp_fcast_trdy},0) / NULLIF(${ic_sale_fcast_trdy},0),0);;
-    value_format_name: gbp
-  }
-
-  ##############################################################
   ### Inbound Call Conversion Rate
   ##############################################################
 
@@ -2965,7 +2754,75 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale},0) / NULLIF(${ic_answered},0),0);;
+    sql: COALESCE(COALESCE(${volume},0) / NULLIF(${ic_answered},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Trading Week
+
+  measure: ic_cr_actual_trdwk {
+    label: "Inbound Calls Conversion Rate Trading WK"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk},0) / NULLIF(${ic_answered_actual_trdwk},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_cr_actual_trdwk_ly {
+    label: "Inbound Calls Conversion Rate Trading WK LY"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk_ly},0) / NULLIF(${ic_answered_actual_trdwk_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_cr_fcast_trdwk {
+    label: "Inbound Calls Conversion Rate Trading WK Forecast"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_fcast_trdwk},0) / NULLIF(${ic_answered_fcast_trdwk},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_cr_actual_trdwk_vs_ly {
+    label: "Inbound Calls Conversion Rate Trading WK VS LY %"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE((COALESCE(${ic_cr_actual_trdwk},0) - COALESCE(${ic_cr_actual_trdwk_ly},0))/NULLIF(${ic_cr_actual_trdwk_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: ic_cr_actual_trdwk_vs_fcast {
+    label: "Inbound Calls Conversion Rate Trading WK VS Forecast %"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE((COALESCE(${ic_cr_actual_trdwk},0) - COALESCE(${ic_cr_fcast_trdwk},0))/NULLIF(${ic_cr_fcast_trdwk},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  ### Financial YTD
+
+  measure: ic_cr_actual_fytd {
+    label: "Inbound Calls Conversion Rate FYTD"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_fytd},0) / NULLIF(${ic_answered_actual_fytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_cr_actual_fytd_ly {
+    label: "Inbound Calls Conversion Rate FYTD LY"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_fytd_ly},0) / NULLIF(${ic_answered_actual_fytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: icr_actual_fytd_vs_ly {
+    label: "Inbound Calls Conversion Rate FYTD VS LY %"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE((COALESCE(${ic_cr_actual_fytd},0) - COALESCE(${ic_cr_actual_fytd_ly},0))/NULLIF(${ic_cr_actual_fytd_ly},0),0)  ;;
     value_format_name: percent_2
   }
 
@@ -2975,7 +2832,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading YTD"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd},0) / NULLIF(${ic_answered_actual_trdytd},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_trdytd},0) / NULLIF(${ic_answered_actual_trdytd},0),0);;
     value_format_name: percent_2
   }
 
@@ -2983,7 +2840,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading YTD LY"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdytd_ly},0) / NULLIF(${ic_answered_actual_trdytd_ly},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_trdytd_ly},0) / NULLIF(${ic_answered_actual_trdytd_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -2993,7 +2850,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading Year LY"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_actual_trdy_ly},0) / NULLIF(${ic_answered_actual_trdy_ly},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_trdy_ly},0) / NULLIF(${ic_answered_actual_trdy_ly},0),0);;
     value_format_name: percent_2
   }
 
@@ -3001,7 +2858,7 @@ view: new_business_sale {
     label: "Inbound Calls Conversion Rate Trading Year Forecast"
     group_label: "Rate"
     type: number
-    sql: COALESCE(COALESCE(${ic_sale_fcast_trdy},0) / NULLIF(${ic_answered_fcast_trdy},0),0);;
+    sql: COALESCE(COALESCE(${volume_fcast_trdy},0) / NULLIF(${ic_answered_fcast_trdy},0),0);;
     value_format_name: percent_2
   }
 
