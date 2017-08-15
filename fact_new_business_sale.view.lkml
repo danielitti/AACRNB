@@ -39,7 +39,9 @@ view: new_business_sale {
                                 TRANSACTION_COUNT,
                                 null as INBOUND_CALL_CNT,
                                 null AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CLOSED,
+                                null as OUTBOUND_DIAL_DIALLED,
+                                null as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
                                 null AS INBOUND_CALL_ABANDONED,
                                 null as INBOUND_CALL_AGCP,
@@ -80,7 +82,9 @@ view: new_business_sale {
                                 null as TRANSACTION_COUNT,
                                 SUM(ic.INTERACTION_CNT) AS INBOUND_CALL_CNT, --xxx DO I NEED OFFERED_CALLS HERE?
                                 null AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CLOSED,
+                                null as OUTBOUND_DIAL_DIALLED,
+                                null as OUTBOUND_DIAL_NEW_LEAD,
                                 SUM(CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ANSWERED,
                                 SUM(CASE WHEN IS_CALL_ABANDONED = 'Y' THEN 1 ELSE 0 END) AS INBOUND_CALL_ABANDONED,
                                 SUM(s.ANNUALISED_PRODUCT_ADDON_GCP) as INBOUND_CALL_AGCP,
@@ -126,7 +130,9 @@ view: new_business_sale {
                                 null as TRANSACTION_COUNT,
                                 null AS INBOUND_CALL_CNT,
                                 INTERACTION_CNT AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CNT,
+                                null AS OUTBOUND_DIAL_CLOSED,
+                                null as OUTBOUND_DIAL_DIALLED,
+                                null as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
                                 null AS INBOUND_CALL_ABANDONED,
                                 null as INBOUND_CALL_AGCP,
@@ -168,7 +174,9 @@ view: new_business_sale {
                                 null as TRANSACTION_COUNT,
                                 null as INBOUND_CALL_CNT,
                                 null AS DIGITAL_VISIT_CNT,
-                                INTERACTION_CNT AS OUTBOUND_DIAL_CNT,
+                                INTERACTION_CNT AS OUTBOUND_DIAL_CLOSED,
+                                0 as OUTBOUND_DIAL_DIALLED,
+                                0 as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
                                 null AS INBOUND_CALL_ABANDONED,
                                 null as INBOUND_CALL_AGCP,
@@ -2217,6 +2225,96 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Trading Week
+
+  measure: ic_actual_trdwk {
+    label: "Inbound Calls Offered Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_actual_trdwk_ly {
+    label: "Inbound Calls Offered Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_fcast_trdwk {
+    label: "Inbound Calls Offered Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_CNT;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_actual_trdwk_vs_ly {
+    label: "Inbound Calls Offered Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_actual_trdwk},0) - COALESCE(${ic_actual_trdwk_ly},0))/NULLIF(${ic_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: ic_actual_trdwk_vs_fcast {
+    label: "Inbound Calls Offered Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_actual_trdwk},0) - COALESCE(${ic_fcast_trdwk},0))/NULLIF(${ic_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
   ### Trading YTD
 
   measure: ic_actual_trdytd {
@@ -2303,6 +2401,96 @@ view: new_business_sale {
     type: sum
     sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
     value_format_name: decimal_0
+  }
+
+### Trading Week
+
+  measure: ic_answered_actual_trdwk {
+    label: "Inbound Calls Answered Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_answered_actual_trdwk_ly {
+    label: "Inbound Calls Answered Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_answered_fcast_trdwk {
+    label: "Inbound Calls Answered Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_answered_actual_trdwk_vs_ly {
+    label: "Inbound Calls Answered Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_answered_actual_trdwk},0) - COALESCE(${ic_answered_actual_trdwk_ly},0))/NULLIF(${ic_answered_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: ic_answered_actual_trdwk_vs_fcast {
+    label: "Inbound Calls Answered Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_answered_actual_trdwk},0) - COALESCE(${ic_answered_fcast_trdwk},0))/NULLIF(${ic_answered_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
   }
 
   ### Trading YTD
@@ -2481,6 +2669,80 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Trading Week
+
+  measure: ic_sale_actual_trdwk {
+    label: "Inbound Calls Sale Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_SALE;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_sale_actual_trdwk_ly {
+    label: "Inbound Calls Sale Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_SALE;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_sale_fcast_trdwk {
+    label: "Inbound Calls Sale Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_SALE;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
   ### Trading YTD
 
   measure: ic_sale_actual_trdytd {
@@ -2568,6 +2830,8 @@ view: new_business_sale {
     sql: ${TABLE}.INBOUND_CALL_AGCP ;;
     value_format_name: gbp_0
   }
+
+
 
   ### Trading YTD
 
@@ -2790,24 +3054,114 @@ view: new_business_sale {
   }
 
   ##############################################################
-  ### Outbound Dial
+  ### Outbound Dial Closed
   ##############################################################
 
-  measure: outbound_dial {
-    label: "Outbound Dial"
+  measure: od_closed {
+    label: "Outbound Dial Closed"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
     value_format_name: decimal_0
+  }
+
+  ### Trading Week
+
+  measure: od_closed_actual_trdwk {
+    label: "Outbound Dial Closed Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_closed_actual_trdwk_ly {
+    label: "Outbound Dial Closed Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_closed_fcast_trdwk {
+    label: "Outbound Dial Closed Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_closed_actual_trdwk_vs_ly {
+    label: "Outbound Dial Closed Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${od_closed_actual_trdwk},0) - COALESCE(${od_closed_actual_trdwk_ly},0))/NULLIF(${od_closed_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: od_closed_actual_trdwk_vs_fcast {
+    label: "Outbound Dial Closed Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${od_closed_actual_trdwk},0) - COALESCE(${od_closed_fcast_trdwk},0))/NULLIF(${od_closed_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
   }
 
   ### Financial YTD
 
-  measure: outbound_dial_actual_fytd {
-    label: "Outbound Dial FYTD"
+  measure: od_closed_actual_fytd {
+    label: "Outbound Dial Closed FYTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
     filters: {
       field: new_business_sale.is_selected_fy
       value: "yes"
@@ -2823,11 +3177,11 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
-  measure: outbound_dial_actual_fytd_ly {
-    label: "Outbound Dial FYTD LY"
+  measure: od_closed_actual_fytd_ly {
+    label: "Outbound Dial Closed FYTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
     filters: {
       field: new_business_sale.is_selected_last_fy
       value: "yes"
@@ -2843,16 +3197,27 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  measure: od_closed_actual_fytd_vs_ly {
+    label: "Outbound Dial Closed FYTD VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${od_closed_actual_fytd},0) - COALESCE(${od_closed_actual_fytd_ly},0))/NULLIF(${od_closed_actual_fytd_ly},0)  ;;
+    value_format_name: percent_2
+  }
 
-  ### Financial Year
+  ### Trading YTD
 
-  measure: outbound_dial_actual_fy_ly {
-    label: "Outbound Dial FY LY"
+  measure: od_closed_actual_trdytd {
+    label: "Outbound Dial Closed Trading YTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CNT ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
     filters: {
-      field: is_selected_last_fy
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_trdy
       value: "yes"
     }
     filters: {
@@ -2862,44 +3227,296 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  measure: od_closed_actual_trdytd_ly {
+    label: "Outbound Dial Closed Trading YTD LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_trdy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Trading Year
+
+  measure: od_closed_actual_trdy_ly {
+    label: "Outbound Dial Closed Trading Year LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_closed_fcast_trdy {
+    label: "Outbound Dial Closed Trading Year Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  ##############################################################
+  ### Outbound Dialled
+  ##############################################################
+
+  measure: od_dialled_actual_trdwk {
+    label: "Outbound Dialled Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_dialled_fcast_trdwk {
+    label: "Outbound Dialled Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_dialled_actual_trdwk_vs_fcast {
+    label: "Outbound Dialled Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${od_dialled_actual_trdwk},0) - COALESCE(${od_dialled_fcast_trdwk},0))/NULLIF(${od_dialled_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
+  ##############################################################
+  ### Outbound Dial New Lead
+  ##############################################################
+
+  measure: od_new_lead_actual_trdwk {
+    label: "Outbound Dial New Lead Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_new_lead_fcast_trdwk {
+    label: "Outbound Dial New Lead Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: od_new_lead_actual_trdwk_vs_fcast {
+    label: "Outbound Dial New Lead Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${od_new_lead_actual_trdwk},0) - COALESCE(${od_new_lead_fcast_trdwk},0))/NULLIF(${od_new_lead_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
   ##############################################################
   ### Outbound Dial Conversion Rate
   ##############################################################
 
-  measure: outbound_dial_cr {
+  measure: od_cr {
     label: "Outbound Dial Conversion Rate"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume},0) / NULLIF(${outbound_dial},0),0);;
+    sql: COALESCE(COALESCE(${volume},0) / NULLIF(${od_closed},0),0);;
     value_format_name: percent_2
   }
+
+  ### Trading Week
+
+  measure: od_cr_actual_trdwk {
+    label: "Outbound Dial Conversion Rate Trading WK"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk},0) / NULLIF(${od_closed_actual_trdwk},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: od_cr_actual_trdwk_ly {
+    label: "Outbound Dial Conversion Rate Trading WK LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdwk_ly},0) / NULLIF(${od_closed_actual_trdwk_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: od_cr_fcast_trdwk {
+    label: "Outbound Dial Conversion Rate Trading WK Forecast"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_fcast_trdwk},0) / NULLIF(${od_closed_fcast_trdwk},0),0);;
+    value_format_name: gbp
+  }
+
+  measure: od_cr_actual_trdwk_vs_ly {
+    label: "Outbound Dial Conversion Rate Trading WK VS LY %"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE((COALESCE(${od_cr_actual_trdwk},0) - COALESCE(${od_cr_actual_trdwk_ly},0))/NULLIF(${od_cr_actual_trdwk_ly},0),0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: od_cr_actual_trdwk_vs_fcast {
+    label: "Outbound Dial Conversion Rate Trading WK VS Forecast %"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE((COALESCE(${od_cr_actual_trdwk},0) - COALESCE(${od_cr_fcast_trdwk},0))/NULLIF(${od_cr_fcast_trdwk},0),0)  ;;
+    value_format_name: percent_2
+  }
+
 
   ### Financial YTD
 
-  measure: outbound_dial_cr_actual_fytd {
+  measure: od_cr_actual_fytd {
     label: "Outbound Dial Conversion Rate FYTD"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd},0) / NULLIF(${outbound_dial_actual_fytd},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_fytd},0) / NULLIF(${od_closed_actual_fytd},0),0);;
     value_format_name: percent_2
   }
 
-  measure: outbound_call_cr_actual_fytd_ly {
+  measure: od_cr_actual_fytd_ly {
     label: "Outbound Dial Conversion Rate FYTD LY"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fytd_ly},0) / NULLIF(${outbound_dial_actual_fytd_ly},0),0);;
+    sql: COALESCE(COALESCE(${volume_actual_fytd_ly},0) / NULLIF(${od_closed_actual_fytd_ly},0),0);;
     value_format_name: percent_2
   }
 
-  ### Financial Year
-
-  measure: outbound_dial_cr_actual_fy_ly {
-    label: "Outbound Dial Conversion Rate FY LY"
+  measure: od_cr_actual_fytd_vs_ly {
+    label: "Outbound Dial Conversion Rate FYTD VS LY %"
     group_label: "Conversion Rate"
     type: number
-    sql: COALESCE(COALESCE(${new_business_sale.volume_actual_fy_ly},0) / NULLIF(${outbound_dial_actual_fy_ly},0),0);;
+    sql: COALESCE((COALESCE(${od_cr_actual_fytd},0) - COALESCE(${od_cr_actual_fytd_ly},0))/NULLIF(${od_cr_actual_fytd_ly},0),0)  ;;
     value_format_name: percent_2
   }
+
+  ### Trading YTD
+
+  measure: od_cr_actual_trdytd {
+    label: "Outbound Dial Conversion Rate Trading YTD"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdytd},0) / NULLIF(${od_closed_actual_trdytd},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: od_cr_actual_trdytd_ly {
+    label: "Outbound Dial Conversion Rate Trading YTD LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdytd_ly},0) / NULLIF(${od_closed_actual_trdytd_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Trading Year
+
+  measure: od_cr_actual_trdy_ly {
+    label: "Outbound Dial Conversion Rate Trading Year LY"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_actual_trdy_ly},0) / NULLIF(${od_closed_actual_trdy_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: od_cr_fcast_trdy {
+    label: "Outbound Dial Conversion Rate Trading Year Forecast"
+    group_label: "Conversion Rate"
+    type: number
+    sql: COALESCE(COALESCE(${volume_fcast_trdy},0) / NULLIF(${od_closed_fcast_trdy},0),0);;
+    value_format_name: percent_2
+  }
+
 
 }
