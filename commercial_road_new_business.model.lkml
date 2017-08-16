@@ -42,6 +42,11 @@ explore: new_business_sale {
     sql_on: ${new_business_sale.staff_key} = ${staff.staff_key} ;;
     relationship: many_to_one
   }
+  join: fst_staff {
+    type: inner
+    sql_on: ${new_business_sale.fst_staff_key} = ${fst_staff.staff_key} ;;
+    relationship: many_to_one
+  }
   join: policy {
     type: inner
     sql_on: ${new_business_sale.policy_key} = ${policy.policy_key} ;;

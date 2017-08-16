@@ -1,4 +1,4 @@
-view: staff {
+view: fst_staff {
   sql_table_name: {{_user_attributes["commercial_road_new_business_schema_name"]}}.DIM_STAFF ;;
 
   dimension: staff_key {
@@ -9,9 +9,17 @@ view: staff {
   }
 
   dimension: staff_type {
-    label: "Department"
+    label: "Staff Type"
+    group_label: "Staff"
     type: string
     sql: ${TABLE}.STAFF_TYPE ;;
+  }
+
+  dimension: region {
+    label: "Staff Region"
+    group_label: "Staff"
+    type: string
+    sql: ${TABLE}.REGION ;;
   }
 
 }

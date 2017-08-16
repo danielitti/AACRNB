@@ -26,6 +26,7 @@ view: new_business_sale {
                                 DEVICE_TYPE_KEY,
                                 SOURCE_CODE_KEY,
                                 STAFF_KEY,
+                                FST_STAFF_KEY,
                                 LEAD_CODE_KEY,
                                 MEMBERSHIP_TYPE_LEVEL_2_KEY,
                                 MANUFACTURER_KEY,
@@ -67,6 +68,7 @@ view: new_business_sale {
                                 null as DEVICE_TYPE_KEY,
                                 null as SOURCE_CODE_KEY,
                                 STAFF_KEY,
+                                null as FST_STAFF_KEY,
                                 null as LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
                                 null as MANUFACTURER_KEY,
@@ -109,6 +111,7 @@ view: new_business_sale {
                                 DEVICE_TYPE_KEY,
                                 SOURCE_CODE_KEY,
                                 null as STAFF_KEY,
+                                null as FST_STAFF_KEY,
                                 null as LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
                                 null as MANUFACTURER_KEY,
@@ -151,6 +154,7 @@ view: new_business_sale {
                                 null as DEVICE_TYPE_KEY,
                                 null as SOURCE_CODE_KEY,
                                 STAFF_KEY,
+                                null as FST_STAFF_KEY,
                                 LEAD_CODE_KEY,
                                 null as MEMBERSHIP_TYPE_LEVEL_2_KEY,
                                 null as MANUFACTURER_KEY,
@@ -265,6 +269,13 @@ view: new_business_sale {
     hidden:  yes
     type: string
     sql: ${TABLE}.STAFF_KEY;;
+  }
+
+  dimension: fst_staff_key {
+    label: "Staff Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.FST_STAFF_KEY;;
   }
 
   dimension: policy_key {
