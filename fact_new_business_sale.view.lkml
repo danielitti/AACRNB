@@ -3386,5 +3386,232 @@ view: new_business_sale {
     value_format_name: percent_2
   }
 
+  ##############################################################
+  ### FTE
+  ##############################################################
+
+  measure: fst_staff {
+    label: "FTE Count"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    value_format_name: decimal_0
+  }
+
+  ### Trading Week
+
+  measure: fst_staff_actual_trdwk {
+    label: "FTE Count Trading WK"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_actual_trdwk_ly {
+    label: "FTE Count Trading WK LY"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_fcast_trdwk {
+    label: "FTE Count Trading WK Forecast"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_actual_trdwk_vs_ly {
+    label: "FTE Count Trading WK VS LY %"
+    group_label: "FTE"
+    type: number
+    sql: (COALESCE(${fst_staff_actual_trdwk},0) - COALESCE(${fst_staff_actual_trdwk_ly},0))/NULLIF(${fst_staff_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: fst_staff_actual_trdwk_vs_fcast {
+    label: "FTE Count Trading WK VS Forecast %"
+    group_label: "FTE"
+    type: number
+    sql: (COALESCE(${fst_staff_actual_trdwk},0) - COALESCE(${fst_staff_fcast_trdwk},0))/NULLIF(${fst_staff_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
+  ### Trading YTD
+
+  measure: fst_staff_actual_trdytd {
+    label: "FTE Count Trading YTD"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_trdy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_actual_trdytd_ly {
+    label: "FTE Count Trading YTD LY"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_trdy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  ### Financial YTD
+
+  measure: fst_staff_actual_fytd {
+    label: "FTE Count FYTD"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_actual_fytd_ly {
+    label: "FTE Count FYTD LY"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_last_fy
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_selected_doy_fy
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_actual_fytd_vs_ly {
+    label: "FTE Count FYTD VS LY %"
+    group_label: "FTE"
+    type: number
+    sql: (COALESCE(${fst_staff_actual_fytd},0) - COALESCE(${fst_staff_actual_fytd_ly},0))/NULLIF(${fst_staff_actual_fytd_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  ### Trading Year
+
+  measure: fst_staff_actual_trdy_ly {
+    label: "FTE Count Trading Year LY"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: fst_staff_fcast_trdy {
+    label: "FTE Count Trading Year Forecast"
+    group_label: "FTE"
+    type: count_distinct
+    sql: ${TABLE}.FST_STAFF_KEY;;
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "Yes"
+    }
+    value_format_name: decimal_0
+  }
 
 }

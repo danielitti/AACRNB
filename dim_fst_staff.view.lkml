@@ -10,14 +10,14 @@ view: fst_staff {
 
   dimension: staff_type {
     label: "Staff Type"
-    group_label: "Staff"
+    group_label: "FST Staff"
     type: string
     sql: ${TABLE}.STAFF_TYPE ;;
   }
 
   dimension: region {
     label: "Staff Region"
-    group_label: "Staff"
+    group_label: "FST Staff"
     type: string
     sql: ${TABLE}.REGION ;;
   }
