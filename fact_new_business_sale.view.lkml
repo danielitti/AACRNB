@@ -25,6 +25,7 @@ view: new_business_sale {
                                 ADDON_PACKAGE_LEVEL_1_KEY,
                                 DEVICE_TYPE_KEY,
                                 SOURCE_CODE_KEY,
+                                ADJUSTED_MKT_CHAN_LEVEL_2_KEY,
                                 STAFF_KEY,
                                 FST_STAFF_KEY,
                                 LEAD_CODE_KEY,
@@ -67,6 +68,7 @@ view: new_business_sale {
                                 null as ADDON_PACKAGE_LEVEL_1_KEY,
                                 null as DEVICE_TYPE_KEY,
                                 null as SOURCE_CODE_KEY,
+                                MARKETING_CHANNEL_LEVEL_2_KEY as ADJUSTED_MKT_CHAN_LEVEL_2_KEY,
                                 STAFF_KEY,
                                 null as FST_STAFF_KEY,
                                 null as LEAD_CODE_KEY,
@@ -109,7 +111,14 @@ view: new_business_sale {
                                 null as PRODUCT_PACKAGE_LEVEL_2_KEY,
                                 null as ADDON_PACKAGE_LEVEL_1_KEY,
                                 DEVICE_TYPE_KEY,
-                                SOURCE_CODE_KEY,
+                                dv.SOURCE_CODE_KEY,
+                                CASE  WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_AFFILIATES' THEN 9
+                                      WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_OTHER' THEN 39
+                                      WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_SEO' THEN 10
+                                      WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_PPC' THEN 8
+                                      WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_DIRECT' THEN 13
+                                      WHEN sc.SOURCE_CODE='DIGITAL_DUMMY_EMAIL' THEN 15
+                                END as ADJUSTED_MKT_CHAN_LEVEL_2_KEY,
                                 null as STAFF_KEY,
                                 null as FST_STAFF_KEY,
                                 null as LEAD_CODE_KEY,
@@ -130,7 +139,9 @@ view: new_business_sale {
                                 null as OUTBOUND_DIAL_NEW_LEAD,
                                 null AS INBOUND_CALL_ANSWERED,
                                 null AS INBOUND_CALL_ABANDONED
-                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_DIGITAL_VISIT
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_DIGITAL_VISIT dv
+                    LEFT JOIN   {{_user_attributes["commercial_road_new_business_schema_name"]}}.dim_SOURCE_CODE sc
+                    ON          dv.SOURCE_CODE_KEY = sc.SOURCE_CODE_KEY
                     WHERE       DIGITAL_VISIT_TYPE_KEY = 1 /* Consumer Road New Business */
 
                     UNION ALL
@@ -153,6 +164,7 @@ view: new_business_sale {
                                 null as ADDON_PACKAGE_LEVEL_1_KEY,
                                 null as DEVICE_TYPE_KEY,
                                 null as SOURCE_CODE_KEY,
+                                null as ADJUSTED_MKT_CHAN_LEVEL_2_KEY,
                                 STAFF_KEY,
                                 null as FST_STAFF_KEY,
                                 LEAD_CODE_KEY,
@@ -262,6 +274,13 @@ view: new_business_sale {
     hidden:  yes
     type: string
     sql: ${TABLE}.SOURCE_CODE_KEY;;
+  }
+
+  dimension: adjusted_mkt_chan_level_2_key {
+    label: "Adjusted Marketing Channel Level 2 Key"
+    hidden:  yes
+    type: string
+    sql: ${TABLE}.ADJUSTED_MKT_CHAN_LEVEL_2_KEY;;
   }
 
   dimension: staff_key {

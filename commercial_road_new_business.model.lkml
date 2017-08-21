@@ -29,7 +29,7 @@ explore: new_business_sale {
   }
   join: marketing_channel {
     type: inner
-    sql_on: ${new_business_sale.source_code_key} = ${marketing_channel.source_code_key} ;;
+    sql_on: ${new_business_sale.adjusted_mkt_chan_level_2_key} = ${marketing_channel.marketing_channel_level_2_key} ;;
     relationship: many_to_one
   }
   join: device_type {
