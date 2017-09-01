@@ -474,25 +474,25 @@ view: new_business_sale {
   dimension: trdwk_number_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_number} END;;
+    sql: ${date_filter.trdwk_number};;
   }
 
   dimension: trdwk_number_ly_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${trdwk_number_by_date_filter} = 53 THEN 1 ELSE ${trdwk_number_by_date_filter} END;;
+    sql: ${trdwk_number_by_date_filter} ;;
   }
 
   dimension: trdwk_day_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_day_number_of_week} END;;
+    sql: ${date_filter.trdwk_day_number_of_week} ;;
   }
 
   dimension: trdwk_year_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.trdwk_year} END;;
+    sql: ${date_filter.trdwk_year} ;;
   }
 
   dimension: trdwk_year_ly_by_date_filter {
@@ -504,25 +504,25 @@ view: new_business_sale {
   dimension: trading_doy_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.trading_day_of_year} END;;
+    sql: ${date_filter.trading_day_of_year} ;;
   }
 
   dimension: financial_year_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.financial_year} END;;
+    sql: ${date_filter.financial_year} ;;
   }
 
   dimension: financial_year_ly_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.financial_year_ly} END;;
+    sql: ${date_filter.financial_year_ly} ;;
   }
 
   dimension: financial_doy_by_date_filter {
     hidden:  yes
     type: string
-    sql: CASE WHEN ${date_filter.date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') THEN ${date_filter.financial_day_of_year} END;;
+    sql: ${date_filter.financial_day_of_year} ;;
   }
 
   ### Supporting dimensions for measure calculation
@@ -536,7 +536,7 @@ view: new_business_sale {
   dimension: is_selected_day {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} = TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') ;;
+    sql: ${trx_date_raw} = ${date_filter.date_raw};;
   }
 
   dimension: is_selected_trading_week {
@@ -584,13 +584,13 @@ view: new_business_sale {
   dimension: is_up_to_selected_day {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} <= TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd') ;;
+    sql: ${trx_date_raw} <= ${date_filter.date_raw} ;;
   }
 
   dimension: is_up_to_selected_day_ly {
     hidden: yes
     type: yesno
-    sql: ${trx_date_raw} <= ADD_MONTHS(TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd'), -12) ;;
+    sql: ${trx_date_raw} <= ADD_MONTHS(${date_filter.date_raw}, -12) ;;
   }
 
   dimension: is_selected_fy {
@@ -614,13 +614,13 @@ view: new_business_sale {
   dimension: is_selected_year_month {
     hidden: yes
     type: yesno
-    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw}), EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd'))) ;;
+    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw}), EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM ${date_filter.date_raw}), EXTRACT(MONTH FROM ${date_filter.date_raw})) ;;
   }
 
   dimension: is_selected_year_month_ly {
     hidden: yes
     type: yesno
-    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd')), EXTRACT(MONTH FROM TO_DATE(${date_filter_dimension}, 'yyyy/mm/dd'))) ;;
+    sql: CONCAT(EXTRACT(YEAR FROM ${trx_date_raw})+1, EXTRACT(MONTH FROM ${trx_date_raw})) = CONCAT(EXTRACT(YEAR FROM ${date_filter.date_raw}), EXTRACT(MONTH FROM ${date_filter.date_raw})) ;;
   }
 
 
@@ -633,22 +633,6 @@ view: new_business_sale {
     group_label: "Filters"
     type: date
     suggest_dimension: trx_date_date
-  }
-
-  dimension: date_filter_dimension {
-    label: "Date Filter Dimension"
-    #hidden: yes
-    type: date
-    sql: COALESCE({% date_start date_filter_parameter %},
-                  CASE  WHEN TO_CHAR(SYSDATE, 'DY') = 'MON' THEN TRUNC(SYSDATE-5)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'TUE' THEN TRUNC(SYSDATE-6)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'WED' THEN TRUNC(SYSDATE-7)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'THU' THEN TRUNC(SYSDATE-8)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'FRI' THEN TRUNC(SYSDATE-2)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'SAT' THEN TRUNC(SYSDATE-3)
-                        WHEN TO_CHAR(SYSDATE, 'DY') = 'SUN' THEN TRUNC(SYSDATE-4)
-                  END
-         );;
   }
 
   filter: forecast_series_filter_parameter {
