@@ -41,23 +41,23 @@ view: new_business_sale {
                                 TRANSACTION_COUNT,
                                 null as INBOUND_CALL_CNT,
                                 null AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CLOSED,
-                                null as OUTBOUND_DIAL_DIALLED,
-                                null as OUTBOUND_DIAL_NEW_LEAD,
-                                null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED
+                                null AS OUTBOUND_DIAL_CLOSED_CNT,
+                                null as OUTBOUND_DIAL_DIALLED_CNT,
+                                null as OUTBOUND_DIAL_NEW_LEAD_CNT,
+                                null AS INBOUND_CALL_ANSWERED_CNT,
+                                null AS INBOUND_CALL_ABANDONED_CNT
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_NEW_BUSINESS_SALE
 
                     UNION ALL
                     -- FACT_INTERACTION_INBOUND_CALL
-                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
-                                CALL_DATE_KEY as DATE_KEY,
-                                CALL_TIME_KEY as TIME_KEY,
+                    SELECT      ACCOUNTING_TREATMENT,
+                                DATE_KEY,
+                                TIME_KEY,
                                 null as TRANSACTION_KEY,
                                 null as TRANSACTION_ID,
                                 FIRST_POLICY_KEY as POLICY_KEY,
                                 null as TRANSACTION_TYPE_LEVEL_3_KEY,
-                                8 as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                8 as TRANS_SALES_CHANNEL_LEVEL2_KEY, /* Assume Inbound */
                                 null as CUSTOMER_TYPE_KEY,
                                 3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
                                 null as CONTRACT_TYPE_LEVEL_2_KEY,
@@ -76,20 +76,20 @@ view: new_business_sale {
                                 null as MANUFACTURER_KEY,
                                 null as OFFER_CODE,
                                 IS_WILL_JOIN,
-                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                SERIES_IDENTIFIER,
                                 null as DAR_CHANNEL,
                                 null as ANNUALISATION_FACTOR,
                                 null as PRODUCT_AND_ADDON_GCP,
                                 null as ANNUALISED_PRODUCT_ADDON_GCP,
                                 null as TRANSACTION_COUNT,
-                                INTERACTION_CNT AS INBOUND_CALL_CNT, --xxx DO I NEED OFFERED_CALLS HERE?
+                                INBOUND_CALL_INTERACTION_CNT AS INBOUND_CALL_CNT,
                                 null AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CLOSED,
-                                null as OUTBOUND_DIAL_DIALLED,
-                                null as OUTBOUND_DIAL_NEW_LEAD,
-                                CASE WHEN IS_CALL_ANSWERED = 'Y' THEN 1 ELSE 0 END AS INBOUND_CALL_ANSWERED,
-                                CASE WHEN IS_CALL_ABANDONED = 'Y' THEN 1 ELSE 0 END AS INBOUND_CALL_ABANDONED
-                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_INBOUND_CALL ic
+                                null AS OUTBOUND_DIAL_CLOSED_CNT,
+                                null as OUTBOUND_DIAL_DIALLED_CNT,
+                                null as OUTBOUND_DIAL_NEW_LEAD_CNT,
+                                INBOUND_CALL_ANSWERED_CNT,
+                                INBOUND_CALL_ABANDONED_CNT
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INBOUND ic
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
 
                     UNION ALL
@@ -134,11 +134,11 @@ view: new_business_sale {
                                 null as TRANSACTION_COUNT,
                                 null AS INBOUND_CALL_CNT,
                                 INTERACTION_CNT AS DIGITAL_VISIT_CNT,
-                                null AS OUTBOUND_DIAL_CLOSED,
-                                null as OUTBOUND_DIAL_DIALLED,
-                                null as OUTBOUND_DIAL_NEW_LEAD,
-                                null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED
+                                null AS OUTBOUND_DIAL_CLOSED_CNT,
+                                null as OUTBOUND_DIAL_DIALLED_CNT,
+                                null as OUTBOUND_DIAL_NEW_LEAD_CNT,
+                                null AS INBOUND_CALL_ANSWERED_CNT,
+                                null AS INBOUND_CALL_ABANDONED_CNT
                     FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_DIGITAL_VISIT dv
                     LEFT JOIN   {{_user_attributes["commercial_road_new_business_schema_name"]}}.dim_SOURCE_CODE sc
                     ON          dv.SOURCE_CODE_KEY = sc.SOURCE_CODE_KEY
@@ -146,14 +146,14 @@ view: new_business_sale {
 
                     UNION ALL
                     -- FACT_INTERACTION_OUTBOUND_DIAL
-                    SELECT      'Transacted' as ACCOUNTING_TREATMENT,
-                                DIAL_DATE_KEY as DATE_KEY,
-                                DIAL_TIME_KEY as TIME_KEY,
+                    SELECT      ACCOUNTING_TREATMENT,
+                                DATE_KEY,
+                                TIME_KEY,
                                 null as TRANSACTION_KEY,
                                 null as TRANSACTION_ID,
                                 POLICY_KEY,
                                 null as TRANSACTION_TYPE_LEVEL_3_KEY,
-                                9 as TRANS_SALES_CHANNEL_LEVEL2_KEY,
+                                9 as TRANS_SALES_CHANNEL_LEVEL2_KEY, /* Assume Outbound */
                                 null as CUSTOMER_TYPE_KEY,
                                 3 as POLICY_TYPE_LEVEL_2_KEY, /* Assume Paid */
                                 null as CONTRACT_TYPE_LEVEL_2_KEY,
@@ -172,7 +172,7 @@ view: new_business_sale {
                                 null as MANUFACTURER_KEY,
                                 null as OFFER_CODE,
                                 null as IS_WILL_JOIN,
-                                'Actual' as SERIES_IDENTIFIER, /* Assume Actual */
+                                SERIES_IDENTIFIER, /* Assume Actual */
                                 null as DAR_CHANNEL,
                                 null as ANNUALISATION_FACTOR,
                                 null as PRODUCT_AND_ADDON_GCP,
@@ -180,12 +180,12 @@ view: new_business_sale {
                                 null as TRANSACTION_COUNT,
                                 null as INBOUND_CALL_CNT,
                                 null AS DIGITAL_VISIT_CNT,
-                                INTERACTION_CNT AS OUTBOUND_DIAL_CLOSED,
-                                0 as OUTBOUND_DIAL_DIALLED,
-                                0 as OUTBOUND_DIAL_NEW_LEAD,
-                                null AS INBOUND_CALL_ANSWERED,
-                                null AS INBOUND_CALL_ABANDONED
-                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_INTERACTION_OUTBOUND_DIAL
+                                OUTBOUND_DIAL_INTERACTION_CNT AS OUTBOUND_DIAL_CLOSED_CNT,
+                                OUTBOUND_DIAL_DIAL_CNT as OUTBOUND_DIAL_DIALLED_CNT,
+                                OUTBOUND_DIAL_LEAD_CNT as OUTBOUND_DIAL_NEW_LEAD_CNT,
+                                null AS INBOUND_CALL_ANSWERED_CNT,
+                                null AS INBOUND_CALL_ABANDONED_CNT
+                    FROM        {{_user_attributes["commercial_road_new_business_schema_name"]}}.FACT_OUTBOUND
                     WHERE       CALL_TYPE_KEY = 1 /* Consumer Road New Business */
                     ) FACTS
           INNER JOIN
@@ -2452,7 +2452,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     value_format_name: decimal_0
   }
 
@@ -2462,7 +2462,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading WK"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -2486,7 +2486,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading WK LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week_ly
       value: "yes"
@@ -2510,7 +2510,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading WK Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -2552,7 +2552,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading YTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -2572,7 +2572,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading YTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -2594,7 +2594,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading Year LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -2610,7 +2610,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered Trading Year Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -2628,7 +2628,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered FYTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_fy
       value: "yes"
@@ -2648,7 +2648,7 @@ view: new_business_sale {
     label: "Inbound Calls Answered FYTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ANSWERED;;
+    sql: ${TABLE}.INBOUND_CALL_ANSWERED_CNT;;
     filters: {
       field: is_selected_last_fy
       value: "yes"
@@ -2680,7 +2680,7 @@ view: new_business_sale {
     label: "Inbound Calls Abandoned"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ABANDONED ;;
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT ;;
     value_format_name: decimal_0
   }
 
@@ -2690,7 +2690,7 @@ view: new_business_sale {
     label: "Inbound Calls Abandoned Trading YTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -2710,7 +2710,7 @@ view: new_business_sale {
     label: "Inbound Calls Abandoned Trading YTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -2732,7 +2732,7 @@ view: new_business_sale {
     label: "Inbound Calls Abandoned Trading Year LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -2748,7 +2748,7 @@ view: new_business_sale {
     label: "Inbound Calls Abandoned Trading Year Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.INBOUND_CALL_ABANDONED;;
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -2932,7 +2932,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT ;;
     value_format_name: decimal_0
   }
 
@@ -2942,7 +2942,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading WK"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -2966,7 +2966,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading WK LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week_ly
       value: "yes"
@@ -2990,7 +2990,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading WK Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -3032,7 +3032,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed FYTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT ;;
     filters: {
       field: new_business_sale.is_selected_fy
       value: "yes"
@@ -3052,7 +3052,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed FYTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED ;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT ;;
     filters: {
       field: new_business_sale.is_selected_last_fy
       value: "yes"
@@ -3082,7 +3082,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading YTD"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -3102,7 +3102,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading YTD LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -3124,7 +3124,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading Year LY"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week_year_ly
       value: "yes"
@@ -3140,7 +3140,7 @@ view: new_business_sale {
     label: "Outbound Dial Closed Trading Year Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_CLOSED_CNT;;
     filters: {
       field: is_selected_trading_week_year
       value: "yes"
@@ -3160,7 +3160,7 @@ view: new_business_sale {
     label: "Outbound Dialled Trading WK"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -3184,7 +3184,7 @@ view: new_business_sale {
     label: "Outbound Dialled Trading WK Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED;;
+    sql: ${TABLE}.OUTBOUND_DIAL_DIALLED_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -3220,7 +3220,7 @@ view: new_business_sale {
     label: "Outbound Dial New Lead Trading WK"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD;;
+    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
@@ -3244,7 +3244,7 @@ view: new_business_sale {
     label: "Outbound Dial New Lead Trading WK Forecast"
     group_label: "Interaction"
     type: sum
-    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD;;
+    sql: ${TABLE}.OUTBOUND_DIAL_NEW_LEAD_CNT;;
     filters: {
       field: is_selected_trading_week
       value: "yes"
