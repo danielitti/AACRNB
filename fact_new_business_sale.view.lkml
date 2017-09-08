@@ -2684,6 +2684,96 @@ view: new_business_sale {
     value_format_name: decimal_0
   }
 
+  ### Trading Week
+
+  measure: ic_abandoned_actual_trdwk {
+    label: "Inbound Calls Abandoned Trading WK"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_abandoned_actual_trdwk_ly {
+    label: "Inbound Calls Abandoned Trading WK LY"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
+    filters: {
+      field: is_selected_trading_week_ly
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year_ly
+      value: "yes"
+    }
+    filters: {
+      field: series_identifier
+      value: "Actual"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_abandoned_fcast_trdwk {
+    label: "Inbound Calls Abandoned Trading WK Forecast"
+    group_label: "Interaction"
+    type: sum
+    sql: ${TABLE}.INBOUND_CALL_ABANDONED_CNT;;
+    filters: {
+      field: is_selected_trading_week
+      value: "yes"
+    }
+    filters: {
+      field: is_up_to_trading_week_day
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_trading_week_year
+      value: "yes"
+    }
+    filters: {
+      field: is_selected_forecast_series
+      value: "yes"
+    }
+    value_format_name: decimal_0
+  }
+
+  measure: ic_abandoned_actual_trdwk_vs_ly {
+    label: "Inbound Calls Abandoned Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_abandoned_actual_trdwk},0) - COALESCE(${ic_abandoned_actual_trdwk_ly},0))/NULLIF(${ic_abandoned_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: ic_abandoned_actual_trdwk_vs_fcast {
+    label: "Inbound Calls Abandoned Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_abandoned_actual_trdwk},0) - COALESCE(${ic_abandoned_fcast_trdwk},0))/NULLIF(${ic_abandoned_fcast_trdwk},0)  ;;
+    value_format_name: percent_2
+  }
+
   ### Trading YTD
 
   measure: ic_abandoned_actual_trdytd {
@@ -2885,6 +2975,48 @@ view: new_business_sale {
     group_label: "Rate"
     type: number
     sql: COALESCE(COALESCE(${ic_abandoned},0) / NULLIF(${ic},0),0);;
+    value_format_name: percent_2
+  }
+
+  ### Trading Week
+
+  measure: ic_ar_actual_trdwk {
+    label: "Inbound Calls Abandoned Rate Trading WK"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${ic_abandoned_actual_trdwk},0) / NULLIF(${ic_actual_trdwk},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_ar_actual_trdwk_ly {
+    label: "Inbound Calls Abandoned Rate Trading WK LY"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${ic_abandoned_actual_trdwk_ly},0) / NULLIF(${ic_actual_trdwk_ly},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_ar_fcast_trdwk {
+    label: "Inbound Calls Abandoned Rate Trading WK Forecast"
+    group_label: "Rate"
+    type: number
+    sql: COALESCE(COALESCE(${ic_abandoned_fcast_trdwk},0) / NULLIF(${ic_fcast_trdwk},0),0);;
+    value_format_name: percent_2
+  }
+
+  measure: ic_ar_actual_trdwk_vs_ly {
+    label: "Inbound Calls Abandoned Rate Trading WK VS LY %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_ar_actual_trdwk},0) - COALESCE(${ic_ar_actual_trdwk_ly},0))/NULLIF(${ic_ar_actual_trdwk_ly},0)  ;;
+    value_format_name: percent_2
+  }
+
+  measure: ic_ar_actual_trdwk_vs_fcast {
+    label: "Inbound Calls Abandoned Rate Trading WK VS Forecast %"
+    group_label: "Interaction"
+    type: number
+    sql: (COALESCE(${ic_ar_actual_trdwk},0) - COALESCE(${ic_ar_fcast_trdwk},0))/NULLIF(${ic_ar_fcast_trdwk},0)  ;;
     value_format_name: percent_2
   }
 
